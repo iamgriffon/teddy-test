@@ -12,6 +12,7 @@ services:
       - "8080:8080"
     volumes:
       - ./back:/app
+      - /app/node_modules
     networks:
       - app-network
     container_name: back
@@ -44,6 +45,21 @@ services:
     networks:
       - app-network
     container_name: nginx
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: '123456'
+      POSTGRES_DB: teddy
+      POSTGRES_MULTIPLE_DATABASES: 'teddy_db,teddy'
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    container_name: postgres
 
 networks:
   app-network:
