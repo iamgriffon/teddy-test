@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+![reactjs-vite-tailwindcss-boilerplate](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# React Tailwindcss Boilerplate build with Vite
 
-Currently, two official plugins are available:
+This is a boilerplate build with Vite, React 18, TypeScript, Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What is inside?
 
-## Expanding the ESLint configuration
+This project uses many tools like:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- [Vite](https://vitejs.dev)
+- [ReactJS](https://reactjs.org)
+- [TypeScript](https://www.typescriptlang.org)
+- [Vitest](https://vitest.dev)
+- [Testing Library](https://testing-library.com)
+- [Tailwindcss](https://tailwindcss.com)
+- [Eslint](https://eslint.org)
+- [Prettier](https://prettier.io)
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+### Install
+
+Create the project.
+
+```bash
+pnpm dlx degit joaopaulomoraes/reactjs-vite-tailwindcss-boilerplate my-app
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Access the project directory.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+cd my-app
 ```
+
+Install dependencies.
+
+```bash
+pnpm install
+```
+
+Serve with hot reload at <http://localhost:5173>.
+
+```bash
+pnpm run dev
+```
+
+### Lint
+
+```bash
+pnpm run lint
+```
+
+### Typecheck
+
+```bash
+pnpm run typecheck
+```
+
+### Build
+
+```bash
+pnpm run build
+```
+
+### Test
+
+```bash
+pnpm run test
+```
+
+View and interact with your tests via UI.
+
+```bash
+pnpm run test:ui
+```
+
+## License
+
+This project is licensed under the MIT License.
