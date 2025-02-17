@@ -43,17 +43,17 @@ Issues are used to track the progress of the project. They are also used to trac
 We follow a specific commit message format to maintain a clear and organized commit history. Please adhere to the following pattern when creating your commits:
 
 ```
-[COMMIT FLAG] - <commit description>
+[COMMIT FLAG]#<issue number> - <commit description>
 ```
 
 Provide a concise and descriptive summary of the changes made in the commit. Start with a verb in the imperative mood (e.g., "Add feature," "Fix bug," "Refactor code").
 
 ### Examples
 
-- `[FEATURE] - Add user authentication`
-- `[BUGFIX] - Fix issue with data validation`
-- `[REFAC] - Refactor database connection logic`
-- `[HOTFIX] - Fix critical security vulnerability`
+- `[FEATURE]#123 - Add user authentication`
+- `[BUGFIX]#456 - Fix issue with data validation`
+- `[REFAC]#789 - Refactor database connection logic`
+- `[HOTFIX]#999 - Fix critical security vulnerability`
 
 ## Branch Name Guidelines
 
