@@ -1,3 +1,3 @@
-export * from './dtos/index'
-export * from './entities/index'
+export * from './dtos'
+export * from './models'
 

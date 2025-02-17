@@ -1,22 +1,20 @@
-import { IsString, IsNotEmpty, IsEmail, Equals } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { IsString, Length, Min, IsNumber, IsDate } from 'class-validator';
 
-export class CreateUserDTO {
+export class UserDTO {
+  @IsNumber()
+  @Min(0, { message: 'Id must be greater than 0' })
+  id: number;
+
   @IsString()
+  @Length(3, 255, { message: 'Name must be between 3 and 255 characters' })
   name!: string;
 
-  @IsNotEmpty()
-  @IsEmail()
-  email!: string;
-
-  @IsNotEmpty()
   @IsString()
-  password!: string;
+  @Length(3, 255, { message: 'Session token must be between 3 and 255 characters' })
+  session_token!: string;
 
-  @IsNotEmpty()
-  @IsString()
-  @Equals('password')
-  confirmPassword!: string;
+  @IsDate()
+  session_token_expiry!: Date;
 }
 
-export class UpdateUserDTO extends PartialType(CreateUserDTO) {}
+export type CreateUserDTO = Omit<UserDTO, 'id' | 'session_token' | 'session_token_expiry'>;
