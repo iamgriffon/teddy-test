@@ -1,17 +1,19 @@
-FROM node:22-slim
+FROM node:22-alpine
 
-RUN apt-get update && apt-get install -y procps
+RUN apk update && apk add --no-cache procps
 
 RUN mkdir -p /app/node_modules && chown -R node:node /app
 
 WORKDIR /app
 
-COPY . .
+COPY package.json ./
 
 RUN npm install -g pnpm
 
 RUN pnpm install
 
+COPY . .
+
 EXPOSE 8080
 
-CMD [ "pnpm", "start:dev", "--host", "0.0.0.0" ]
+CMD [ "pnpm", "start:dev" ]
