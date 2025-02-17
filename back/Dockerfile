@@ -14,4 +14,4 @@ RUN pnpm install
 
 EXPOSE 8080
 
-CMD [ "pnpm", "start:dev" ]
+CMD [ "pnpm", "start:dev", "--host", "0.0.0.0" ]
