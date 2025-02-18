@@ -4,7 +4,7 @@
 - Ele contém informações sobre o formato de mensagens de commit e outras diretrizes de contribuição.
 - Ele é um documento de referência para os padrões de contribuição do projeto.
 - Todas as seções desse documento com exceção desta estarão escritas em inglês.
-
+- Para checar o progresso do projeto enquanto estava sendo desenvolvido, acesse as issues do projeto: `https://github.com/iamgriffon/teddy-test/issues?q=is%3Aissue%20state%3Aclosed`
 
 # Project Flags
 
@@ -16,7 +16,6 @@ Use one of the following to indicate which project the commit is for:
 - `[BACK]` - For commits related to the backend
 - `[DEVOPS]` - For commits related to devops
 - `[ALL]` - For commits related to all projects
-
 
 ## Commit Flags
 
@@ -36,7 +35,6 @@ Include the issue number that the commit addresses. If the commit is not related
 ### About issues
 
 Issues are used to track the progress of the project. They are also used to track the progress of the project. They are tied to the project's repository. ()
-
 
 ## Commit Message Guidelines
 
@@ -85,7 +83,6 @@ Example:
 
 - `back/feature#123_b`
 
-
 ## Pull Request Title Guidelines
 
 We follow a specific pull request title format to maintain a clear and organized pull request history. Please adhere to the following pattern when creating your pull requests:
@@ -115,6 +112,3 @@ Example:
 - `front/bugfix#456_c`
 - `devops/refac#789_d`
 - `front/hotfix#999_e`
-
-
-

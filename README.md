@@ -39,7 +39,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
     -   Frontend: `http://localhost/`
     -   Backend: `http://localhost/api/`
-
+    -   Swagger: `http://localhost/api/docs`
 ## Frameworks e Bibliotecas Utilizadas
 
 ### Frontend (ReactJS com Vite)
@@ -50,8 +50,9 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 -   **Estilização:** [TailwindCSS](https://tailwindcss.com/)
 -   **Interface HTTP:** [Axios](https://axios-http.com/)
 -   **Gerenciamento de Requisições:** [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/react-native/overview)
--   **Gerenciamento de Rotas:** [Tanstack Router](https://tanstack.com/router/latest/docs/overview)
+-   **Gerenciamento de Rotas:** [React Router](https://reactrouter.com/)
 -   **Testes:** [Playwright](https://playwright.dev/)
+
 
 ### Backend (NestJS)
 
@@ -60,6 +61,8 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 -   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
 -   **Autenticação:** [JWT](https://jwt.io/)
 -   **Testes:** [Jest](https://jestjs.io/)
+-   **Documentação:** [Swagger](https://swagger.io/)
+-   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
 
 ## Testes
 
@@ -78,11 +81,6 @@ Dentro da pasta `teddy-test/back` execute o seguinte comando:
 ```bash
 npm run test
 ```
-
-## Deploy
-
--  Deploy da aplicação disponível em: [https://teddy-test.iamgriffon.com](https://teddy-test.iamgriffon.com)
-
 ## Código fonte
 
 -  [Código fonte do frontend](https://github.com/iamgriffon/teddy-test/tree/main/front)
