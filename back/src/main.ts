@@ -1,11 +1,11 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from '@/application/modules/app.module';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { NestFactory } from '@nestjs/core'
+import { AppModule } from '@/application/modules/app.module'
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
-  app.enableCors();
+  const app = await NestFactory.create(AppModule)
+
+  app.enableCors()
 
   const config = new DocumentBuilder()
     .setTitle('Client API')
@@ -13,20 +13,20 @@ async function bootstrap() {
     .setVersion('1.0')
     .addTag('clients')
     .addBearerAuth()
-    .build();
+    .build()
 
   const document = SwaggerModule.createDocument(app, config, {
     extraModels: []
-  });
-  
+  })
+
   SwaggerModule.setup('api/docs', app, document, {
     swaggerOptions: {
       persistAuthorization: true,
       defaultModelsExpandDepth: -1
     },
     customSiteTitle: 'API Documentation'
-  });
+  })
 
-  await app.listen(8080);
+  await app.listen(8080)
 }
-bootstrap();
+bootstrap().catch(console.error)

@@ -18,9 +18,9 @@ export class ClientService implements IClientService {
 
   async findMany(
     options: FindManyOptions<ClientEntity>
-  ): Promise<GetClientsDTO>  {
-    const clients = await this.clientRepository.findMany(options);
-    const total = await this.clientRepository.count();
+  ): Promise<GetClientsDTO> {
+    const clients = await this.clientRepository.findMany(options)
+    const total = await this.clientRepository.count()
     if (!options.skip || !options.take) {
       return { clients, total, page: 1, total_pages: 1 }
     }
@@ -40,7 +40,11 @@ export class ClientService implements IClientService {
   }
 
   async updateClient(id: number, client: ClientEntity): Promise<UpdateResult> {
-    return this.clientRepository.update(id, client) || null
+    const result = await this.clientRepository.update(id, client)
+    if (!result) {
+      throw new Error('Client not found')
+    }
+    return result
   }
 
   async deleteClient(id: number): Promise<DeleteResult> {
