@@ -35,11 +35,26 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
     Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
 
-3.  **Acesse a aplicação:**
+3. **Instale as variáveis de ambiente:**
+
+    Dentro da pasta `teddy-test/front` execute o seguinte comando:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+    Dentro da pasta `teddy-test/back` execute o seguinte comando:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+4.  **Acesse a aplicação:**
 
     -   Frontend: `http://localhost/`
     -   Backend: `http://localhost/api/`
     -   Swagger: `http://localhost/api/docs`
+
 ## Frameworks e Bibliotecas Utilizadas
 
 ### Frontend (ReactJS com Vite)
@@ -59,7 +74,6 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 -   **Framework:** [NestJS](https://nestjs.com/)
 -   **ORM:** [TypeORM](https://typeorm.io/)
 -   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
--   **Autenticação:** [JWT](https://jwt.io/)
 -   **Testes:** [Jest](https://jestjs.io/)
 -   **Documentação:** [Swagger](https://swagger.io/)
 -   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)

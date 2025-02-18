@@ -7,7 +7,6 @@ Este é o módulo backend do projeto fullstack, construído com NestJS, TypeORM 
 - **Framework:** [NestJS](https://nestjs.com/)
 - **ORM:** [TypeORM](https://typeorm.io/)
 - **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
-- **Autenticação:** [JWT](https://jwt.io/)
 - **Testes:** [Jest](https://jestjs.io/)
 - **Documentação:** [Swagger](https://swagger.io/)
 
