@@ -9,13 +9,13 @@ import { ClientEntity } from '@/db/entities/client.entity'
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'postgres',
-      port: 5432,
-      password: '123456',
-      username: 'sa',
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT!),
+      username: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME,
       entities: [ClientEntity],
-      database: 'teddy',
-      synchronize: true,
+      synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
       logging: true
     }),
     ClientModule
