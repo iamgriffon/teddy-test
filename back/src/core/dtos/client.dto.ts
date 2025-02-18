@@ -32,4 +32,4 @@ export type DeleteClientDTO = { message: string, raw: DeleteResult, affected: nu
 
 export type CreateClientDTO = ClientDTO;
 
-export type ErrorClientDTO = { error: string };
+export type ErrorClientDTO = { error: string, status: number };
