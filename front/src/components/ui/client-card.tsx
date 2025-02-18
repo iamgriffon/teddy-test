@@ -12,7 +12,7 @@ import { ClientFormSchemaType } from 'schemas/client-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseCurrency } from 'utils/parse-currency'
 import { ClientForm } from './client-form'
-import { useClientStore } from 'store/client/store'
+import { useClientStore } from 'store/client'
 import { toast } from 'react-toastify'
 import { cn } from 'utils/cn'
 interface ClientCardProps extends HTMLAttributes<HTMLDivElement> {
