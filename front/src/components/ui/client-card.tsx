@@ -147,7 +147,7 @@ export default function ClientCard({
 
   return (
     <section
-      className="max-w-[320px]: flex min-w-[285px] flex-col items-center justify-center gap-2.5 rounded-[4px] bg-white px-16 py-4 shadow-[0px_0px_4px_0px_#0000001A]"
+      className="max-w-[320px] flex min-w-[285px] flex-col items-center justify-center gap-2.5 rounded-[4px] bg-white px-16 py-4 shadow-[0px_0px_4px_0px_#0000001A]"
       {...props}
     >
       <h1 className="truncate font-bold" data-testid="client-form-name">

@@ -145,10 +145,10 @@ export default function Clients() {
   return (
     <div className="flex h-full grow flex-col justify-between">
       <section
-        className="mb-5 flex flex-col justify-between gap-4"
+        className="mb-5 flex flex-col xl:w-[1280px] max-xl:w-[1024px] max-lg:w-[768px] max-md:w-[480px] max-sm:w-[320px] justify-between gap-4"
         data-testid="clients-section"
       >
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between max-md:flex-col max-md:items-start">
           <p
             className="flex items-center gap-2 text-lg leading-6"
             data-testid="clients-total-label"
@@ -174,7 +174,7 @@ export default function Clients() {
           </div>
         </div>
         <div
-          className="grid size-full grid-cols-4 gap-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1"
+          className="grid size-full grid-cols-4 gap-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:grid-cols-1 max-md:justify-items-center"
           data-testid="clients-cards-wrapper"
         >
           {isLoading
