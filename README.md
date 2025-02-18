@@ -25,17 +25,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     cd teddy-test
     ```
 
-2.  **Execute o projeto com Docker Compose:**
-
-    Dentro da pasta `teddy-test` execute o seguinte comando:
-
-    ```bash
-    docker-compose up --build
-    ```
-
-    Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
-
-3. **Instale as variáveis de ambiente:**
+2. **Instale as variáveis de ambiente:**
 
     Dentro da pasta `teddy-test/front` execute o seguinte comando:
 
@@ -48,6 +38,18 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ```bash
     cp .env.example .env
     ```
+
+3.  **Execute o projeto com Docker Compose:**
+
+    Dentro da pasta `teddy-test` execute o seguinte comando:
+
+    ```bash
+    docker-compose up --build
+    ```
+
+    Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
+
+
 
 4.  **Acesse a aplicação:**
 
