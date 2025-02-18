@@ -5,7 +5,7 @@ export function MobileMenuIcon({
   width,
   height,
   fill,
-  onClick,
+  onClick
 }: IconProps) {
   return (
     <svg

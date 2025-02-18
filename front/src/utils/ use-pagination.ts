@@ -27,6 +27,6 @@ export const usePagination = <T>(
     currentPage: currentPage || 1,
     setCurrentPage: setCurrentPage || (() => {}),
     currentPageData: currentPageData || [],
-    totalPages: totalPages || 1,
+    totalPages: totalPages || 1
   }
 }

@@ -1,11 +1,6 @@
-import { IconProps } from "./types";
+import { IconProps } from './types'
 
-export function CloseIcon({
-  className,
-  width,
-  height,
-  onClick,
-}: IconProps) {
+export function CloseIcon({ className, width, height, onClick }: IconProps) {
   return (
     <svg
       className={className}
@@ -13,7 +8,7 @@ export function CloseIcon({
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       onClick={onClick}
-      data-testid="close-modal-button"  
+      data-testid="close-modal-button"
     >
       <rect width={width} height={height} fill="url(#pattern0_2086_333)" />
       <defs>

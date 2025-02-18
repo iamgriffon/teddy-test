@@ -1,7 +1,12 @@
-
 import { IconProps } from './types'
 
-export function HomeIcon({ className, width, height, fill, stroke }: IconProps) {
+export function HomeIcon({
+  className,
+  width,
+  height,
+  fill,
+  stroke
+}: IconProps) {
   return (
     <svg
       className={className}

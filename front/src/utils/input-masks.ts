@@ -7,7 +7,7 @@ export function maskSalary(value: string) {
       integerPart = '0'
     }
 
-    let decimalPart = cleanedValue
+    const decimalPart = cleanedValue
       .slice(commaIndex + 1)
       .replace(/,/g, '')
       .slice(0, 2)

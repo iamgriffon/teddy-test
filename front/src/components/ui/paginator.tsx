@@ -26,7 +26,7 @@ export function Paginator({
         breakLabel="..."
         nextLabel={null}
         forcePage={currentPage}
-        className="flex items-center justify-center gap-5 font-bold text-sm"
+        className="flex items-center justify-center gap-5 text-sm font-bold"
         activeClassName="bg-theme-primary flex items-center justify-center w-8 h-8 text-white rounded-lg"
         onPageChange={handlePageClick}
         marginPagesDisplayed={1}

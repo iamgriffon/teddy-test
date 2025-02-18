@@ -26,5 +26,5 @@ export const useClientStore = create<ClientStore>((set) => ({
           ? { ...client, ...updatedClient }
           : client
       )
-    })) 
+    }))
 }))

@@ -1,5 +1,5 @@
-import { create } from "zustand";
-import { UserStore } from "./types";
+import { create } from 'zustand'
+import { UserStore } from './types'
 
 export const useUserStore = create<UserStore>((set) => ({
   user: localStorage.getItem('user') || '',
@@ -10,5 +10,5 @@ export const useUserStore = create<UserStore>((set) => ({
   clearUser: () => {
     localStorage.removeItem('user')
     set({ user: '' })
-  },
+  }
 }))

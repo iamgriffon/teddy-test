@@ -13,12 +13,12 @@ function App() {
       <Router>
         <Layout>
           <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/clients" element={<Clients />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Layout>
-    </Router>
+            <Route path="/" element={<Home />} />
+            <Route path="/clients" element={<Clients />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
+      </Router>
     </QueryClientProvider>
   )
 }
