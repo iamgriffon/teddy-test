@@ -4,8 +4,6 @@ export function CloseIcon({
   className,
   width,
   height,
-  fill,
-  stroke,
   onClick,
 }: IconProps) {
   return (
@@ -15,6 +13,7 @@ export function CloseIcon({
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       onClick={onClick}
+      data-testid="close-modal-button"  
     >
       <rect width={width} height={height} fill="url(#pattern0_2086_333)" />
       <defs>

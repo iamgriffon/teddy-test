@@ -1,6 +1,14 @@
 import { IconProps } from './types'
 
-export function AddIcon({ className, width, height, fill, stroke }: IconProps) {
+export function AddIcon({
+  className,
+  width = 13,
+  height = 13,
+  fill,
+  stroke,
+  onClick,
+  ...props
+}: IconProps) {
   return (
     <svg
       className={className}
@@ -11,6 +19,8 @@ export function AddIcon({ className, width, height, fill, stroke }: IconProps) {
       stroke={stroke}
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
+      onClick={onClick}
+      {...props}
     >
       <rect width="17" height="17" fill="url(#pattern0_2086_29)" />
       <defs>
