@@ -19,7 +19,12 @@ export class ClientDTO {
   company_sallary: number;
 }
 
-export type GetClientDTO = ClientDTO[];
+export type GetClientsDTO = {
+  clients: ClientDTO[];
+  total: number;
+  page: number;
+  total_pages: number;
+};
 
 export type UpdateClientDTO = UpdateResult;
 
