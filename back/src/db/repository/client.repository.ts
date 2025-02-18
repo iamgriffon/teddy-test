@@ -55,8 +55,8 @@ export class ClientRepository extends Repository<ClientEntity> {
     for (let i = 0; i < count; i++) {
       const client = new ClientEntity();
       client.name = faker.person.fullName();
-      client.sallary = faker.number.int({ min: 5000, max: 100000 });
-      client.company_sallary = faker.number.int({ min: 10000, max: 100000 });
+      client.sallary = faker.number.int({ min: 500000, max: 10000000 });
+      client.company_sallary = faker.number.int({ min: 1000000, max: 10000000 });
       client.created_at = faker.date.recent();
       clients.push(client);
     }
