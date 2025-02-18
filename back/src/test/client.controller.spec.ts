@@ -5,7 +5,7 @@ import { ClientRepositoryProvider } from '../db/repository/client.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ClientEntity } from '../db/entities/client.entity'
 import { faker } from '@faker-js/faker/locale/pt_BR'
-import { ErrorClientDTO, DeleteClientDTO } from '@/core'
+import { ErrorClientDTO, DeleteClientDTO, GetClientsDTO } from '@/core'
 import { UpdateResult } from 'typeorm'
 import { HttpException } from '@nestjs/common'
 describe('ClientController', () => {
@@ -48,6 +48,21 @@ describe('ClientController', () => {
       expect(clients.length).toBeGreaterThanOrEqual(10)
       await clientController.wipeAll()
     })
+    
+    it('should return the created client as the first element of the array (LIFO)', async () => {
+      const client = new ClientEntity()
+      client.name = 'Teste'
+      client.company_sallary = 10000
+      client.sallary = 5000
+      await clientController.create(client)
+      const response = await clientController.findMany('1', '1')
+      expect(response).toBeDefined()
+      if (!!response.clients) {
+        expect(response.clients[0].name).toBe('Teste')
+        expect(response.clients[0].company_sallary).toBe(10000)
+        expect(response.clients[0].sallary).toBe(5000)
+      }
+    })
     it('should throw an error if the client is not valid', async () => {
       const client = new ClientEntity()
       client.name = ''
@@ -59,7 +74,6 @@ describe('ClientController', () => {
   describe('Read Client', () => {
     beforeEach(async () => {
       await clientController.wipeAll()
-      // Ensure a client exists before attempting to read it
       const client = new ClientEntity()
       client.name = 'teste'
       client.company_sallary = 10000

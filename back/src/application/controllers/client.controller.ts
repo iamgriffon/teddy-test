@@ -39,6 +39,7 @@ export class ClientController {
     if (!data) {
       return { clients: [], total: 0, page: 1, total_pages: 1 }
     }
+
     return { clients: data.clients, total: data.total, page: pageNumber, total_pages }
   }
 
@@ -58,6 +59,9 @@ export class ClientController {
     if (!client.name?.trim() || !client.company_sallary || !client.sallary) {
       throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST);
     }
+
+    client.created_at = new Date()
+    client.updated_at = new Date()
     const result = await this.clientService.createClient(client)
     if (!result) {
       throw new HttpException('Client not created', HttpStatus.BAD_REQUEST);
@@ -73,6 +77,7 @@ export class ClientController {
     if (!client){
       throw new HttpException('Invalid body', HttpStatus.BAD_REQUEST);
     }
+    client.updated_at = new Date()
     const result = await this.clientService.updateClient(id, client)  
     if (result.affected === 0 || !result) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND);
@@ -82,7 +87,11 @@ export class ClientController {
 
   @Delete('wipe')
   async wipeAll(): Promise<void> {
-    return this.clientService.wipe()
+    try {
+      return await this.clientService.wipe()
+    } catch (error) {
+      throw new HttpException('Failed to wipe clients', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Delete(':id')

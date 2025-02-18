@@ -1,4 +1,4 @@
-import { IsNumber, Length } from "class-validator";
+import { IsDate, IsNumber, Length } from "class-validator";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity('clients')
@@ -17,4 +17,12 @@ export class ClientEntity {
   @Column()
   @IsNumber()
   company_sallary: number;
+
+  @Column({ nullable: true })
+  @IsDate()
+  created_at?: Date;  
+
+  @Column({ nullable: true })
+  @IsDate()
+  updated_at?: Date;
 }

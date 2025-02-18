@@ -20,7 +20,11 @@ export class ClientRepository extends Repository<ClientEntity> {
   }
 
   async findMany(options: FindManyOptions<ClientEntity>): Promise<ClientDTO[]> {
-    return this.find(options);
+    return this.createQueryBuilder('client')
+      .orderBy('client.created_at', 'DESC')
+      .skip(options.skip) 
+      .take(options.take)
+      .getMany();
   }
 
   async findById(id: number): Promise<ClientDTO | null> {
@@ -53,15 +57,23 @@ export class ClientRepository extends Repository<ClientEntity> {
       client.name = faker.person.fullName();
       client.sallary = faker.number.int({ min: 5000, max: 100000 });
       client.company_sallary = faker.number.int({ min: 10000, max: 100000 });
+      client.created_at = faker.date.recent();
       clients.push(client);
     }
-    await Promise.all(clients.map((client) => this.save(client)));
+    await this.save(clients);
   }
 
   async wipe(): Promise<void> {
     await this.clear();
     await this.query(`ALTER SEQUENCE clients_id_seq RESTART WITH 1;`);
     await this.query(`COMMIT;`);
+  }
+
+  async findRecent(limit: number): Promise<ClientDTO[]> {
+    return this.createQueryBuilder('client')
+      .orderBy('client.created_at', 'DESC')
+      .take(limit)
+      .getMany();
   }
 }
 
