@@ -10,8 +10,12 @@ export default {
       colors: {
         "theme": {
           "primary": "#EC6724",
-          "black": "#141414"
+          "black": "#141414",
+          "gray": "#D9D9D9"
         },
+        "background": {
+          "primary": "#F5F5F5"
+        }
       },
     },
   },

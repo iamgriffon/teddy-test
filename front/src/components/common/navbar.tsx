@@ -1,14 +1,15 @@
-import menuLogo from '../assets/menu-icon.svg'
-import logo from '../assets/logo.svg'
+import logo from '../../assets/logo.svg'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { breakpoints, cn } from 'utils'
 import { Link, useLocation } from 'react-router-dom'
 import { useClickAway, useMediaQuery } from '@uidotdev/usehooks'
-import { HomeIcon } from './icons/home-icon'
-import { MobileMenuIcon } from './icons/mobile-menu.icon'
-import { UserIcon } from './icons/user-icon'
+import { HomeIcon } from '../icons/home-icon'
+import { MobileMenuIcon } from '../icons/mobile-menu.icon'
+import { UserIcon } from '../icons/user-icon'
 import { useUserStore } from 'store/user/store'
-import { CloseIcon } from './icons/close-icon'
+import { BackArrowIcon } from '../icons/back-arrow-icon'
+import { MenuIcon } from '../icons/menu-icon'
+import { Overlay } from '../ui/overlay'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -22,7 +23,7 @@ export function Navbar() {
           ? 'text-base text-theme-primary underline stroke-theme-primary fill-theme-primary'
           : 'text-base'
       ),
-    []
+    [location.pathname, location.search]
   )
 
   const baseMobileMenuStyle = useMemo(
@@ -48,27 +49,29 @@ export function Navbar() {
     const menuSize = useMemo(
       () =>
         cn(
-          isMobile ? 'w-screen' : 'w-1/3',
-          'fixed bottom-0 left-0 z-10 w-full h-[87.5%] py-12 bg-white flex flex-col gap-10 justify-start items-center',
-          'transition-transform duration-300 ease-in-out',
-          isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+          isMobile ? 'w-screen items-center' : 'w-auto pl-10 pr-20 items-start',
+          'fixed bottom-0 left-0 z-11 h-[87.5%] py-12 bg-white flex flex-col gap-10 justify-start'
         ),
-      [isMobile, isMenuOpen]
+      [isMobile]
     )
-
     return (
-      <div className="h-screen w-screen fixed top-0 left-0 z-10 bg-theme-black/90">
+      <>
+        <Overlay />
         <aside
-          className={cn(menuSize)}
+          className={cn(menuSize, 'z-10')}
           ref={ref as React.RefObject<HTMLDivElement>}
+          data-testid="side-menu"
         >
-          <CloseIcon
-            className="cursor-pointer absolute top-4 right-4"
-            width={16}
-            height={16}
-            fill="white"
-            onClick={() => setIsMenuOpen(false)}
-          />
+          <button className="cursor-pointer flex items-center justify-center absolute -top-4 -right-4 w-10 h-10 p-0.5 rounded-full bg-black">
+            <BackArrowIcon
+              className="fill-white"
+              width={16}
+              height={16}
+              fill=""
+              onClick={() => setIsMenuOpen(false)}
+              data-testid="side-menu-close-button"
+            />
+          </button>
           <section className="flex flex-col gap-10">
             <Link
               to="/"
@@ -88,23 +91,26 @@ export function Navbar() {
               Home
             </Link>
             <Link
-              to="/users"
+              to="/clients"
               className={cn(
                 baseMobileMenuStyle,
-                linkStyle(location.pathname === '/users')
+                linkStyle(location.pathname === '/clients' && !location.search)
               )}
             >
               <UserIcon
-                className={cn(linkStyle(location.pathname === '/users'))}
+                className={cn(
+                  linkStyle(
+                    location.pathname === '/clients' && !location.search
+                  )
+                )}
                 width={24}
                 height={24}
-                fill={location.pathname === '/users' ? '#EE7D46' : '#141414'}
+                fill={location.pathname === '/clients' ? '#EE7D46' : '#141414'}
               />
-              Usuários selecionados
+              Clientes
             </Link>
             <Link
               to="/products"
-              onClick={() => clearUser()}
               className={cn(
                 baseMobileMenuStyle,
                 linkStyle(location.pathname === '/products')
@@ -119,31 +125,38 @@ export function Navbar() {
                     : 'stroke-theme-primary'
                 }
               />
-              Sair
+              Produtos
             </Link>
           </section>
         </aside>
-      </div>
+      </>
     )
-  }, [isMobile, isMenuOpen, location.pathname])
+  }, [isMobile, isMenuOpen, location])
 
   const DesktopMenu = useCallback(() => {
     return (
       <section className="flex items-center gap-10 pr-[50px]">
-        <nav>
+        <nav className="max-md:hidden">
           <ul className="flex items-center gap-10">
             <li>
               <Link
-                to="/users"
-                className={linkStyle(location.pathname === '/users')}
+                to="/clients"
+                className={linkStyle(
+                  location.pathname === '/clients' && location.search === ''
+                )}
+                data-testid="link-to-clients"
               >
                 Clientes
               </Link>
             </li>
             <li>
               <Link
-                to="/selected-users"
-                className={linkStyle(location.pathname === '/selected-users')}
+                to="/clients?selected=true"
+                className={linkStyle(
+                  location.pathname === '/clients' &&
+                    location.search === '?selected=true'
+                )}
+                data-testid="link-to-selected-clients"
               >
                 Clientes selecionados
               </Link>
@@ -155,6 +168,7 @@ export function Navbar() {
                 className={cn(
                   'text-base hover:text-theme-primary hover:underline'
                 )}
+                data-testid="link-to-logout"
               >
                 Sair
               </Link>
@@ -163,20 +177,25 @@ export function Navbar() {
         </nav>
       </section>
     )
-  }, [location.pathname])
+  }, [location.pathname, location.search, isMobile, clearUser])
 
   return (
-    <nav className="fixed top-0 left-0 flex justify-between items-center w-full h-[100px] py-6 shadow-sm">
+    <nav
+      className="z-10 flex justify-between items-center w-full h-[100px] py-6 mb-5 shadow-sm bg-white"
+      data-testid="navbar"
+    >
       <section className="flex items-center gap-10 pl-[50px]">
-        <img
-          src={menuLogo}
-          alt="Logo"
+        <MenuIcon
+          width={24}
+          height={24}
+          fill="none"
           onClick={toggleSideMenu}
           className="cursor-pointer"
+          data-testid="side-menu-icon"
         />
         <img src={logo} alt="Logo" />
       </section>
-      {!isMobile && <DesktopMenu />}
+      <DesktopMenu />
       {isMenuOpen && <Sidemenu />}
       <section className="flex items-center gap-10 pr-[50px]">
         <span>
