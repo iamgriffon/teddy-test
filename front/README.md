@@ -21,18 +21,13 @@ Este projeto utiliza diversas ferramentas como:
 
 ## Como começar?
 
-### Instalação
+### Instalação e Configuração
 
-Acesse o diretório do projeto.
-
-```bash
-cd front
-```
-
-Instale as dependências.
+Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente e instale as dependências.
 
 ```bash
-pnpm install
+  cp .env.example .env
+  pnpm install
 ```
 
 Acesse a aplicação através de <http://localhost:5173> ou <http://localhost/> (devido ao Nginx).
