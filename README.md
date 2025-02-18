@@ -25,23 +25,18 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     cd teddy-test
     ```
 
-2. **Instale as variáveis de ambiente:**
+2. **Instale as variáveis de ambiente e dependências:**
 
-    Dentro da pasta `teddy-test/front` execute o seguinte comando:
-
-    ```bash
-    cp .env.example .env
-    ```
-
-    Dentro da pasta `teddy-test/back` execute o seguinte comando:
+    Dentro das pastas `teddy-test/front` e `teddy-test/back` execute o seguinte comando:
 
     ```bash
     cp .env.example .env
+    pnpm install
     ```
 
 3.  **Execute o projeto com Docker Compose:**
 
-    Dentro da pasta `teddy-test` execute o seguinte comando:
+    Dentro da pasta `teddy-test` execute os seguintes comandos:
 
     ```bash
     docker-compose up --build
@@ -56,6 +51,22 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     -   Frontend: `http://localhost/`
     -   Backend: `http://localhost/api/`
     -   Swagger: `http://localhost/api/docs`
+
+5. **Caso você esteja tendo problemas com dependências**
+
+Execute o seguinte comando caso você esteja com problemas com as dependências:
+
+- No front 
+
+```bash
+docker exec -it front sh -c "pnpm install"
+```
+
+- No back
+
+```bash
+docker exec -it back sh -c "pnpm install"
+```
 
 ## Frameworks e Bibliotecas Utilizadas
 

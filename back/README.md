@@ -27,10 +27,11 @@ pnpm install
 
 ### Configuração do Ambiente
 
-Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente.
+Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente e instale as dependências.
 
 ```bash
   cp .env.example .env
+  pnpm install
 ```
 
 ### Execução
