@@ -1,4 +1,4 @@
-import { IsNumber, IsString, Length, Min } from 'class-validator';
+import { IsDate, IsNumber, IsString, Length, Min } from 'class-validator';
 import { DeleteResult, UpdateResult } from 'typeorm';
 
 export class ClientDTO {
@@ -17,6 +17,12 @@ export class ClientDTO {
   @IsNumber()
   @Min(0, { message: 'Company sallary must be greater than 0' })
   company_sallary: number;
+
+  @IsDate()
+  created_at?: Date;
+
+  @IsDate()
+  updated_at?: Date;
 }
 
 export type GetClientsDTO = {

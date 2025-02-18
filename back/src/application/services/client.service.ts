@@ -18,9 +18,9 @@ export class ClientService implements IClientService {
 
   async findMany(
     options: FindManyOptions<ClientEntity>
-  ): Promise<GetClientsDTO> {
-    const clients = await this.clientRepository.findMany(options)
-    const total = await this.clientRepository.count()
+  ): Promise<GetClientsDTO>  {
+    const clients = await this.clientRepository.findMany(options);
+    const total = await this.clientRepository.count();
     if (!options.skip || !options.take) {
       return { clients, total, page: 1, total_pages: 1 }
     }
