@@ -1,7 +1,6 @@
 import { api } from './api'
 import { ClientDTO } from 'dtos/userDTO'
 import { GetClientsResponse, CreateClientRequest } from './types'
-import { ClientFormSchemaType } from 'schemas/client-form-schema'
 
 export const getClient = async (id: number) => {
   const { data } = await api.get<ClientDTO>(`/clients/${id}`)
@@ -9,7 +8,9 @@ export const getClient = async (id: number) => {
 }
 
 export const getClients = async (page: number, size: number) => {
-  const { data } = await api.get<GetClientsResponse>(`/clients?page=${page}&size=${size}`)
+  const { data } = await api.get<GetClientsResponse>(
+    `/clients?page=${page}&size=${size}`
+  )
   return data
 }
 

@@ -24,22 +24,22 @@ export default function Home() {
     <Layout className="h-screen">
       <form
         onSubmit={handleLogin}
-        className="flex flex-col items-center h-full justify-center gap-5 w-[512px]"
+        className="flex h-full w-[512px] flex-col items-center justify-center gap-5"
         data-testid="homepage-form"
       >
-        <h1 className="text-4xl font-sans" data-testid="homepage-title">
+        <h1 className="font-sans text-4xl" data-testid="homepage-title">
           Olá, seja bem-vindo!{' '}
         </h1>
         <Input
           placeholder="Digite seu nome:"
-          className="w-full h-[60px]"
+          className="h-[60px] w-full"
           value={input}
           onChange={handleChange}
           id="user-input"
           data-testid="homepage-input"
         />
         <Button
-          className="bg-theme-primary h-[60px] hover:bg-orange-800/90"
+          className="h-[60px] bg-theme-primary hover:bg-orange-800/90"
           type="submit"
           data-testid="homepage-button"
         >

@@ -25,7 +25,7 @@ export default function Layout({ children, className }: LayoutProps) {
     if (user && isHome) {
       navigate('/clients')
     }
-  }, [])
+  }, [user, isHome, navigate])
 
   return (
     <main

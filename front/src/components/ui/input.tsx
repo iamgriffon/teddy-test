@@ -10,7 +10,13 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const baseInputStyle = cn(
       'py-3 pl-5 text-2xl placeholder:text-[#AAAAAA] border-2 border-theme-gray rounded-[4px]'
     )
-    return <input className={cn(baseInputStyle, 'h-12', className)} ref={ref} {...props} />
+    return (
+      <input
+        className={cn(baseInputStyle, 'h-12', className)}
+        ref={ref}
+        {...props}
+      />
+    )
   }
 )
 

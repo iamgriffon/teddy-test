@@ -1,6 +1,13 @@
 import { IconProps } from './types'
 
-export const MenuIcon = ({ width, height, fill, onClick, className, ...props }: IconProps) => {
+export const MenuIcon = ({
+  width,
+  height,
+  fill,
+  onClick,
+  className,
+  ...props
+}: IconProps) => {
   return (
     <svg
       width={width}

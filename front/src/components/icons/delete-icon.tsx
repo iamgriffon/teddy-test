@@ -1,6 +1,11 @@
-import { IconProps } from "./types";
+import { IconProps } from './types'
 
-export function DeleteIcon({ className, width = 20, height = 20, dataTestId, ...props }: IconProps) {
+export function DeleteIcon({
+  className,
+  width = 20,
+  height = 20,
+  ...props
+}: IconProps) {
   return (
     <svg
       className={className}
@@ -10,7 +15,6 @@ export function DeleteIcon({ className, width = 20, height = 20, dataTestId, ...
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      data-testId={dataTestId}
       {...props}
     >
       <rect width="20" height="20" fill="url(#pattern0_2086_31)" />

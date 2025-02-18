@@ -1,27 +1,21 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import Layout from 'components/common/layout'
 import { Button } from 'components/ui/button'
 import ClientCard from 'components/ui/client-card'
 import { ClientForm } from 'components/ui/client-form'
 import { Paginator } from 'components/ui/paginator'
-import { ClientDTO } from 'dtos/userDTO'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { createClient, getClients } from 'services/clients'
 import { useClientStore } from 'store/client/store'
-import { useUserStore } from 'store/user/store'
-import { usePagination } from 'utils/ use-pagination'
 import { useForm, FormProvider } from 'react-hook-form'
 import { ClientFormSchema } from 'schemas/client-form-schema'
 import { ClientFormSchemaType } from 'schemas/client-form-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseCurrency } from 'utils/parse-currency'
-import { printCurrency } from 'utils/print-currency'
 import { CreateClientRequest } from 'services/types'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 export default function Clients() {
-  const { clients, selectedClients, selectClient, setClients } =
-    useClientStore()
+  const { clients, selectedClients, setClients } = useClientStore()
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [page, setPage] = useState(1)
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -35,12 +29,14 @@ export default function Clients() {
   const handleOpenForm = useCallback(() => {
     setIsFormOpen(true)
     form.reset()
+    //eslint-disable-next-line
   }, [])
 
   useEffect(() => {
     if (data) {
       setClients(data.clients)
     }
+    //eslint-disable-next-line
   }, [data])
 
   const list = useMemo(() => {
@@ -72,7 +68,7 @@ export default function Clients() {
       data: clients,
       total: data?.total
     }
-  }, [clients, selectedClients, location.search])
+  }, [clients, selectedClients, location.search, data, itemsPerPage])
 
   const options = useMemo(() => {
     return Array.from({ length: 11 }, (_, index) => index + 10).map((item) => ({
@@ -92,13 +88,13 @@ export default function Clients() {
       return 'cliente encontrado'
     }
     return 'clientes encontrados'
-  }, [location.search])
+  }, [location.search, list.total])
 
   const handleChange = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
       setItemsPerPage(Number(event.target.value))
     },
-    [refetch]
+    []
   )
 
   const form = useForm<ClientFormSchemaType>({
@@ -135,24 +131,28 @@ export default function Clients() {
   useEffect(() => {
     refetch()
     setPage(1)
-  }, [itemsPerPage])
+  }, [itemsPerPage, refetch])
 
   useEffect(() => {
     refetch()
-  }, [page])
+  }, [page, refetch])
 
   const onCRUDClient = useCallback(() => {
     refetch()
+    //eslint-disable-next-line
   }, [])
 
   return (
-    <div className="flex flex-col h-full flex-grow justify-between">
+    <div className="flex h-full grow flex-col justify-between">
       <section
-        className="flex flex-col gap-4 justify-between mb-5"
+        className="mb-5 flex flex-col justify-between gap-4"
         data-testid="clients-section"
       >
         <div className="flex items-center justify-between">
-          <p className="flex items-center gap-2 text-lg leading-6" data-testid="clients-total-label">
+          <p
+            className="flex items-center gap-2 text-lg leading-6"
+            data-testid="clients-total-label"
+          >
             <strong>{list.total}</strong>
             <span className="text-theme-black">{totalLabel}:</span>
           </p>
@@ -160,7 +160,7 @@ export default function Clients() {
             <p className="text-lg leading-6">Clientes por página:</p>
             <select
               id="itemsPerPage"
-              className="border border-theme-gray rounded-md p-2"
+              className="rounded-md border border-theme-gray p-2"
               data-testid="items-per-page-select"
               value={itemsPerPage}
               onChange={handleChange}
@@ -173,7 +173,10 @@ export default function Clients() {
             </select>
           </div>
         </div>
-        <div className="grid w-full h-full grid-cols-4 max-sm:grid-cols-1 max-lg:grid-cols-2 max-xl:grid-cols-3 gap-5" data-testid="clients-cards-wrapper">
+        <div
+          className="grid size-full grid-cols-4 gap-5 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1"
+          data-testid="clients-cards-wrapper"
+        >
           {isLoading
             ? Array.from({ length: itemsPerPage }).map((_, index) => (
                 <ClientCard
@@ -202,7 +205,7 @@ export default function Clients() {
       </section>
       <footer>
         <Button
-          className="w-full border-2 h-10 border-theme-primary text-theme-primary hover:bg-theme-primary hover:text-white font-bold transition-all duration-300 text-sm"
+          className="h-10 w-full border-2 border-theme-primary text-sm font-bold text-theme-primary transition-all duration-300 hover:bg-theme-primary hover:text-white"
           onClick={handleOpenForm}
           data-testid="create-client-button"
         >
@@ -214,7 +217,7 @@ export default function Clients() {
             handlePageClick={(selectedItem) =>
               setPage(selectedItem.selected + 1)
             }
-            className="pt-5 pb-20"
+            className="pb-20 pt-5"
             currentPage={page - 1}
           />
         )}

@@ -2,12 +2,7 @@ import { AddIcon } from 'components/icons/add-icon'
 import { DeleteIcon } from 'components/icons/delete-icon'
 import EditIcon from 'components/icons/edit-icon'
 import { ClientDTO } from 'dtos/userDTO'
-import {
-  HTMLAttributes,
-  useCallback,
-  useMemo,
-  useState
-} from 'react'
+import { HTMLAttributes, useCallback, useMemo, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { deleteClient, updateClient } from 'services/clients'
 import { printCurrency } from 'utils/print-currency'
@@ -70,10 +65,10 @@ export default function ClientCard({
     toast.success(
       `${client.name} ${isSelected ? 'removido' : 'adicionado'} com sucesso!`,
       {
-        position: 'bottom-left',
+        position: 'bottom-left'
       }
     )
-  }, [client, selectClient, toast, isSelected])
+  }, [client, selectClient, isSelected])
 
   const UpdateForm = useForm<ClientFormSchemaType>({
     resolver: zodResolver(ClientFormSchema),
@@ -100,7 +95,7 @@ export default function ClientCard({
       }
       onUpdateClient(request)
     },
-    [onUpdateClient]
+    [onUpdateClient, client.id]
   )
 
   const UpdateClientForm = useCallback(
@@ -137,13 +132,13 @@ export default function ClientCard({
         />
       </FormProvider>
     ),
-    [DeleteForm]
+    [DeleteForm, client, isDeleting, onDeleteClient]
   )
 
   if (loading) {
     return (
       <section
-        className="flex flex-col justify-center items-center gap-2.5 h-[138px] w-[285px] bg-gray-200 rounded-[4px] animate-pulse shadow-[0px_0px_4px_0px_#0000001A]"
+        className="flex h-[138px] w-[285px] animate-pulse flex-col items-center justify-center gap-2.5 rounded-[4px] bg-gray-200 shadow-[0px_0px_4px_0px_#0000001A]"
         {...props}
         data-testid="client-card-skeleton"
       />
@@ -152,13 +147,10 @@ export default function ClientCard({
 
   return (
     <section
-      className="flex flex-col justify-center items-center gap-2.5 rounded-[4px] bg-white py-4 px-16 shadow-[0px_0px_4px_0px_#0000001A]"
+      className="max-w-[320px]: flex min-w-[285px] flex-col items-center justify-center gap-2.5 rounded-[4px] bg-white px-16 py-4 shadow-[0px_0px_4px_0px_#0000001A]"
       {...props}
     >
-      <h1
-        className="font-bold truncate text-ellipsis"
-        data-testid="client-form-name"
-      >
+      <h1 className="truncate font-bold" data-testid="client-form-name">
         {client.name}
       </h1>
       <span data-testid="client-form-sallary" className="truncate">
@@ -167,7 +159,7 @@ export default function ClientCard({
       <span data-testid="client-form-company-sallary" className="truncate">
         Empresa: {printCurrency(client.company_sallary)}
       </span>
-      <div className="flex items-center justify-between w-full pt-1.5">
+      <div className="flex w-full items-center justify-between pt-1.5">
         <AddIcon
           width={17}
           height={17}

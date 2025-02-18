@@ -23,7 +23,7 @@ export function Navbar() {
           ? 'text-base text-theme-primary underline stroke-theme-primary fill-theme-primary'
           : 'text-base'
       ),
-    [location.pathname, location.search]
+    []
   )
 
   const baseMobileMenuStyle = useMemo(
@@ -46,14 +46,11 @@ export function Navbar() {
   }, [isMobile])
 
   const Sidemenu = useCallback(() => {
-    const menuSize = useMemo(
-      () =>
-        cn(
-          isMobile ? 'w-screen items-center' : 'w-auto pl-10 pr-20 items-start',
-          'fixed bottom-0 left-0 z-11 h-[87.5%] py-12 bg-white flex flex-col gap-10 justify-start'
-        ),
-      [isMobile]
+    const menuSize = cn(
+      isMobile ? 'w-screen items-center' : 'w-auto pl-10 pr-20 items-start',
+      'fixed bottom-0 left-0 z-11 h-[87.5%] py-12 bg-white flex flex-col gap-10 justify-start'
     )
+
     return (
       <>
         <Overlay />
@@ -62,7 +59,7 @@ export function Navbar() {
           ref={ref as React.RefObject<HTMLDivElement>}
           data-testid="side-menu"
         >
-          <button className="cursor-pointer flex items-center justify-center absolute -top-4 -right-4 w-10 h-10 p-0.5 rounded-full bg-black">
+          <button className="absolute -right-4 -top-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black p-0.5">
             <BackArrowIcon
               className="fill-white"
               width={16}
@@ -131,7 +128,7 @@ export function Navbar() {
         </aside>
       </>
     )
-  }, [isMobile, isMenuOpen, location])
+  }, [location, ref, baseMobileMenuStyle, linkStyle, isMobile])
 
   const DesktopMenu = useCallback(() => {
     return (
@@ -177,11 +174,11 @@ export function Navbar() {
         </nav>
       </section>
     )
-  }, [location.pathname, location.search, isMobile, clearUser])
+  }, [location.pathname, location.search, clearUser, linkStyle])
 
   return (
     <nav
-      className="z-10 flex justify-between items-center w-full h-[100px] py-6 mb-5 shadow-sm bg-white"
+      className="z-10 mb-5 flex h-[100px] w-full items-center justify-between bg-white py-6 shadow-sm"
       data-testid="navbar"
     >
       <section className="flex items-center gap-10 pl-[50px]">

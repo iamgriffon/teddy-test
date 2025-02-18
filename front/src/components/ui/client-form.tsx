@@ -2,17 +2,25 @@ import { maskSalary } from 'utils/input-masks'
 import { Button } from './button'
 import { Input } from './input'
 import { Overlay } from './overlay'
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { CloseIcon } from 'components/icons/close-icon'
 import { cn } from 'utils'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, SubmitHandler, FieldValues } from 'react-hook-form'
+
 interface ClientFormProps {
-  onSubmit: (data: any) => void
+  onSubmit: (data: ClientFormData) => void
   buttonText: string
   title: string
   onClose: () => void
   loading: boolean
   type?: 'create' | 'update' | 'delete'
+}
+
+type ClientFormData = {
+  id?: number
+  name: string
+  sallary: string
+  company_sallary: string
 }
 
 export function ClientForm({
@@ -29,14 +37,16 @@ export function ClientForm({
   const name = watch('name')
   return (
     <Overlay>
-      <section className="flex flex-col w-full h-full justify-center items-center">
+      <section className="flex size-full flex-col items-center justify-center">
         <form
-          className="flex flex-col gap-4 h-[w-360px] p-5 bg-white rounded-md justify-center mb-5"
-          onSubmit={handleSubmit(onSubmit)}
+          className="mb-5 flex h-[w-360px] flex-col justify-center gap-4 rounded-md bg-white p-5"
+          onSubmit={handleSubmit(onSubmit as SubmitHandler<FieldValues>)}
           data-testid="client-form"
         >
-          <p className="flex justify-between items-center w-full relative">
-            <span className="text-lg font-bold" data-testid="client-form-title">{title}</span>
+          <p className="relative flex w-full items-center justify-between">
+            <span className="text-lg font-bold" data-testid="client-form-title">
+              {title}
+            </span>
             <CloseIcon
               width={12}
               height={12}
@@ -79,14 +89,17 @@ export function ClientForm({
               />
             </>
           ) : (
-            <p className="flex gap-2 text-lg" data-testid="client-form-delete-message">
+            <p
+              className="flex gap-2 text-lg"
+              data-testid="client-form-delete-message"
+            >
               <span>Você está prestes a excluir o cliente:</span>
               <span className="font-bold">{name}</span>
             </p>
           )}
           <Button
             type={type === 'delete' ? 'button' : 'submit'}
-            className="w-full h-10 bg-theme-primary text-white font-bold hover:bg-orange-800/90 transition-all duration-300"
+            className="h-10 w-full bg-theme-primary font-bold text-white transition-all duration-300 hover:bg-orange-800/90"
             loading={loading}
             onClick={() => {
               if (type === 'delete') {
