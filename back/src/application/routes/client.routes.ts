@@ -1,7 +1,7 @@
-import { ClientController } from "@/application/controllers/client.controller";
-import { Module } from "@nestjs/common";
+import { ClientController } from '@/application/controllers/client.controller'
+import { Module } from '@nestjs/common'
 
 @Module({
-  controllers: [ClientController],
+  controllers: [ClientController]
 })
 export class ClientRoutes {}

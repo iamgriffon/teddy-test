@@ -1,9 +1,5 @@
 import { ClientService } from '../services/client.service'
-import {
-  ClientDTO,
-  DeleteClientDTO,
-  GetClientsDTO
-} from '../../core/dtos'
+import { ClientDTO, DeleteClientDTO, GetClientsDTO } from '../../core/dtos'
 import { ClientEntity } from '../../db/entities/client.entity'
 import {
   Body,
@@ -18,7 +14,13 @@ import {
   Query
 } from '@nestjs/common'
 import { UpdateResult } from 'typeorm'
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBody } from '@nestjs/swagger'
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiQuery,
+  ApiBody
+} from '@nestjs/swagger'
 
 @ApiTags('clients')
 @Controller('/api/clients')
@@ -34,8 +36,8 @@ export class ClientController {
     @Query('page') page: string = '1',
     @Query('size') size: string = '10'
   ): Promise<GetClientsDTO> {
-    const pageNumber = Number(page);
-    const sizeNumber = Number(size);
+    const pageNumber = Number(page)
+    const sizeNumber = Number(size)
     const data = await this.clientService.findMany({
       skip: (pageNumber - 1) * sizeNumber,
       take: sizeNumber
@@ -45,7 +47,12 @@ export class ClientController {
       return { clients: [], total: 0, page: 1, total_pages: 1 }
     }
 
-    return { clients: data.clients, total: data.total, page: pageNumber, total_pages }
+    return {
+      clients: data.clients,
+      total: data.total,
+      page: pageNumber,
+      total_pages
+    }
   }
 
   @ApiOperation({ summary: 'Get client by ID' })
@@ -61,7 +68,7 @@ export class ClientController {
   }
 
   @ApiOperation({ summary: 'Create new client' })
-  @ApiBody({ 
+  @ApiBody({
     type: ClientEntity,
     examples: {
       example: {
@@ -73,53 +80,53 @@ export class ClientController {
       }
     }
   })
-  @ApiResponse({ 
-    status: 201, 
+  @ApiResponse({
+    status: 201,
     type: ClientDTO,
-    description: 'Successfully created client' 
+    description: 'Successfully created client'
   })
-  @ApiResponse({ 
-    status: 400, 
-    description: 'Invalid client data' 
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid client data'
   })
   @Post()
   async create(
     @Body() client: ClientEntity
   ): Promise<ClientDTO | HttpException> {
     if (!client.name?.trim() || !client.company_sallary || !client.sallary) {
-      throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST)
     }
 
     client.created_at = new Date()
     client.updated_at = new Date()
     const result = await this.clientService.createClient(client)
     if (!result) {
-      throw new HttpException('Client not created', HttpStatus.BAD_REQUEST);
+      throw new HttpException('Client not created', HttpStatus.BAD_REQUEST)
     }
     return result
   }
 
   @Put(':id')
-  @ApiResponse({ 
-    status: 200, 
+  @ApiResponse({
+    status: 200,
     description: 'Successfully updated client',
-    type: UpdateResult 
+    type: UpdateResult
   })
-  @ApiResponse({ 
-    status: 404, 
-    description: 'Client not found' 
+  @ApiResponse({
+    status: 404,
+    description: 'Client not found'
   })
   async update(
     @Param('id') id: number,
     @Body() client: ClientEntity
   ): Promise<UpdateResult | HttpException> {
-    if (!client){
-      throw new HttpException('Invalid body', HttpStatus.BAD_REQUEST);
+    if (!client) {
+      throw new HttpException('Invalid body', HttpStatus.BAD_REQUEST)
     }
     client.updated_at = new Date()
-    const result = await this.clientService.updateClient(id, client)  
+    const result = await this.clientService.updateClient(id, client)
     if (result.affected === 0 || !result) {
-      throw new HttpException('Client not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return result
   }
@@ -128,21 +135,26 @@ export class ClientController {
   async wipeAll(): Promise<void> {
     try {
       return await this.clientService.wipe()
-    } catch (error) {
-      throw new HttpException('Failed to wipe clients', HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch {
+      throw new HttpException(
+        'Failed to wipe clients',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
     }
   }
 
   @Delete(':id')
-  @ApiResponse({ 
+  @ApiResponse({
     status: 200,
     type: DeleteClientDTO,
-    description: 'Successfully deleted client' 
+    description: 'Successfully deleted client'
   })
-  async delete(@Param('id') id: number): Promise<DeleteClientDTO | HttpException> {
+  async delete(
+    @Param('id') id: number
+  ): Promise<DeleteClientDTO | HttpException> {
     const result = await this.clientService.deleteClient(id)
     if (result.affected === 0) {
-      throw new HttpException('Client not found', HttpStatus.NOT_FOUND);
+      throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return {
       message: 'Client deleted successfully',

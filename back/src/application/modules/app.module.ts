@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from '@/application/controllers/app.controller';
-import { AppService } from '@/application/services/app.service';
-import { ClientModule } from '@/application/modules/client.module';
-import { ClientEntity } from '@/db/entities/client.entity';
+import { Module } from '@nestjs/common'
+import { TypeOrmModule } from '@nestjs/typeorm'
+import { AppController } from '@/application/controllers/app.controller'
+import { AppService } from '@/application/services/app.service'
+import { ClientModule } from '@/application/modules/client.module'
+import { ClientEntity } from '@/db/entities/client.entity'
 
 @Module({
   imports: [
@@ -16,11 +16,11 @@ import { ClientEntity } from '@/db/entities/client.entity';
       entities: [ClientEntity],
       database: 'teddy',
       synchronize: true,
-      logging: true,
+      logging: true
     }),
-    ClientModule,
+    ClientModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

@@ -47,7 +47,7 @@ describe('ClientController', () => {
       expect(clients.length).toBeGreaterThanOrEqual(10)
       await clientController.wipeAll()
     })
-    
+
     it('should return the created client as the first element of the array (LIFO)', async () => {
       const client = new ClientEntity()
       client.name = 'Teste'
@@ -56,7 +56,7 @@ describe('ClientController', () => {
       await clientController.create(client)
       const response = await clientController.findMany('1', '1')
       expect(response).toBeDefined()
-      if (!!response.clients) {
+      if (response.clients) {
         expect(response.clients[0].name).toBe('Teste')
         expect(response.clients[0].company_sallary).toBe(10000)
         expect(response.clients[0].sallary).toBe(5000)
@@ -67,7 +67,9 @@ describe('ClientController', () => {
       client.name = ''
       client.company_sallary = 0
       client.sallary = 0
-      await expect(clientController.create(client)).rejects.toThrow(HttpException)
+      await expect(clientController.create(client)).rejects.toThrow(
+        HttpException
+      )
     })
   })
   describe('Read Client', () => {
@@ -99,12 +101,13 @@ describe('ClientController', () => {
       expect(response.total_pages).toBe(4)
     })
     it('should return null if the client is not found', async () => {
-      await expect(clientController.findById(255)).rejects.toThrow(HttpException)
+      await expect(clientController.findById(255)).rejects.toThrow(
+        HttpException
+      )
     })
   })
   describe('Update Client', () => {
     beforeAll(async () => {
-      // Changed to beforeAll to ensure client exists for all tests in this describe block
       await clientController.wipeAll()
       const client = new ClientEntity()
       client.name = 'teste'
@@ -125,12 +128,14 @@ describe('ClientController', () => {
       }
     })
     it('should return an empty update result if the client is not found', async () => {
-      await expect(clientController.update(255, {
-        name: 'teste2',
-        company_sallary: 15000,
-        sallary: 7000,
-        id: 1
-      })).rejects.toThrow(HttpException)
+      await expect(
+        clientController.update(255, {
+          name: 'teste2',
+          company_sallary: 15000,
+          sallary: 7000,
+          id: 1
+        })
+      ).rejects.toThrow(HttpException)
     })
     afterAll(async () => {
       await clientController.wipeAll()
@@ -138,7 +143,6 @@ describe('ClientController', () => {
   })
   describe('Delete Client', () => {
     beforeAll(async () => {
-      // Changed to beforeAll
       await clientController.wipeAll()
       const client = new ClientEntity()
       client.name = 'teste'
@@ -158,10 +162,11 @@ describe('ClientController', () => {
     })
   })
   afterAll(async () => {
-    await new Promise(resolve => setTimeout(resolve, 500));
-    const connection = clientController['clientService']['clientRepository'].manager.connection;
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    const connection =
+      clientController['clientService']['clientRepository'].manager.connection
     if (connection.isConnected) {
-      await connection.close();
+      await connection.close()
     }
   })
 })
