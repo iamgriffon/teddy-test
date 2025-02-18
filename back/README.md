@@ -29,6 +29,10 @@ pnpm install
 
 Crie um arquivo `.env` baseado no `.env.example` e configure as variáveis de ambiente.
 
+```bash
+  cp .env.example .env
+```
+
 ### Execução
 
 ```bash
@@ -39,6 +43,13 @@ pnpm run start:dev
 pnpm run build
 pnpm run start:prod
 ```
+
+## Populando o banco de dados
+
+```bash
+curl -X POST http://localhost/api/clients/seed/50
+```
+Isso irá criar 50 clientes aleatórios no banco de dados.
 
 ## Testes
 
