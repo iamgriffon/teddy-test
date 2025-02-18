@@ -1,57 +1,49 @@
-![reactjs-vite-tailwindcss-boilerplate](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
+![reactjs-vite-tailwindcss](https://user-images.githubusercontent.com/16243531/217138979-b854309c-4742-4275-a705-f9fec5158217.jpg)
 
-# React Tailwindcss Boilerplate build with Vite
+# Modelo React TailwindCSS construído com Vite
 
-This is a boilerplate build with Vite, React 18, TypeScript, Vitest, Testing Library, TailwindCSS 3, Eslint and Prettier.
+Este é um projeto construído com Vite, React 18, TypeScript, Playwright, TanStack Query, TailwindCSS, React Router, Zustand, Eslint e Prettier.
 
-## What is inside?
+## O que está incluído?
 
-This project uses many tools like:
+Este projeto utiliza diversas ferramentas como:
 
 - [Vite](https://vitejs.dev)
 - [ReactJS](https://reactjs.org)
 - [TypeScript](https://www.typescriptlang.org)
-- [Vitest](https://vitest.dev)
-- [Testing Library](https://testing-library.com)
+- [Playwright](https://playwright.dev/)
 - [Tailwindcss](https://tailwindcss.com)
 - [Eslint](https://eslint.org)
 - [Prettier](https://prettier.io)
+- [React Router](https://reactrouter.com/)
+- [TanStack Query](https://tanstack.com/query/latest/docs/framework/react/react-native/overview)
+- [Zustand](https://zustand.docs.pmnd.rs/)
 
-## Getting Started
+## Como começar?
 
-### Install
+### Instalação
 
-Create the project.
-
-```bash
-pnpm dlx degit joaopaulomoraes/reactjs-vite-tailwindcss-boilerplate my-app
-```
-
-Access the project directory.
+Acesse o diretório do projeto.
 
 ```bash
-cd my-app
+cd front
 ```
 
-Install dependencies.
+Instale as dependências.
 
 ```bash
 pnpm install
 ```
 
-Serve with hot reload at <http://localhost:5173>.
+Acesse a aplicação através de <http://localhost:5173> ou <http://localhost/> (devido ao Nginx).
 
-```bash
-pnpm run dev
-```
-
-### Lint
+### Verificação de código
 
 ```bash
 pnpm run lint
 ```
 
-### Typecheck
+### Verificação de tipos
 
 ```bash
 pnpm run typecheck
@@ -63,18 +55,18 @@ pnpm run typecheck
 pnpm run build
 ```
 
-### Test
+### Testes
 
 ```bash
 pnpm run test
 ```
 
-View and interact with your tests via UI.
+Visualize e interaja com seus testes via interface gráfica.
 
 ```bash
 pnpm run test:ui
 ```
 
-## License
+## Licença
 
-This project is licensed under the MIT License.
+Este projeto está licenciado sob a Licença MIT.
