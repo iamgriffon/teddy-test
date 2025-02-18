@@ -77,6 +77,39 @@ describe('Users Page', () => {
       await expect(page.getByTestId('client-form')).not.toBeVisible()
     })
 
+    test('should show the error message when the name input is empty', async () => {
+      const createClientButton = page.getByTestId('create-client-button')
+      await createClientButton.click()
+      await expect(page.getByTestId('client-form')).toBeVisible()
+      const nameInput = page.getByTestId('client-form-name-input')
+      await nameInput.fill('')
+      const submitButton = page.getByTestId('client-form-button')
+      await submitButton.click()
+      await expect(page.getByTestId('client-form-name-error')).toBeVisible()
+    })
+
+    test('should show the error message when the sallary input is empty', async () => {
+      const createClientButton = page.getByTestId('create-client-button')
+      await createClientButton.click()
+      await expect(page.getByTestId('client-form')).toBeVisible()
+      const sallaryInput = page.getByTestId('client-form-sallary-input')
+      await sallaryInput.fill('')
+      const submitButton = page.getByTestId('client-form-button')
+      await submitButton.click()
+      await expect(page.getByTestId('client-form-sallary-error')).toBeVisible()
+    })
+
+    test('should show the error message when the company sallary input is empty', async () => {
+      const createClientButton = page.getByTestId('create-client-button')
+      await createClientButton.click()
+      await expect(page.getByTestId('client-form')).toBeVisible()
+      const companySallaryInput = page.getByTestId('client-form-company-sallary-input')
+      await companySallaryInput.fill('')
+      const submitButton = page.getByTestId('client-form-button')
+      await submitButton.click()
+      await expect(page.getByTestId('client-form-company-sallary-error')).toBeVisible()
+    })
+
     test('should fill the form correctly', async () => {
       const createClientButton = page.getByTestId('create-client-button')
       await createClientButton.click()
