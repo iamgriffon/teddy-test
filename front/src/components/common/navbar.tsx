@@ -20,8 +20,8 @@ export function Navbar() {
     (condition: boolean) =>
       cn(
         condition
-          ? 'text-base text-theme-primary underline stroke-theme-primary fill-theme-primary'
-          : 'text-base'
+          ? 'text-base text-theme-primary underline stroke-theme-primary fill-theme-primary hover:text-orange-800/80 hover:fill-orange-800/80'
+          : 'text-base hover:text-theme-primary/80 hover:fill-theme-primary/80'
       ),
     []
   )
@@ -69,7 +69,7 @@ export function Navbar() {
               data-testid="side-menu-close-button"
             />
           </button>
-          <section className="flex flex-col gap-10">
+          <section className="flex flex-col gap-5">
             <Link
               to="/"
               className={cn(
@@ -91,7 +91,10 @@ export function Navbar() {
               to="/clients"
               className={cn(
                 baseMobileMenuStyle,
-                linkStyle(location.pathname === '/clients' && !location.search)
+                linkStyle(
+                  location.pathname.includes('/clients') ||
+                    location.search.includes('selected=true')
+                )
               )}
             >
               <UserIcon
@@ -102,7 +105,6 @@ export function Navbar() {
                 )}
                 width={24}
                 height={24}
-                fill={location.pathname === '/clients' ? '#EE7D46' : '#141414'}
               />
               Clientes
             </Link>
