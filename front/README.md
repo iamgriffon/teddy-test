@@ -53,13 +53,13 @@ pnpm run build
 ### Testes
 
 ```bash
-pnpm run test
+pnpm test
 ```
 
 Visualize e interaja com seus testes via interface gráfica.
 
 ```bash
-pnpm run test:ui
+pnpm test:ui
 ```
 
 ## Licença
