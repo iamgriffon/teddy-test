@@ -5,7 +5,6 @@ import { ClientRepositoryProvider } from '../db/repository/client.repository'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ClientEntity } from '../db/entities/client.entity'
 import { faker } from '@faker-js/faker/locale/pt_BR'
-import { ErrorClientDTO, DeleteClientDTO, GetClientsDTO } from '@/core'
 import { UpdateResult } from 'typeorm'
 import { HttpException } from '@nestjs/common'
 describe('ClientController', () => {
