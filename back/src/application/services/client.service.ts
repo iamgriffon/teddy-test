@@ -40,7 +40,7 @@ export class ClientService implements IClientService {
   }
 
   async updateClient(id: number, client: ClientEntity): Promise<UpdateResult> {
-    return this.clientRepository.update(id, client)
+    return this.clientRepository.update(id, client) || null
   }
 
   async deleteClient(id: number): Promise<DeleteResult> {

@@ -11,7 +11,8 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -43,19 +44,23 @@ export class ClientController {
 
   @Get(':id')
   async findById(@Param('id') id: number): Promise<ClientDTO | null> {
-    return this.clientService.findById(id)
+    const result = await this.clientService.findById(id)
+    if (!result) {
+      throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
+    }
+    return result
   }
 
   @Post()
   async create(
     @Body() client: ClientEntity
-  ): Promise<ClientDTO | ErrorClientDTO> {
-    const result = await this.clientService.createClient(client)
-    if (!client.name.trim() || !client.company_sallary || !client.sallary) {
-      return { error: 'Invalid client' }
+  ): Promise<ClientDTO | HttpException> {
+    if (!client.name?.trim() || !client.company_sallary || !client.sallary) {
+      throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST);
     }
+    const result = await this.clientService.createClient(client)
     if (!result) {
-      return { error: 'Client not created' }
+      throw new HttpException('Client not created', HttpStatus.BAD_REQUEST);
     }
     return result
   }
@@ -64,8 +69,15 @@ export class ClientController {
   async update(
     @Param('id') id: number,
     @Body() client: ClientEntity
-  ): Promise<UpdateResult> {
-    return this.clientService.updateClient(id, client)
+  ): Promise<UpdateResult | HttpException> {
+    if (!client){
+      throw new HttpException('Invalid body', HttpStatus.BAD_REQUEST);
+    }
+    const result = await this.clientService.updateClient(id, client)  
+    if (result.affected === 0 || !result) {
+      throw new HttpException('Client not found', HttpStatus.NOT_FOUND);
+    }
+    return result
   }
 
   @Delete('wipe')
@@ -74,10 +86,10 @@ export class ClientController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: number): Promise<DeleteClientDTO> {
+  async delete(@Param('id') id: number): Promise<DeleteClientDTO | HttpException> {
     const result = await this.clientService.deleteClient(id)
     if (result.affected === 0) {
-      return { message: 'Client not found', ...result, affected: 0 }
+      throw new HttpException('Client not found', HttpStatus.NOT_FOUND);
     }
     return {
       message: 'Client deleted successfully',

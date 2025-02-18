@@ -61,6 +61,7 @@ export class ClientRepository extends Repository<ClientEntity> {
   async wipe(): Promise<void> {
     await this.clear();
     await this.query(`ALTER SEQUENCE clients_id_seq RESTART WITH 1;`);
+    await this.query(`COMMIT;`);
   }
 }
 
