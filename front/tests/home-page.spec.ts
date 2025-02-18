@@ -43,6 +43,12 @@ describe('Homepage', () => {
   })
 
   describe('It should have the correct behavior', () => {
+    test('should show the error message when the input is empty', async () => {
+      const button = page.getByTestId('homepage-button')
+      await button.click()
+      await expect(page.getByTestId('homepage-error')).toBeVisible()
+    })
+
     test('should redirect to the users page when the form is submitted', async () => {
       const input = page.getByTestId('homepage-input')
       await input.fill('John Doe')

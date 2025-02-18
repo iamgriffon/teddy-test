@@ -31,10 +31,17 @@ export function ClientForm({
   loading,
   type = 'create'
 }: ClientFormProps) {
-  const { handleSubmit, register, setValue, watch } = useFormContext()
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors }
+  } = useFormContext()
   const formsWithInputs = useMemo(() => ['create', 'update'], [])
   const baseInputStyle = useMemo(() => 'w-[360px] h-10 text-base', [])
   const name = watch('name')
+  const errorMessageStyle = useMemo(() => 'text-red-500 text-sm', [])
   return (
     <Overlay>
       <section className="flex size-full flex-col items-center justify-center">
@@ -50,43 +57,73 @@ export function ClientForm({
             <CloseIcon
               width={12}
               height={12}
-              className="absolute right-0 top-1.5 cursor-pointer"
+              className="absolute right-1 top-1.5 cursor-pointer"
               onClick={onClose}
               data-testid="close-modal-button"
             />
           </p>
           {formsWithInputs.includes(type) ? (
             <>
-              <Input
-                placeholder="Digite o nome:"
-                {...register('name')}
-                className={baseInputStyle}
-                data-testid="client-form-name-input"
-              />
-              <Input
-                placeholder="Digite o salário"
-                className={cn(baseInputStyle, 'appearance-none')}
-                {...register('sallary', {
-                  onChange: (e) => {
-                    const value = e.target.value
-                    const parsedValue = maskSalary(value)
-                    setValue('sallary', parsedValue)
-                  }
-                })}
-                data-testid="client-form-sallary-input"
-              />
-              <Input
-                placeholder="Digite o valor da empresa"
-                className={baseInputStyle}
-                {...register('company_sallary', {
-                  onChange: (e) => {
-                    const value = e.target.value
-                    const parsedValue = maskSalary(value)
-                    setValue('company_sallary', parsedValue)
-                  }
-                })}
-                data-testid="client-form-company-sallary-input"
-              />
+              <div className="flex flex-col gap-2">
+                <Input
+                  placeholder="Digite o nome:"
+                  {...register('name')}
+                  className={baseInputStyle}
+                  data-testid="client-form-name-input"
+                />
+                {errors?.name && (
+                  <p
+                    className={errorMessageStyle}
+                    data-testid="client-form-name-error"
+                  >
+                    *{errors.name.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <Input
+                  placeholder="Digite o salário"
+                  className={cn(baseInputStyle, 'appearance-none')}
+                  {...register('sallary', {
+                    onChange: (e) => {
+                      const value = e.target.value
+                      const parsedValue = maskSalary(value)
+                      setValue('sallary', parsedValue)
+                    }
+                  })}
+                  data-testid="client-form-sallary-input"
+                />
+                {errors?.sallary && (
+                  <p
+                    className={errorMessageStyle}
+                    data-testid="client-form-sallary-error"
+                  >
+                    *{errors.sallary.message as string}
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col gap-2">
+                <Input
+                  placeholder="Digite o valor da empresa"
+                  className={baseInputStyle}
+                  {...register('company_sallary', {
+                    onChange: (e) => {
+                      const value = e.target.value
+                      const parsedValue = maskSalary(value)
+                      setValue('company_sallary', parsedValue)
+                    }
+                  })}
+                  data-testid="client-form-company-sallary-input"
+                />
+                {errors?.company_sallary && (
+                  <p
+                    className={errorMessageStyle}
+                    data-testid="client-form-company-sallary-error"
+                  >
+                    *{errors.company_sallary.message as string}
+                  </p>
+                )}
+              </div>
             </>
           ) : (
             <p

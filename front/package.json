@@ -9,7 +9,9 @@
     "build": "tsc && vite build",
     "serve": "vite preview",
     "lint": "eslint src --max-warnings=0",
-    "typecheck": "tsc --project tsconfig.json --noEmit"
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui"
   },
   "dependencies": {
     "@fontsource/inter": "^5.1.1",
