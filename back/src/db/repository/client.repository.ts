@@ -9,7 +9,6 @@ import {
   UpdateResult,
 } from 'typeorm';
 import { faker } from '@faker-js/faker';
-import { Client } from '@/core/models';
 
 export class ClientRepository extends Repository<ClientEntity> {
   constructor(private dataSource: DataSource) {

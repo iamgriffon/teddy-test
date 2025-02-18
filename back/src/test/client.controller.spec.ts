@@ -85,10 +85,13 @@ describe('ClientController', () => {
 
     it('should find all clients', async () => {
       await clientController.seedClients(10);
-      const response = await clientController.findMany();
+      const response = await clientController.findMany('1', '3');
       expect(response).toBeDefined();
-      expect(response).toBeInstanceOf(Array);
-      expect(response.length).toBeGreaterThanOrEqual(10);
+      expect(response.clients).toBeInstanceOf(Array);
+      expect(response.clients.length).toBeGreaterThanOrEqual(3);
+      expect(response.total).toBeGreaterThanOrEqual(10);
+      expect(response.page).toBe(1);
+      expect(response.total_pages).toBe(4);
     });
 
     it('should return null if the client is not found', async () => {
