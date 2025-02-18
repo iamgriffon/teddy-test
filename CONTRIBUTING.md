@@ -4,7 +4,9 @@
 - Ele contém informações sobre o formato de mensagens de commit e outras diretrizes de contribuição.
 - Ele é um documento de referência para os padrões de contribuição do projeto.
 - Todas as seções desse documento com exceção desta estarão escritas em inglês.
-- Para checar o progresso do projeto enquanto estava sendo desenvolvido, acesse as issues do projeto: `https://github.com/iamgriffon/teddy-test/issues?q=is%3Aissue%20state%3Aclosed`
+- Para checar o progresso do projeto enquanto estava sendo desenvolvido, acesse:
+  - As issues do projeto: `https://github.com/iamgriffon/teddy-test/issues?q=is%3Aissue%20state%3Aclosed`
+  - As pull requests do projeto: `https://github.com/iamgriffon/teddy-test/pulls?q=is%3Apr+is%3Aclosed`
 
 # Project Flags
 
