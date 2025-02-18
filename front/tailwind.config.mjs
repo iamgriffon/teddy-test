@@ -3,7 +3,17 @@
 export default {
   content: ['./src/**/*.{mjs,js,ts,jsx,tsx}'],
   theme: {
-    extend: {}
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
+      colors: {
+        "theme": {
+          "primary": "#EC6724",
+          "black": "#141414"
+        },
+      },
+    },
   },
   plugins: []
 }
