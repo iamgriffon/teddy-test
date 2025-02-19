@@ -1,18 +1,16 @@
 import { maskSalary } from 'utils/input-masks'
-import { Button } from './button'
-import { Input } from './input'
-import { Overlay } from './overlay'
+import { Button, Input, Overlay } from 'components/ui'
 import { useMemo } from 'react'
-import { CloseIcon } from 'components/icons/close-icon'
+import { CloseIcon } from 'components/icons'
 import { cn } from 'utils'
 import { useFormContext, SubmitHandler, FieldValues } from 'react-hook-form'
 
-interface ClientFormProps {
-  onSubmit: (data: ClientFormData) => void
+interface ClientFormProps<T = any> {
+  onSubmit: (data: T) => void
   buttonText: string
   title: string
   onClose: () => void
-  loading: boolean
+  loading?: boolean
   type?: 'create' | 'update' | 'delete'
 }
 
@@ -23,14 +21,14 @@ type ClientFormData = {
   company_sallary: string
 }
 
-export function ClientForm({
+export function ClientForm<T>({
   onSubmit,
   buttonText,
   onClose,
   title,
-  loading,
+  loading = false,
   type = 'create'
-}: ClientFormProps) {
+}: ClientFormProps<T>) {
   const {
     handleSubmit,
     register,

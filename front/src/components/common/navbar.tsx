@@ -1,7 +1,7 @@
 import logo from '../../assets/logo.svg'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { breakpoints, cn } from 'utils'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useClickAway, useMediaQuery } from '@uidotdev/usehooks'
 import { HomeIcon } from '../icons/home-icon'
 import { MobileMenuIcon } from '../icons/mobile-menu.icon'
@@ -9,22 +9,15 @@ import { UserIcon } from '../icons/user-icon'
 import { useUserStore } from 'store/user/store'
 import { BackArrowIcon } from '../icons/back-arrow-icon'
 import { MenuIcon } from '../icons/menu-icon'
-import { Overlay } from '../ui/overlay'
+import { Overlay, Link } from 'components/ui'
+import { links } from 'routes/links'
 
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, clearUser } = useUserStore()
   const location = useLocation()
   const isMobile = useMediaQuery(breakpoints.mobile)
-  const linkStyle = useCallback(
-    (condition: boolean) =>
-      cn(
-        condition
-          ? 'text-base text-theme-primary underline stroke-theme-primary fill-theme-primary hover:text-orange-800/80 hover:fill-orange-800/80'
-          : 'text-base hover:text-theme-primary/80 hover:fill-theme-primary/80'
-      ),
-    []
-  )
+  const { home, clients, selectedClients } = links
 
   const baseMobileMenuStyle = useMemo(
     () => cn('flex gap-4 items-center py-[14px] px-3 font-semibold'),
@@ -71,15 +64,15 @@ export function Navbar() {
           </button>
           <section className="flex flex-col gap-5">
             <Link
-              to="/"
+              to={home}
+              active={location.pathname === home}
               className={cn(
                 baseMobileMenuStyle,
-                linkStyle(location.pathname === '/')
               )}
             >
               <HomeIcon
                 className={cn(
-                  location.pathname === '/' &&
+                  location.pathname === home &&
                     'stroke-theme-primary stroke-0.5',
                   'w-6 h-6'
                 )}
@@ -88,20 +81,21 @@ export function Navbar() {
               Home
             </Link>
             <Link
-              to="/clients"
+              to={clients}
+              active={
+                location.pathname.includes('/clients') ||
+                location.search.includes('selected=true')
+              }
               className={cn(
                 baseMobileMenuStyle,
-                linkStyle(
-                  location.pathname.includes('/clients') ||
-                    location.search.includes('selected=true')
-                )
               )}
             >
               <UserIcon
                 className={cn(
-                  linkStyle(
-                    location.pathname === '/clients' && !location.search
-                  )
+                  location.pathname === clients && !location.search
+                    ? 'stroke-theme-primary stroke-0.5'
+                    : 'stroke-theme-primary',
+                  'w-6 h-6'
                 )}
                 width={24}
                 height={24}
@@ -109,17 +103,17 @@ export function Navbar() {
               Clientes
             </Link>
             <Link
-              to="/products"
+              to={selectedClients}
+              active={location.pathname === selectedClients}
               className={cn(
                 baseMobileMenuStyle,
-                linkStyle(location.pathname === '/products')
               )}
             >
               <MobileMenuIcon
                 width={24}
                 height={24}
                 fill={
-                  location.pathname === '/products'
+                  location.pathname === selectedClients
                     ? 'text-theme-primary'
                     : 'stroke-theme-primary'
                 }
@@ -130,7 +124,7 @@ export function Navbar() {
         </aside>
       </>
     )
-  }, [location, ref, baseMobileMenuStyle, linkStyle, isMobile])
+  }, [location, ref, baseMobileMenuStyle, isMobile])
 
   const DesktopMenu = useCallback(() => {
     return (
@@ -139,10 +133,10 @@ export function Navbar() {
           <ul className="flex items-center gap-10">
             <li>
               <Link
-                to="/clients"
-                className={linkStyle(
-                  location.pathname === '/clients' && location.search === ''
-                )}
+                to={clients}
+                active={
+                  location.pathname === clients && location.search === ''
+                }
                 data-testid="link-to-clients"
               >
                 Clientes
@@ -150,11 +144,11 @@ export function Navbar() {
             </li>
             <li>
               <Link
-                to="/clients?selected=true"
-                className={linkStyle(
-                  location.pathname === '/clients' &&
-                    location.search === '?selected=true'
-                )}
+                to={selectedClients}
+                active={
+                  location.pathname === selectedClients &&
+                  location.search === '?selected=true'
+                }
                 data-testid="link-to-selected-clients"
               >
                 Clientes selecionados
@@ -163,7 +157,7 @@ export function Navbar() {
             <li>
               <Link
                 onClick={() => clearUser()}
-                to="/"
+                to={home}
                 className={cn(
                   'text-base hover:text-theme-primary hover:underline'
                 )}
@@ -176,7 +170,7 @@ export function Navbar() {
         </nav>
       </section>
     )
-  }, [location.pathname, location.search, clearUser, linkStyle])
+  }, [location.pathname, location.search, clearUser])
 
   return (
     <nav

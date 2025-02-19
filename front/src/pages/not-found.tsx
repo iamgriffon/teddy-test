@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import Layout from '../components/common/layout'
+import { Layout } from 'components/common'
 import { useUserStore } from 'store/user/store'
-
+import { links } from 'routes/links'
 export function NotFound() {
   const { clearUser } = useUserStore()
+  const { home, clients } = links
   return (
     <Layout className="h-screen">
       <div
@@ -18,7 +19,7 @@ export function NotFound() {
         </p>
         <section className="flex flex-col gap-4">
           <Link
-            to="/"
+            to={home}
             onClick={() => clearUser()}
             //eslint-disable-next-line
             className="hover:bg-theme-primary-dark flex w-72 items-center justify-center rounded bg-theme-primary px-4 py-2 font-semibold text-white"
@@ -26,7 +27,7 @@ export function NotFound() {
             Voltar para a página inicial
           </Link>
           <Link
-            to="/clients"
+            to={clients}
             //eslint-disable-next-line
             className="hover:bg-theme-primary-dark flex w-72 items-center justify-center rounded border-2 border-theme-primary bg-white px-4 py-2 font-semibold text-theme-primary"
           >

@@ -1,29 +1,23 @@
-import { AddIcon } from 'components/icons/add-icon'
-import { DeleteIcon } from 'components/icons/delete-icon'
-import EditIcon from 'components/icons/edit-icon'
-import { ClientDTO } from 'dtos/clientDTO'
+import { AddIcon, DeleteIcon, EditIcon } from 'components/icons'
+import { ClientDTO } from 'dtos'
 import { HTMLAttributes, useCallback, useMemo, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
-import { deleteClient, updateClient } from 'services/clients'
-import { printCurrency } from 'utils/print-currency'
+import { deleteClient, updateClient } from 'services'
 import { useForm, FormProvider } from 'react-hook-form'
-import { ClientFormSchema } from 'schemas/client-form-schema'
-import { ClientFormSchemaType } from 'schemas/client-form-schema'
+import { ClientFormSchema, type ClientFormSchemaType } from 'schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { parseCurrency } from 'utils/parse-currency'
-import { ClientForm } from './client-form'
-import { useClientStore } from 'store/client'
+import { parseCurrency, printCurrency, cn } from 'utils'
+import { ClientForm } from '../client-form'
+import { useClientStore } from 'store'
 import { toast } from 'react-toastify'
-import { cn } from 'utils/cn'
+
 interface ClientCardProps extends HTMLAttributes<HTMLDivElement> {
   client: ClientDTO
-  loading?: boolean
   onCRUDClient: () => void
 }
 
-export default function ClientCard({
+export function ListClientCard({
   client,
-  loading,
   onCRUDClient,
   ...props
 }: ClientCardProps) {
@@ -135,19 +129,8 @@ export default function ClientCard({
     [DeleteForm, client, isDeleting, onDeleteClient]
   )
 
-  if (loading) {
-    return (
-      <section
-        className="flex h-[138px] w-[285px] animate-pulse flex-col items-center justify-center gap-2.5 rounded-[4px] bg-gray-200 shadow-[0px_0px_4px_0px_#0000001A]"
-        {...props}
-        data-testid="client-card-skeleton"
-      />
-    )
-  }
-
   return (
     <section
-      className="flex min-w-[285px] max-w-[320px] flex-col items-center justify-center gap-2.5 rounded-[4px] bg-white px-16 py-4 shadow-[0px_0px_4px_0px_#0000001A]"
       {...props}
     >
       <h1 className="truncate font-bold" data-testid="client-form-name">
