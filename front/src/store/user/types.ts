@@ -1,5 +1,7 @@
+import { UserDTO } from 'dtos/userDTO'
+
 export type UserStore = {
-  user?: string
-  setUser: (user: string) => void
+  user?: UserDTO
+  setUser: (user: UserDTO) => void
   clearUser: () => void
 }

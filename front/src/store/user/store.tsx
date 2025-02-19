@@ -1,14 +1,12 @@
 import { create } from 'zustand'
 import { UserStore } from './types'
-
+import { UserDTO } from 'dtos/userDTO'
 export const useUserStore = create<UserStore>((set) => ({
-  user: localStorage.getItem('user') || '',
-  setUser: (user: string) => {
-    localStorage.setItem('user', user)
+  user: undefined,
+  setUser: (user: UserDTO) => {
     set({ user })
   },
   clearUser: () => {
-    localStorage.removeItem('user')
-    set({ user: '' })
+    set({ user: undefined })
   }
 }))

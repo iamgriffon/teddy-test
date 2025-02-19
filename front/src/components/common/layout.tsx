@@ -1,17 +1,17 @@
 import { Navbar } from './navbar'
 import { cn } from 'utils'
 import { useLocation } from 'react-router-dom'
-import { useUserStore } from 'store/user'
+import { useUserStore } from 'store'
 import { useEffect, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Bounce } from 'react-toastify'
-import { ToastContainer } from 'react-toastify'
+import { Bounce, ToastContainer } from 'react-toastify'
+
 interface LayoutProps {
   children?: React.ReactNode
   className?: string
 }
 
-export default function Layout({ children, className }: LayoutProps) {
+export function Layout({ children, className }: LayoutProps) {
   const location = useLocation()
   const { user } = useUserStore()
   const navigate = useNavigate()

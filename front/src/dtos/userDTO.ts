@@ -1,6 +1,3 @@
-export interface ClientDTO {
-  id: number
+export interface UserDTO {
   name: string
-  sallary: number
-  company_sallary: number
 }
