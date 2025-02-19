@@ -1,4 +1,4 @@
-import { ClientDTO } from 'dtos/userDTO'
+import { ClientDTO } from 'dtos/clientDTO'
 
 export type GetClientsResponse = {
   clients: ClientDTO[]

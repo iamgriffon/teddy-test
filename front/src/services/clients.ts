@@ -1,5 +1,5 @@
 import { api } from './api'
-import { ClientDTO } from 'dtos/userDTO'
+import { ClientDTO } from 'dtos/clientDTO'
 import { GetClientsResponse, CreateClientRequest } from './types'
 
 export const getClient = async (id: number) => {

@@ -15,7 +15,8 @@ import { CreateClientRequest } from 'services/types'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 export default function Clients() {
-  const { clients, selectedClients, setClients } = useClientStore()
+  const { clients, selectedClients, setClients, setSelectedClients } =
+    useClientStore()
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [page, setPage] = useState(1)
   const [isFormOpen, setIsFormOpen] = useState(false)
@@ -135,6 +136,8 @@ export default function Clients() {
 
   useEffect(() => {
     refetch()
+    sanitizeStoredClients()
+    //eslint-disable-next-line
   }, [page, refetch])
 
   const onCRUDClient = useCallback(() => {
@@ -142,10 +145,24 @@ export default function Clients() {
     //eslint-disable-next-line
   }, [])
 
+  const sanitizeStoredClients = useCallback(() => {
+    if (clients.length) {
+      const storedClients = selectedClients.filter((client) =>
+        clients.some((c) => c.id === client.id)
+      )
+      setSelectedClients(storedClients)
+    }
+  }, [clients, selectedClients, setSelectedClients])
+
+  useEffect(() => {
+    sanitizeStoredClients()
+    //eslint-disable-next-line
+  }, [])
+
   return (
     <div className="flex h-full grow flex-col justify-between">
       <section
-        className="mb-5 flex flex-col xl:w-[1280px] max-xl:w-[1024px] max-lg:w-[768px] max-md:w-[480px] max-sm:w-[320px] justify-between gap-4"
+        className="mb-5 flex flex-col justify-between gap-4 max-xl:w-[1024px] max-lg:w-[768px] max-md:w-[480px] max-sm:w-[320px] xl:w-[1280px]"
         data-testid="clients-section"
       >
         <div className="flex items-center justify-between max-md:flex-col max-md:items-start">

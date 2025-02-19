@@ -198,7 +198,7 @@ export function Navbar() {
       {isMenuOpen && <Sidemenu />}
       <section className="flex items-center gap-10 pr-[50px]">
         <span>
-          Olá, <strong>{user}!</strong>
+          Olá, <strong>{user?.name}!</strong>
         </span>
       </section>
     </nav>
