@@ -15,7 +15,7 @@ import { CreateClientRequest } from 'services/types'
 import { useLocation } from 'react-router-dom'
 import { toast } from 'react-toastify'
 export default function Clients() {
-  const { clients, selectedClients, setClients, setSelectedClients } =
+  const { clients, selectedClients, setClients } =
     useClientStore()
   const [itemsPerPage, setItemsPerPage] = useState(10)
   const [page, setPage] = useState(1)
@@ -24,21 +24,25 @@ export default function Clients() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ['clients'],
     queryFn: () => getClients(page, itemsPerPage),
-    enabled: !!page && !!itemsPerPage
+    enabled: !!page && !!itemsPerPage,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true
   })
+
+  const sanitizeStoredClients = useCallback(() => {
+    if (selectedClients.length && clients.length) {
+      const storedClients = selectedClients.filter((client) =>
+        clients.find((c) => c.id === client.id)
+      )
+      localStorage.setItem('selectedClients', JSON.stringify(storedClients))
+    }
+  }, [clients, selectedClients])
 
   const handleOpenForm = useCallback(() => {
     setIsFormOpen(true)
     form.reset()
     //eslint-disable-next-line
   }, [])
-
-  useEffect(() => {
-    if (data) {
-      setClients(data.clients)
-    }
-    //eslint-disable-next-line
-  }, [data])
 
   const list = useMemo(() => {
     const searchParams = new URLSearchParams(location.search)
@@ -136,7 +140,6 @@ export default function Clients() {
 
   useEffect(() => {
     refetch()
-    sanitizeStoredClients()
     //eslint-disable-next-line
   }, [page, refetch])
 
@@ -145,19 +148,16 @@ export default function Clients() {
     //eslint-disable-next-line
   }, [])
 
-  const sanitizeStoredClients = useCallback(() => {
-    if (clients.length) {
-      const storedClients = selectedClients.filter((client) =>
-        clients.some((c) => c.id === client.id)
-      )
-      setSelectedClients(storedClients)
-    }
-  }, [clients, selectedClients, setSelectedClients])
-
   useEffect(() => {
-    sanitizeStoredClients()
+    if (data) {
+      setClients(data.clients)
+    }
     //eslint-disable-next-line
-  }, [])
+  }, [data])
+
+  if (list.data.length) {
+    sanitizeStoredClients()
+  }
 
   return (
     <div className="flex h-full grow flex-col justify-between">

@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { ClientStore } from './types'
 import { ClientDTO } from 'dtos/clientDTO'
+import { AsyncLocalStorage } from 'async_hooks'
 
 export const useClientStore = create<ClientStore>((set) => ({
   clients: [],
@@ -8,9 +9,6 @@ export const useClientStore = create<ClientStore>((set) => ({
     localStorage.getItem('selectedClients') || '[]'
   ) as ClientDTO[],
   setClients: (clients) => set({ clients }),
-
-  setSelectedClients: (selectedClients: ClientDTO[]) =>
-    localStorage.setItem('selectedClients', JSON.stringify(selectedClients)),
 
   selectClient: (client) =>
     set((state) => {

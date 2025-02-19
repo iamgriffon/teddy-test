@@ -9,7 +9,6 @@ export type ClientStore = {
   clients: Client[]
   selectedClients: Client[]
   setClients: (clients: Client[]) => void
-  setSelectedClients: (selectedClients: Client[]) => void
   selectClient: (client: Client) => void
   editClient: (client: Client) => void
 }
