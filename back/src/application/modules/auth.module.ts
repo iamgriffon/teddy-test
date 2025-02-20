@@ -10,7 +10,7 @@ import { UserRepositoryProvider } from '@/db/repository/user.repository'
   imports: [
     JwtModule.register({
       global: true,
-      secretOrPrivateKey: process.env.JWT_SECRET!,
+      secret: process.env.JWT_SECRET!,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME }
     }),
     TypeOrmModule.forFeature([UserEntity])

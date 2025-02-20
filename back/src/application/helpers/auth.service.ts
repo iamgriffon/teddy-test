@@ -24,7 +24,7 @@ export class AuthService {
     private readonly userRepository: UserRepository
   ) {
     this.jwtService = new JwtService({
-      privateKey: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: JWT_EXPIRATION_TIME }
     })
   }
