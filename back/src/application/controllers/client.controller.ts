@@ -11,7 +11,8 @@ import {
   Param,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common'
 import { UpdateResult } from 'typeorm'
 import {
@@ -21,9 +22,12 @@ import {
   ApiQuery,
   ApiBody
 } from '@nestjs/swagger'
+import { AuthGuard } from '../helpers/auth.guard'
 
 @ApiTags('clients')
-@Controller('/api/clients')
+@Controller('clients')
+@UseGuards(AuthGuard)
+
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 

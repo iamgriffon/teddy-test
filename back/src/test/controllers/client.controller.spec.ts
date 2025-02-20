@@ -1,29 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ClientController } from '../application/controllers/client.controller'
-import { ClientService } from '../application/services/client.service'
-import { ClientRepositoryProvider } from '../db/repository/client.repository'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ClientEntity } from '../db/entities/client.entity'
+import { ClientController } from '@/application/controllers/client.controller'
+import { ClientService } from '../../application/services/client.service'
+import { ClientRepositoryProvider } from '@/db/repository/client.repository'
+import { ClientEntity } from '@/db/entities/client.entity'
 import { faker } from '@faker-js/faker/locale/pt_BR'
 import { UpdateResult } from 'typeorm'
 import { HttpException } from '@nestjs/common'
+import { TestDatabaseModule } from '@/db/helpers/test-db-module'
+import * as dotenv from 'dotenv'
+import { AuthModule } from '@/application/modules/auth.module'
+dotenv.config({ path: '.env' })
+
 describe('ClientController', () => {
   let clientController: ClientController
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          password: '123456',
-          username: 'sa',
-          entities: [ClientEntity],
-          database: 'teddy_test',
-          synchronize: true,
-          logging: false
-        })
-      ],
+      imports: [TestDatabaseModule, AuthModule],
       controllers: [ClientController],
       providers: [ClientService, ClientRepositoryProvider]
     }).compile()
@@ -165,8 +157,8 @@ describe('ClientController', () => {
     await new Promise((resolve) => setTimeout(resolve, 500))
     const connection =
       clientController['clientService']['clientRepository'].manager.connection
-    if (connection.isConnected) {
-      await connection.close()
+    if (connection) {
+      await connection.destroy()
     }
   })
 })

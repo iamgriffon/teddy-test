@@ -39,11 +39,15 @@ export class ClientRepository extends Repository<ClientEntity> {
     return result
   }
 
-  async update(
+  async updateClient(
     id: number,
     client: DeepPartial<ClientDTO>
   ): Promise<UpdateResult> {
-    return super.update(id, client)
+    return this.createQueryBuilder('client')
+      .update()
+      .set(client)
+      .where('id = :id', { id })
+      .execute()
   }
 
   async deleteClient(id: number): Promise<DeleteResult> {
@@ -66,7 +70,6 @@ export class ClientRepository extends Repository<ClientEntity> {
   async wipe(): Promise<void> {
     await this.clear()
     await this.query(`ALTER SEQUENCE clients_id_seq RESTART WITH 1;`)
-    await this.query(`COMMIT;`)
   }
 
   async findRecent(limit: number): Promise<ClientDTO[]> {
