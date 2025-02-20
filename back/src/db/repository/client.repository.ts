@@ -10,7 +10,22 @@ import {
 } from 'typeorm'
 import { faker } from '@faker-js/faker'
 
-export class ClientRepository extends Repository<ClientEntity> {
+export interface IClientRepository extends Repository<ClientEntity> {
+  createClient(client: Partial<ClientEntity>): Promise<ClientEntity>
+  findAll(): Promise<ClientDTO[]>
+  findMany(options: FindManyOptions<ClientEntity>): Promise<ClientDTO[]>
+  findById(id: number): Promise<ClientDTO | null>
+  updateClient(
+    id: number,
+    client: DeepPartial<ClientDTO>
+  ): Promise<UpdateResult>
+  deleteClient(id: number): Promise<DeleteResult>
+  createMany(count: number): Promise<void>
+  wipe(): Promise<void>
+  findRecent(limit: number): Promise<ClientDTO[]>
+}
+
+export class ClientRepository extends Repository<ClientEntity> implements IClientRepository {
   constructor(private dataSource: DataSource) {
     super(ClientEntity, dataSource.createEntityManager())
   }
@@ -31,19 +46,19 @@ export class ClientRepository extends Repository<ClientEntity> {
     return this.findOneBy({ id })
   }
 
-  async createClient(client?: DeepPartial<ClientEntity>): Promise<ClientDTO> {
-    if (!client) {
-      throw new Error('Client is required')
-    }
-    const result = await this.save(client)
-    return result
+  async createClient(client: Partial<ClientEntity>): Promise<ClientEntity> {
+    return this.save(client)
   }
 
-  async update(
+  async updateClient(
     id: number,
     client: DeepPartial<ClientDTO>
   ): Promise<UpdateResult> {
-    return super.update(id, client)
+    return this.createQueryBuilder('client')
+      .update()
+      .set(client)
+      .where('id = :id', { id })
+      .execute()
   }
 
   async deleteClient(id: number): Promise<DeleteResult> {
@@ -66,7 +81,6 @@ export class ClientRepository extends Repository<ClientEntity> {
   async wipe(): Promise<void> {
     await this.clear()
     await this.query(`ALTER SEQUENCE clients_id_seq RESTART WITH 1;`)
-    await this.query(`COMMIT;`)
   }
 
   async findRecent(limit: number): Promise<ClientDTO[]> {
@@ -75,20 +89,6 @@ export class ClientRepository extends Repository<ClientEntity> {
       .take(limit)
       .getMany()
   }
-}
-
-export interface IClientRepository {
-  findAll(): Promise<ClientDTO[]>
-  findMany(options: FindManyOptions<ClientEntity>): Promise<ClientDTO[]>
-  findById(id: number): Promise<ClientDTO | null>
-  createClient(client?: DeepPartial<ClientEntity>): Promise<ClientDTO>
-  updateClient(
-    id: number,
-    client: DeepPartial<ClientDTO>
-  ): Promise<UpdateResult>
-  deleteClient(id: number): Promise<DeleteResult>
-  populateClients(count: number): Promise<void>
-  wipe(): Promise<void>
 }
 
 export const ClientRepositoryProvider = {

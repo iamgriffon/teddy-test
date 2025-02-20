@@ -1,6 +1,12 @@
 import { UserDTO } from '@/core/dtos'
 import { UserEntity } from '@/db/entities/users.entity'
-import { DataSource, DeepPartial, Repository, UpdateResult } from 'typeorm'
+import {
+  DataSource,
+  DeepPartial,
+  DeleteResult,
+  Repository,
+  UpdateResult
+} from 'typeorm'
 
 export class UserRepository
   extends Repository<UserEntity>
@@ -14,6 +20,10 @@ export class UserRepository
     return this.findOneBy({ id })
   }
 
+  async findUserByEmail(email: string): Promise<UserEntity | null> {
+    return await this.findOneBy({ email: email.toLowerCase() })
+  }
+
   async createUser(user?: DeepPartial<UserEntity>): Promise<UserEntity> {
     if (!user) {
       throw new Error('User is required')
@@ -21,15 +31,34 @@ export class UserRepository
     return this.save(user)
   }
 
-  async update(id: number, user: Partial<UserEntity>): Promise<UpdateResult> {
-    return this.update(id, user)
+  async updateUser(
+    id: number,
+    user: Partial<UserEntity>
+  ): Promise<UpdateResult> {
+    return this.createQueryBuilder()
+      .update(UserEntity)
+      .set(user)
+      .where('id = :id', { id })
+      .execute()
+  }
+
+  async deleteUser(id: number): Promise<DeleteResult> {
+    return this.delete(id)
+  }
+
+  async wipe(): Promise<void> {
+    await this.clear()
+    await this.query(`ALTER SEQUENCE users_id_seq RESTART WITH 1;`)
   }
 }
 
-export interface IUserRepository {
+export interface IUserRepository extends Repository<UserEntity> {
   findById(id: number): Promise<UserEntity | null>
   createUser(user: Partial<UserEntity>): Promise<UserEntity>
-  update(id: number, user: Partial<UserEntity>): Promise<UpdateResult>
+  updateUser(id: number, user: Partial<UserEntity>): Promise<UpdateResult>
+  delete(id: number): Promise<DeleteResult>
+  findUserByEmail(email: string): Promise<UserEntity | null>
+  wipe(): Promise<void>
 }
 
 export type NullableUserDTO = UserDTO | null

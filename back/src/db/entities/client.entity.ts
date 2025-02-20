@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, Length } from 'class-validator'
+import { IsDate, IsNumber, Length, IsNotEmpty, Min } from 'class-validator'
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm'
 
 @Entity('clients')
@@ -8,14 +8,17 @@ export class ClientEntity {
 
   @Column()
   @Length(3, 255)
+  @IsNotEmpty()
   name: string
 
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   @IsNumber()
+  @Min(0)
   sallary: number
 
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   @IsNumber()
+  @Min(0)
   company_sallary: number
 
   @Column({ nullable: true })

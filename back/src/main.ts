@@ -1,11 +1,15 @@
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from '@/application/modules/app.module'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
+import { ValidationPipe } from '@nestjs/common'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
+  app.setGlobalPrefix('api')
 
   app.enableCors()
+
+  app.useGlobalPipes(new ValidationPipe({ transform: true }))
 
   const config = new DocumentBuilder()
     .setTitle('Client API')

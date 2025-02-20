@@ -1,5 +1,10 @@
 import { ClientService } from '../services/client.service'
-import { ClientDTO, DeleteClientDTO, GetClientsDTO } from '../../core/dtos'
+import {
+  ClientDTO,
+  DeleteClientDTO,
+  GetClientsDTO,
+  CreateClientDTO
+} from '../../core/dtos'
 import { ClientEntity } from '../../db/entities/client.entity'
 import {
   Body,
@@ -11,7 +16,8 @@ import {
   Param,
   Post,
   Put,
-  Query
+  Query,
+  UseGuards
 } from '@nestjs/common'
 import { UpdateResult } from 'typeorm'
 import {
@@ -21,9 +27,11 @@ import {
   ApiQuery,
   ApiBody
 } from '@nestjs/swagger'
+import { AuthGuard } from '../helpers/auth.guard'
 
 @ApiTags('clients')
-@Controller('/api/clients')
+@Controller('clients')
+@UseGuards(AuthGuard)
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
@@ -47,12 +55,12 @@ export class ClientController {
       return { clients: [], total: 0, page: 1, total_pages: 1 }
     }
 
-    return {
-      clients: data.clients,
-      total: data.total,
-      page: pageNumber,
-      total_pages
-    }
+    const response = new GetClientsDTO()
+    response.clients = data.clients
+    response.total = data.total
+    response.page = pageNumber
+    response.total_pages = total_pages
+    return response
   }
 
   @ApiOperation({ summary: 'Get client by ID' })
@@ -91,18 +99,16 @@ export class ClientController {
   })
   @Post()
   async create(
-    @Body() client: ClientEntity
+    @Body() data: CreateClientDTO
   ): Promise<ClientDTO | HttpException> {
-    if (!client.name?.trim() || !client.company_sallary || !client.sallary) {
-      throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST)
-    }
-
+    const client = new ClientEntity()
+    client.name = data.name
+    client.company_sallary = data.company_sallary
+    client.sallary = data.sallary
     client.created_at = new Date()
-    client.updated_at = new Date()
-    const result = await this.clientService.createClient(client)
-    if (!result) {
-      throw new HttpException('Client not created', HttpStatus.BAD_REQUEST)
-    }
+    client.updated_at = undefined
+
+    const result = await this.clientService.create(client)
     return result
   }
 
@@ -125,7 +131,7 @@ export class ClientController {
     }
     client.updated_at = new Date()
     const result = await this.clientService.updateClient(id, client)
-    if (result.affected === 0 || !result) {
+    if (!result.affected) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return result
@@ -149,11 +155,15 @@ export class ClientController {
     type: DeleteClientDTO,
     description: 'Successfully deleted client'
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Client not found'
+  })
   async delete(
     @Param('id') id: number
   ): Promise<DeleteClientDTO | HttpException> {
     const result = await this.clientService.deleteClient(id)
-    if (result.affected === 0) {
+    if (!result.affected) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return {

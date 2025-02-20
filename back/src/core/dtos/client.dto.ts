@@ -74,4 +74,8 @@ export class DeleteClientDTO {
   affected?: number
 }
 
-export class CreateClientDTO extends ClientDTO {}
+export class CreateClientDTO {
+  name: string;
+  sallary: number;
+  company_sallary: number;
+}

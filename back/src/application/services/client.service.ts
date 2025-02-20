@@ -1,8 +1,9 @@
 import { ClientEntity } from '../../db/entities/client.entity'
 import { ClientRepository } from '../../db/repository/client.repository'
 import { ClientDTO, GetClientsDTO } from '../../core/dtos'
-import { DeleteResult, FindManyOptions, UpdateResult } from 'typeorm'
-import { Injectable } from '@nestjs/common'
+import { DeleteResult, UpdateResult } from 'typeorm'
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { validate } from 'class-validator'
 
 @Injectable()
 export class ClientService implements IClientService {
@@ -16,16 +17,18 @@ export class ClientService implements IClientService {
     return this.clientRepository.findById(id)
   }
 
-  async findMany(
-    options: FindManyOptions<ClientEntity>
-  ): Promise<GetClientsDTO> {
-    const clients = await this.clientRepository.findMany(options)
-    const total = await this.clientRepository.count()
-    if (!options.skip || !options.take) {
-      return { clients, total, page: 1, total_pages: 1 }
-    }
-    const page = Number(Math.floor(options.skip / options.take) + 1)
+  async findMany(options: {
+    skip: number
+    take: number
+  }): Promise<GetClientsDTO> {
+    const [clients, total] = await Promise.all([
+      this.clientRepository.findMany(options),
+      this.clientRepository.count()
+    ])
+
+    const page = Math.floor(options.skip / options.take) + 1
     const total_pages = Math.ceil(total / options.take)
+
     return {
       clients,
       total,
@@ -34,13 +37,31 @@ export class ClientService implements IClientService {
     }
   }
 
-  async createClient(client: ClientEntity): Promise<ClientDTO> {
-    const newClient = await this.clientRepository.createClient(client)
-    return newClient
+  async create(
+    clientData: Omit<ClientEntity, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ClientDTO> {
+    const client = new ClientEntity()
+    client.name = clientData.name
+    client.sallary = clientData.sallary
+    client.company_sallary = clientData.company_sallary
+    client.created_at = new Date()
+    client.updated_at = new Date()
+    
+    const errors = await validate(client)
+    if (errors.length > 0) {
+      throw new HttpException(errors, HttpStatus.BAD_REQUEST)
+    }
+
+    return this.clientRepository.createClient(client)
   }
 
   async updateClient(id: number, client: ClientEntity): Promise<UpdateResult> {
-    const result = await this.clientRepository.update(id, client)
+    const result = await this.clientRepository
+      .createQueryBuilder()
+      .update(ClientEntity)
+      .set(client)
+      .where('id = :id', { id })
+      .execute()
     if (!result) {
       throw new Error('Client not found')
     }
@@ -56,15 +77,19 @@ export class ClientService implements IClientService {
   }
 
   async wipe(): Promise<void> {
-    return await this.clientRepository.wipe()
+    try {
+      await this.clientRepository.wipe()
+    } catch {
+      throw new HttpException('Failed to wipe clients', HttpStatus.BAD_REQUEST)
+    }
   }
 }
 
 export interface IClientService {
   findAll(): Promise<ClientDTO[]>
   findById(id: number): Promise<NullableClientDTO>
-  createClient(client: ClientEntity): Promise<ClientDTO>
-  findMany(options: FindManyOptions<ClientEntity>): Promise<GetClientsDTO>
+  create(client: ClientEntity): Promise<ClientDTO>
+  findMany(options: { skip: number; take: number }): Promise<GetClientsDTO>
   updateClient(id: number, client: ClientEntity): Promise<UpdateResult>
   deleteClient(id: number): Promise<DeleteResult>
   createMany(count: number): Promise<void>

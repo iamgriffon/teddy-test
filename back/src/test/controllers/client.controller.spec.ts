@@ -1,29 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing'
-import { ClientController } from '../application/controllers/client.controller'
-import { ClientService } from '../application/services/client.service'
-import { ClientRepositoryProvider } from '../db/repository/client.repository'
-import { TypeOrmModule } from '@nestjs/typeorm'
-import { ClientEntity } from '../db/entities/client.entity'
-import { faker } from '@faker-js/faker/locale/pt_BR'
+import { ClientController } from '@/application/controllers/client.controller'
+import { ClientService } from '../../application/services/client.service'
+import { ClientRepositoryProvider } from '@/db/repository/client.repository'
+import { ClientEntity } from '@/db/entities/client.entity'
 import { UpdateResult } from 'typeorm'
 import { HttpException } from '@nestjs/common'
+import { TestDatabaseModule } from '@/db/helpers/test-db-module'
+import * as dotenv from 'dotenv'
+import { AuthModule } from '@/application/modules/auth.module'
+import { ClientDTO, GetClientsDTO } from '@/core'
+dotenv.config({ path: '.env' })
+
 describe('ClientController', () => {
   let clientController: ClientController
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'postgres',
-          host: 'localhost',
-          port: 5432,
-          password: '123456',
-          username: 'sa',
-          entities: [ClientEntity],
-          database: 'teddy_test',
-          synchronize: true,
-          logging: false
-        })
-      ],
+      imports: [TestDatabaseModule, AuthModule],
       controllers: [ClientController],
       providers: [ClientService, ClientRepositoryProvider]
     }).compile()
@@ -35,9 +27,9 @@ describe('ClientController', () => {
     })
     it('should create a new client', async () => {
       const client = new ClientEntity()
-      client.name = faker.person.fullName()
-      client.company_sallary = faker.number.int({ min: 10000, max: 150000 })
-      client.sallary = faker.number.int({ min: 5000, max: 100000 })
+      client.name = 'Teste'
+      client.company_sallary = 10000
+      client.sallary = 5000
       const response = await clientController.create(client)
       expect(response).toBeDefined()
     })
@@ -56,17 +48,18 @@ describe('ClientController', () => {
       await clientController.create(client)
       const response = await clientController.findMany('1', '1')
       expect(response).toBeDefined()
+      expect(response).toBeInstanceOf(GetClientsDTO)
       if (response.clients) {
         expect(response.clients[0].name).toBe('Teste')
-        expect(response.clients[0].company_sallary).toBe(10000)
-        expect(response.clients[0].sallary).toBe(5000)
+        expect(String(response.clients[0].company_sallary)).toBe("10000")
+        expect(String(response.clients[0].sallary)).toBe("5000")
       }
     })
     it('should throw an error if the client is not valid', async () => {
       const client = new ClientEntity()
       client.name = ''
-      client.company_sallary = 0
-      client.sallary = 0
+      client.company_sallary = -1
+      client.sallary = -1
       await expect(clientController.create(client)).rejects.toThrow(
         HttpException
       )
@@ -84,17 +77,18 @@ describe('ClientController', () => {
     it('should find a client by id', async () => {
       const response = await clientController.findById(1)
       expect(response).toBeDefined()
+      expect(response).toBeInstanceOf(ClientEntity)
       if (response) {
         expect(response.name).toBe('teste')
-        expect(response.company_sallary).toBe(10000)
-        expect(response.sallary).toBe(5000)
+        expect(String(response.company_sallary)).toBe("10000")
+        expect(String(response.sallary)).toBe("5000")
       }
     })
     it('should find all clients', async () => {
       await clientController.seedClients(10)
       const response = await clientController.findMany('1', '3')
       expect(response).toBeDefined()
-      expect(response.clients).toBeInstanceOf(Array)
+      expect(response.clients).toBeInstanceOf(Array<ClientDTO>)
       expect(response.clients.length).toBeGreaterThanOrEqual(3)
       expect(response.total).toBeGreaterThanOrEqual(10)
       expect(response.page).toBe(1)
@@ -123,9 +117,7 @@ describe('ClientController', () => {
         id: 1
       })
       expect(response).toBeDefined()
-      if (response) {
-        expect(response).toBeInstanceOf(UpdateResult)
-      }
+      expect(response).toBeInstanceOf(UpdateResult)
     })
     it('should return an empty update result if the client is not found', async () => {
       await expect(
@@ -165,8 +157,8 @@ describe('ClientController', () => {
     await new Promise((resolve) => setTimeout(resolve, 500))
     const connection =
       clientController['clientService']['clientRepository'].manager.connection
-    if (connection.isConnected) {
-      await connection.close()
+    if (connection) {
+      await connection.destroy()
     }
   })
 })
