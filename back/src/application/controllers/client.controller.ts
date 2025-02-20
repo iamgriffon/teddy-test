@@ -131,7 +131,7 @@ export class ClientController {
     }
     client.updated_at = new Date()
     const result = await this.clientService.updateClient(id, client)
-    if (result.affected === 0 || !result) {
+    if (!result.affected) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return result
@@ -155,11 +155,15 @@ export class ClientController {
     type: DeleteClientDTO,
     description: 'Successfully deleted client'
   })
+  @ApiResponse({
+    status: 404,
+    description: 'Client not found'
+  })
   async delete(
     @Param('id') id: number
   ): Promise<DeleteClientDTO | HttpException> {
     const result = await this.clientService.deleteClient(id)
-    if (result.affected === 0) {
+    if (!result.affected) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
     return {
