@@ -57,6 +57,8 @@ export interface IUserRepository extends Repository<UserEntity> {
   createUser(user: Partial<UserEntity>): Promise<UserEntity>
   updateUser(id: number, user: Partial<UserEntity>): Promise<UpdateResult>
   delete(id: number): Promise<DeleteResult>
+  findUserByEmail(email: string): Promise<UserEntity | null>
+  wipe(): Promise<void>
 }
 
 export type NullableUserDTO = UserDTO | null

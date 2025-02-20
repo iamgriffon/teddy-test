@@ -3,6 +3,7 @@ import { ClientRepository } from '../../db/repository/client.repository'
 import { ClientDTO, GetClientsDTO } from '../../core/dtos'
 import { DeleteResult, UpdateResult } from 'typeorm'
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common'
+import { validate } from 'class-validator'
 
 @Injectable()
 export class ClientService implements IClientService {
@@ -36,13 +37,22 @@ export class ClientService implements IClientService {
     }
   }
 
-  async createClient(clientData: Omit<ClientEntity, 'id'|'created_at'|'updated_at'>): Promise<ClientDTO> {
-    const client = this.clientRepository.create({
-      ...clientData,
-      created_at: new Date(),
-      updated_at: undefined
-    });
-    return this.clientRepository.save(client);
+  async create(
+    clientData: Omit<ClientEntity, 'id' | 'created_at' | 'updated_at'>
+  ): Promise<ClientDTO> {
+    const client = new ClientEntity()
+    client.name = clientData.name
+    client.sallary = clientData.sallary
+    client.company_sallary = clientData.company_sallary
+    client.created_at = new Date()
+    client.updated_at = new Date()
+    
+    const errors = await validate(client)
+    if (errors.length > 0) {
+      throw new HttpException(errors, HttpStatus.BAD_REQUEST)
+    }
+
+    return this.clientRepository.createClient(client)
   }
 
   async updateClient(id: number, client: ClientEntity): Promise<UpdateResult> {
@@ -78,7 +88,7 @@ export class ClientService implements IClientService {
 export interface IClientService {
   findAll(): Promise<ClientDTO[]>
   findById(id: number): Promise<NullableClientDTO>
-  createClient(client: ClientEntity): Promise<ClientDTO>
+  create(client: ClientEntity): Promise<ClientDTO>
   findMany(options: { skip: number; take: number }): Promise<GetClientsDTO>
   updateClient(id: number, client: ClientEntity): Promise<UpdateResult>
   deleteClient(id: number): Promise<DeleteResult>

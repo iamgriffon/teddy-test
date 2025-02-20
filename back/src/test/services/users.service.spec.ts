@@ -101,11 +101,13 @@ describe('UsersService', () => {
   describe('logout', () => {
     it('should clear session token', async () => {
       const mockUser = new UserEntity()
-      userRepository.findById.mockResolvedValue(mockUser)
+      mockUser.id = 1
+      userRepository.findUserByEmail.mockResolvedValue(mockUser)
       authService.refreshOrRevokeToken.mockResolvedValue(null)
 
-      const result = await service.logout(1)
+      const result = await service.logout('test@test.com')
       expect(result.message).toBe('User logged out successfully')
+      expect(userRepository.updateUser).toHaveBeenCalled()
     })
   })
 
@@ -122,16 +124,16 @@ describe('UsersService', () => {
         exp: Date.now() / 1000 + 3600
       } as JwtPayload)
 
-      const result = await service.getUser('valid-token')
+      const result = await service.getUser('Bearer valid-token')
       expect(result.name).toBe('name')
       expect(result.email).toBe('test@test.com')
-      expect(result.session_token).not.toBe('valid-token')
+      expect(result.session_token).not.toBe('Bearer valid-token')
       expect(result.session_token_expiry).toBeInstanceOf(Date)
     })
 
     it('should throw for invalid token', async () => {
       authService.decodeJwt.mockReturnValue(null)
-      await expect(service.getUser('invalid-token')).rejects.toThrow(
+      await expect(service.getUser('Bearer invalid-token')).rejects.toThrow(
         HttpException
       )
     })

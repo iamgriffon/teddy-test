@@ -60,7 +60,9 @@ describe('UserController', () => {
 
   describe('Logout User', () => {
     it('should logout a user', async () => {
-      const response = await usersController.logout(1)
+      const response = await usersController.logout({
+        email: 'john.doe@example.com'
+      })
       expect(response).toBeDefined()
       expect(response.message).toBe('User logged out successfully')
     })
@@ -72,7 +74,8 @@ describe('UserController', () => {
         email: 'john.doe@example.com',
         password: 'password'
       })
-      const token = response.session_token!
+      
+      const token = `Bearer ${response.session_token}`
       const userResponse = await usersController.me(token)
       expect(userResponse).toBeDefined()
       expect(userResponse.name).toBe('John Doe')

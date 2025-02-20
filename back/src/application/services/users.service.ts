@@ -1,7 +1,6 @@
 import {
   CreateUserRequestDTO,
   LoginUserDTO,
-  UpdateUserDTO,
   UserDTO
 } from '../../core/dtos'
 import { hashPassword } from '../../core/helpers/password'
@@ -56,8 +55,7 @@ export class UsersService {
 
   async logout(email: string) {
     const user = await this.userRepository.findUserByEmail(email)
-    console.log(user)
-    if (!user) {
+    if (!user?.id) {
       throw new UnauthorizedException('User not found')
     }
     const response = new UserDTO()
@@ -75,7 +73,6 @@ export class UsersService {
   async getUser(Bearer: string) {
     const token = Bearer.split(' ')[1]
     const payload = this.authService.decodeJwt(token)
-    console.log({payload})
     if (!payload) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED)
     }
@@ -84,6 +81,7 @@ export class UsersService {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     }
+    response.id = user.id
     response.name = user.name
     response.email = user.email
     response.session_token = await refreshOrRevokeJwt(String(token))
@@ -96,22 +94,6 @@ export class UsersService {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     }
     return response
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDTO) {
-    try {
-      const user = await this.userRepository.findById(id)
-      if (!user) {
-        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
-      }
-      await this.userRepository.updateUser(user.id, updateUserDto)
-      return {
-        status: 200,
-        message: 'User updated successfully'
-      }
-    } catch {
-      throw new HttpException('Failed to update user', HttpStatus.BAD_REQUEST)
-    }
   }
 
   async deleteUser(id: number) {

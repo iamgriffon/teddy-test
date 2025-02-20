@@ -27,7 +27,6 @@ export function decodeJwt(token: string) {
 export async function refreshOrRevokeJwt(token: string) {
   try {
     const payload = await jwtService.verifyAsync(token, {
-      secret: process.env.JWT_SECRET,
       ignoreExpiration: true
     })
 

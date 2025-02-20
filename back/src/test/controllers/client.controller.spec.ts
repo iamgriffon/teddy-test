@@ -27,9 +27,9 @@ describe('ClientController', () => {
     })
     it('should create a new client', async () => {
       const client = new ClientEntity()
-      client.name = faker.person.fullName()
-      client.company_sallary = faker.number.int({ min: 10000, max: 150000 })
-      client.sallary = faker.number.int({ min: 5000, max: 100000 })
+      client.name = 'Teste'
+      client.company_sallary = 10000
+      client.sallary = 5000
       const response = await clientController.create(client)
       expect(response).toBeDefined()
     })
@@ -50,15 +50,15 @@ describe('ClientController', () => {
       expect(response).toBeDefined()
       if (response.clients) {
         expect(response.clients[0].name).toBe('Teste')
-        expect(response.clients[0].company_sallary).toBe(10000)
-        expect(response.clients[0].sallary).toBe(5000)
+        expect(String(response.clients[0].company_sallary)).toBe("10000")
+        expect(String(response.clients[0].sallary)).toBe("5000")
       }
     })
     it('should throw an error if the client is not valid', async () => {
       const client = new ClientEntity()
       client.name = ''
-      client.company_sallary = 0
-      client.sallary = 0
+      client.company_sallary = -1
+      client.sallary = -1
       await expect(clientController.create(client)).rejects.toThrow(
         HttpException
       )
@@ -78,8 +78,8 @@ describe('ClientController', () => {
       expect(response).toBeDefined()
       if (response) {
         expect(response.name).toBe('teste')
-        expect(response.company_sallary).toBe(10000)
-        expect(response.sallary).toBe(5000)
+        expect(String(response.company_sallary)).toBe("10000")
+        expect(String(response.sallary)).toBe("5000")
       }
     })
     it('should find all clients', async () => {

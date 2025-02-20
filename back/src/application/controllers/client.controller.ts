@@ -108,7 +108,7 @@ export class ClientController {
     client.created_at = new Date()
     client.updated_at = undefined
 
-    const result = await this.clientService.createClient(client)
+    const result = await this.clientService.create(client)
     return result
   }
 
