@@ -1,7 +1,11 @@
-import { CreateUserRequestDTO, LoginUserDTO, UserDTO } from '../../core/dtos'
+import {
+  CreateUserRequestDTO,
+  LoginUserDTO,
+  UpdateUserDTO,
+  UserDTO
+} from '../../core/dtos'
 import { hashPassword } from '../../core/helpers/password'
-import { decodeJwt, refreshOrRevokeJwt } from '../../core/helpers/jwt'
-import { UserEntity } from '../../db/entities/users.entity'
+import { refreshOrRevokeJwt } from '../../core/helpers/jwt'
 import { UserRepository } from '../../db/repository/user.repository'
 import {
   BadRequestException,
@@ -21,25 +25,27 @@ export class UsersService {
 
   async create(userData: CreateUserRequestDTO) {
     try {
-      const hashedPassword = await hashPassword(userData.password);
-      const user = await this.userRepository.createUser({
+      await this.userRepository.createUser({
         ...userData,
-        password: hashedPassword,
-      });
-      return { status: 201, message: 'User created successfully', data: user };
-    } catch (error) {
-      throw new BadRequestException('Failed to create user');
+        password: await hashPassword(userData.password)
+      })
+      return { status: 201, message: 'User created successfully' }
+    } catch {
+      throw new BadRequestException('Failed to create user')
     }
   }
 
   async login(creds: LoginUserDTO) {
-    const user = await this.authService.validateUser(creds.email, creds.password)
+    const user = await this.authService.validateUser(
+      creds.email,
+      creds.password
+    )
     if (!user) {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED)
     }
 
     const tokens = await this.authService.login(user)
-    
+
     const response = new UserDTO()
     response.name = user.name
     response.email = user.email
@@ -89,9 +95,21 @@ export class UsersService {
     return response
   }
 
-  // update(id: number, updateUserDto: UpdateUserDTO) {
-  //   return `This action updates a #${id} user`
-  // }
+  async update(id: number, updateUserDto: UpdateUserDTO) {
+    try {
+      const user = await this.userRepository.findById(id)
+      if (!user) {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND)
+      }
+      await this.userRepository.updateUser(user.id, updateUserDto)
+      return {
+        status: 200,
+        message: 'User updated successfully'
+      }
+    } catch {
+      throw new HttpException('Failed to update user', HttpStatus.BAD_REQUEST)
+    }
+  }
 
   async deleteUser(id: number) {
     try {
@@ -100,7 +118,7 @@ export class UsersService {
         status: 200,
         message: 'User deleted successfully'
       }
-    } catch (error) {
+    } catch {
       throw new HttpException('Failed to delete user', HttpStatus.BAD_REQUEST)
     }
   }
@@ -108,7 +126,7 @@ export class UsersService {
   async deleteAllUsers() {
     try {
       await this.userRepository.wipe()
-    } catch (error) {
+    } catch {
       throw new HttpException(
         'Failed to delete all users',
         HttpStatus.BAD_REQUEST

@@ -7,7 +7,6 @@ import { UserRepositoryProvider } from '@/db/repository/user.repository'
 import { UsersService } from '@/application/services/users.service'
 import { UserEntity } from '@/db/entities'
 import { JwtModule } from '@nestjs/jwt'
-import { HttpException } from '@nestjs/common'
 import { AuthModule } from '@/application/modules/auth.module'
 
 describe('UserController', () => {
@@ -76,7 +75,7 @@ describe('UserController', () => {
       const token = response.session_token!
       const userResponse = await usersController.me(token)
       expect(userResponse).toBeDefined()
-      expect(userResponse.name).toBe('John Doe') 
+      expect(userResponse.name).toBe('John Doe')
       expect(userResponse.email).toBe('john.doe@example.com')
       expect(typeof userResponse.session_token).toBe('string')
       expect(userResponse.session_token_expiry).toBeInstanceOf(Date)

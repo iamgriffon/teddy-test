@@ -45,14 +45,10 @@ export class AuthService {
           return null
         }
       }
-      const { iat, exp, ...newPayload } = payload as {
-        iat: number
-        exp: number
-        name: string
-        email: string
-      }
-      return await this.jwtService.signAsync(newPayload)
-    } catch (error) {
+      delete payload.iat
+      delete payload.exp
+      return await this.jwtService.signAsync(payload)
+    } catch {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
     }
   }
@@ -60,13 +56,13 @@ export class AuthService {
   async verifyJwt(token: string): Promise<any> {
     try {
       return await this.jwtService.verifyAsync(token)
-    } catch (error) {
+    } catch {
       throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
     }
   }
 
   decodeJwt(token: string): JwtPayload {
-    return this.jwtService.decode(token) as JwtPayload
+    return this.jwtService.decode(token)
   }
 
   async refreshToken(refreshToken: string): Promise<{
@@ -79,7 +75,7 @@ export class AuthService {
       return null
     }
 
-    const user = await this.decodeJwt(payload)
+    const user = this.decodeJwt(payload)
     if (!user) {
       return null
     }
@@ -98,25 +94,24 @@ export class AuthService {
       return await this.jwtService.verifyAsync(token, {
         secret: process.env.JWT_REFRESH_SECRET
       })
-    } catch (error) {
+    } catch {
       return null
     }
   }
 
-
   async validateUser(email: string, pass: string): Promise<UserEntity | null> {
-    const user = await this.userRepository.findUserByEmail(email);
+    const user = await this.userRepository.findUserByEmail(email)
     if (user && (await comparePassword(pass, user.password))) {
-      return user;
+      return user
     }
-    return null;
+    return null
   }
 
   async login(user: UserEntity) {
-    const payload = { email: user.email, name: user.name };
+    const payload = { email: user.email, name: user.name }
     return {
       ...payload,
-      access_token: await this.generateJwt(payload),
-    };
+      access_token: await this.generateJwt(payload)
+    }
   }
 }

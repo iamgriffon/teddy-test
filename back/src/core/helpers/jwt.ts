@@ -38,9 +38,10 @@ export async function refreshOrRevokeJwt(token: string) {
         return null
       }
     }
-    const { iat, exp, ...newPayload } = payload as any
-    return await jwtService.signAsync(newPayload)
-  } catch (error) {
+    delete payload.iat
+    delete payload.exp
+    return await jwtService.signAsync(payload)
+  } catch {
     return null
   }
 }

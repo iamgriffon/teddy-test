@@ -5,7 +5,6 @@ import { JwtModule } from '@nestjs/jwt'
 import { UserRepositoryProvider } from '@/db/repository/user.repository'
 import { UserEntity } from '@/db/entities/users.entity'
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { AuthService } from '../helpers/auth.service'
 import { AuthModule } from './auth.module'
 @Module({
   imports: [

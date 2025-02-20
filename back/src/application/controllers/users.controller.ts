@@ -1,9 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
-import { UsersService } from '../services/users.service';
-import { CreateUserRequestDTO, LoginUserDTO, LoginResponseDTO, GetUserResponseDTO } from '../../core/dtos';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
+import { UsersService } from '../services/users.service'
+import {
+  CreateUserRequestDTO,
+  LoginUserDTO,
+  LoginResponseDTO,
+  GetUserResponseDTO,
+  UpdateUserDTO
+} from '../../core/dtos'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
-@ApiTags('Users') 
+@ApiTags('Users')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -13,7 +19,7 @@ export class UsersController {
   @ApiBody({ type: CreateUserRequestDTO })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   create(@Body() createUserDto: CreateUserRequestDTO) {
-    return this.usersService.create(createUserDto);
+    return this.usersService.create(createUserDto)
   }
 
   @Post('login')
@@ -21,7 +27,7 @@ export class UsersController {
   @ApiBody({ type: LoginUserDTO })
   @ApiResponse({ type: LoginResponseDTO })
   login(@Body() creds: LoginUserDTO) {
-    return this.usersService.login(creds);
+    return this.usersService.login(creds)
   }
 
   @Post('logout')
@@ -29,7 +35,7 @@ export class UsersController {
   @ApiBody({ type: Number })
   @ApiResponse({ status: 200, description: 'User logged out successfully' })
   logout(@Body() id: number) {
-    return this.usersService.logout(id);
+    return this.usersService.logout(id)
   }
 
   @Get('me')
@@ -37,25 +43,25 @@ export class UsersController {
   @ApiBody({ type: String })
   @ApiResponse({ type: GetUserResponseDTO })
   me(@Body() token: string) {
-    return this.usersService.getUser(token);
+    return this.usersService.getUser(token)
   }
-  
-  @ApiOperation({ summary: 'Delete all users' }) 
+
+  @ApiOperation({ summary: 'Delete all users' })
   @ApiResponse({ status: 200, description: 'All users deleted successfully' })
   @Delete()
   wipe() {
-    return this.usersService.deleteAllUsers();
+    return this.usersService.deleteAllUsers()
   }
 
-  @ApiOperation({ summary: 'Delete a user' }) 
+  @ApiOperation({ summary: 'Delete a user' })
   @ApiBody({ type: Number })
   @ApiResponse({ status: 200, description: 'User deleted successfully' })
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.usersService.deleteUser(id);
+    return this.usersService.deleteUser(id)
   }
 
-    // @Get()
+  // @Get()
   // findAll() {
   //   return this.usersService.findAll();
   // }
@@ -65,8 +71,11 @@ export class UsersController {
   //   return this.usersService.findOne(+id);
   // }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-  //   return this.usersService.update(+id, updateUserDto);
-  // }
+  @ApiOperation({ summary: 'Update a user' })
+  @ApiBody({ type: UpdateUserDTO })
+  @ApiResponse({ status: 200, description: 'User updated successfully' })
+  @Put(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDTO) {
+    return this.usersService.update(+id, updateUserDto)
+  }
 }

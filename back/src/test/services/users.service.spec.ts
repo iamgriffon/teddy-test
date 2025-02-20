@@ -4,13 +4,12 @@ import { UserRepository } from '@/db/repository/user.repository'
 import { AuthService, JwtPayload } from '@/application/helpers/auth.service'
 import { UserEntity } from '@/db/entities/users.entity'
 import { BadRequestException, HttpException } from '@nestjs/common'
-import { UserDTO } from '@/core/dtos/user.dto'
 
 const mockUserRepository = () => ({
   createUser: jest.fn(),
   findUserByEmail: jest.fn(),
   updateUser: jest.fn(),
-  findById: jest.fn().mockResolvedValue(new UserEntity()),
+  findById: jest.fn().mockResolvedValue(new UserEntity())
 })
 
 const mockAuthService = () => ({
@@ -23,19 +22,7 @@ const mockAuthService = () => ({
     iat: Date.now() / 1000
   } as JwtPayload),
   refreshOrRevokeToken: jest.fn(),
-  generateJwt: jest.fn(),
-})
-
-const mockUserService = () => ({
-  create: jest.fn(),
-  login: jest.fn(),
-  logout: jest.fn(),
-  getUser: jest.fn().mockResolvedValue({
-    name: 'name',
-    email: 'test@test.com',
-    session_token: 'token',
-    session_token_expiry: new Date(Date.now() + 1 * 60 * 60 * 1000)
-  } as UserDTO)
+  generateJwt: jest.fn()
 })
 
 describe('UsersService', () => {
@@ -48,7 +35,7 @@ describe('UsersService', () => {
       providers: [
         UsersService,
         { provide: UserRepository, useFactory: mockUserRepository },
-        { provide: AuthService, useFactory: mockAuthService },
+        { provide: AuthService, useFactory: mockAuthService }
       ]
     }).compile()
 
@@ -124,22 +111,22 @@ describe('UsersService', () => {
 
   describe('getUser', () => {
     it('should return user with refreshed token', async () => {
-      const mockUser = new UserEntity();
-      mockUser.name = 'name';
-      mockUser.email = 'test@test.com';
-      
-      userRepository.findUserByEmail.mockResolvedValue(mockUser);
-      authService.decodeJwt.mockReturnValue({ 
+      const mockUser = new UserEntity()
+      mockUser.name = 'name'
+      mockUser.email = 'test@test.com'
+
+      userRepository.findUserByEmail.mockResolvedValue(mockUser)
+      authService.decodeJwt.mockReturnValue({
         email: 'test@test.com',
         name: 'name',
-        exp: Date.now()/1000 + 3600
-      } as JwtPayload);
+        exp: Date.now() / 1000 + 3600
+      } as JwtPayload)
 
-      const result = await service.getUser('valid-token');
-      expect(result.name).toBe('name');
-      expect(result.email).toBe('test@test.com');
-      expect(result.session_token).not.toBe('valid-token');
-      expect(result.session_token_expiry).toBeInstanceOf(Date);
+      const result = await service.getUser('valid-token')
+      expect(result.name).toBe('name')
+      expect(result.email).toBe('test@test.com')
+      expect(result.session_token).not.toBe('valid-token')
+      expect(result.session_token_expiry).toBeInstanceOf(Date)
     })
 
     it('should throw for invalid token', async () => {

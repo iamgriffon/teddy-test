@@ -27,7 +27,6 @@ import { AuthGuard } from '../helpers/auth.guard'
 @ApiTags('clients')
 @Controller('clients')
 @UseGuards(AuthGuard)
-
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
