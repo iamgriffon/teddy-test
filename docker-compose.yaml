@@ -12,6 +12,7 @@ services:
       - "8080:8080"
     volumes:
       - ./back:/app
+      - ./back/.env:/app/.env
       - /app/node_modules
     networks:
       - app-network
@@ -50,13 +51,12 @@ services:
     image: postgres:15-alpine
     environment:
       POSTGRES_USER: sa
-      POSTGRES_PASSWORD: '123456'
-      POSTGRES_DB: teddy
-      POSTGRES_MULTIPLE_DATABASES: 'teddy_db,teddy'
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: root
     ports:
       - "5432:5432"
     volumes:
-      - ./db_data:/var/lib/postgresql/data
+      - ./db-init.sql:/docker-entrypoint-initdb.d/db-init.sql
     networks:
       - app-network
     container_name: postgres
