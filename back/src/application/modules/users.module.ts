@@ -10,7 +10,7 @@ import { AuthModule } from './auth.module'
   imports: [
     JwtModule.register({
       global: true,
-      privateKey: process.env.JWT_SECRET!,
+      secret: process.env.JWT_SECRET!,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME }
     }),
     TypeOrmModule.forFeature([UserEntity]),
