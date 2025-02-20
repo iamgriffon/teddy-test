@@ -24,7 +24,7 @@ export class AuthService {
     private readonly userRepository: UserRepository
   ) {
     this.jwtService = new JwtService({
-      secret: process.env.JWT_SECRET,
+      privateKey: process.env.JWT_SECRET,
       signOptions: { expiresIn: JWT_EXPIRATION_TIME }
     })
   }
@@ -91,7 +91,7 @@ export class AuthService {
   async verifyRefreshToken(token: string): Promise<any> {
     try {
       return await this.jwtService.verifyAsync(token, {
-        secret: process.env.JWT_REFRESH_SECRET
+        secret: process.env.JWT_REFRESH_SECRET!
       })
     } catch {
       return null

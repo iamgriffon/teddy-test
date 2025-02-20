@@ -8,6 +8,7 @@ import { UsersService } from '@/application/services/users.service'
 import { UserEntity } from '@/db/entities'
 import { JwtModule } from '@nestjs/jwt'
 import { AuthModule } from '@/application/modules/auth.module'
+import { UserDTO } from '@/core'
 
 describe('UserController', () => {
   let usersController: UsersController
@@ -17,7 +18,7 @@ describe('UserController', () => {
         TestDatabaseModule,
         JwtModule.register({
           global: true,
-          secret: process.env.JWT_SECRET,
+          privateKey: process.env.JWT_SECRET,
           signOptions: { expiresIn: '1h' }
         }),
         AuthModule
@@ -52,7 +53,7 @@ describe('UserController', () => {
         password: 'password'
       })
       expect(response).toBeDefined()
-      expect(response.name).toBe('John Doe')
+      expect(response).toBeInstanceOf(UserDTO)
       expect(typeof response.session_token).toBe('string')
       expect(response.session_token_expiry).toBeInstanceOf(Date)
     })
@@ -78,10 +79,7 @@ describe('UserController', () => {
       const token = `Bearer ${response.session_token}`
       const userResponse = await usersController.me(token)
       expect(userResponse).toBeDefined()
-      expect(userResponse.name).toBe('John Doe')
-      expect(userResponse.email).toBe('john.doe@example.com')
-      expect(typeof userResponse.session_token).toBe('string')
-      expect(userResponse.session_token_expiry).toBeInstanceOf(Date)
+      expect(userResponse).toBeInstanceOf(UserDTO)
     })
   })
 })

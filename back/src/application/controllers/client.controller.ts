@@ -55,12 +55,12 @@ export class ClientController {
       return { clients: [], total: 0, page: 1, total_pages: 1 }
     }
 
-    return {
-      clients: data.clients,
-      total: data.total,
-      page: pageNumber,
-      total_pages
-    }
+    const response = new GetClientsDTO()
+    response.clients = data.clients
+    response.total = data.total
+    response.page = pageNumber
+    response.total_pages = total_pages
+    return response
   }
 
   @ApiOperation({ summary: 'Get client by ID' })

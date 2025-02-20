@@ -3,12 +3,12 @@ import { ClientController } from '@/application/controllers/client.controller'
 import { ClientService } from '../../application/services/client.service'
 import { ClientRepositoryProvider } from '@/db/repository/client.repository'
 import { ClientEntity } from '@/db/entities/client.entity'
-import { faker } from '@faker-js/faker/locale/pt_BR'
 import { UpdateResult } from 'typeorm'
 import { HttpException } from '@nestjs/common'
 import { TestDatabaseModule } from '@/db/helpers/test-db-module'
 import * as dotenv from 'dotenv'
 import { AuthModule } from '@/application/modules/auth.module'
+import { ClientDTO, GetClientsDTO } from '@/core'
 dotenv.config({ path: '.env' })
 
 describe('ClientController', () => {
@@ -48,6 +48,7 @@ describe('ClientController', () => {
       await clientController.create(client)
       const response = await clientController.findMany('1', '1')
       expect(response).toBeDefined()
+      expect(response).toBeInstanceOf(GetClientsDTO)
       if (response.clients) {
         expect(response.clients[0].name).toBe('Teste')
         expect(String(response.clients[0].company_sallary)).toBe("10000")
@@ -76,6 +77,7 @@ describe('ClientController', () => {
     it('should find a client by id', async () => {
       const response = await clientController.findById(1)
       expect(response).toBeDefined()
+      expect(response).toBeInstanceOf(ClientEntity)
       if (response) {
         expect(response.name).toBe('teste')
         expect(String(response.company_sallary)).toBe("10000")
@@ -86,7 +88,7 @@ describe('ClientController', () => {
       await clientController.seedClients(10)
       const response = await clientController.findMany('1', '3')
       expect(response).toBeDefined()
-      expect(response.clients).toBeInstanceOf(Array)
+      expect(response.clients).toBeInstanceOf(Array<ClientDTO>)
       expect(response.clients.length).toBeGreaterThanOrEqual(3)
       expect(response.total).toBeGreaterThanOrEqual(10)
       expect(response.page).toBe(1)
@@ -115,9 +117,7 @@ describe('ClientController', () => {
         id: 1
       })
       expect(response).toBeDefined()
-      if (response) {
-        expect(response).toBeInstanceOf(UpdateResult)
-      }
+      expect(response).toBeInstanceOf(UpdateResult)
     })
     it('should return an empty update result if the client is not found', async () => {
       await expect(
