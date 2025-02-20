@@ -1,5 +1,10 @@
 import { ClientService } from '../services/client.service'
-import { ClientDTO, DeleteClientDTO, GetClientsDTO } from '../../core/dtos'
+import {
+  ClientDTO,
+  DeleteClientDTO,
+  GetClientsDTO,
+  CreateClientDTO
+} from '../../core/dtos'
 import { ClientEntity } from '../../db/entities/client.entity'
 import {
   Body,
@@ -94,18 +99,16 @@ export class ClientController {
   })
   @Post()
   async create(
-    @Body() client: ClientEntity
+    @Body() data: CreateClientDTO
   ): Promise<ClientDTO | HttpException> {
-    if (!client.name?.trim() || !client.company_sallary || !client.sallary) {
-      throw new HttpException('Invalid client', HttpStatus.BAD_REQUEST)
-    }
-
+    const client = new ClientEntity()
+    client.name = data.name
+    client.company_sallary = data.company_sallary
+    client.sallary = data.sallary
     client.created_at = new Date()
-    client.updated_at = new Date()
+    client.updated_at = undefined
+
     const result = await this.clientService.createClient(client)
-    if (!result) {
-      throw new HttpException('Client not created', HttpStatus.BAD_REQUEST)
-    }
     return result
   }
 

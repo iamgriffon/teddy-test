@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common'
+import { Controller, Get, Post, Body, Param, Delete, Put, Headers } from '@nestjs/common'
 import { UsersService } from '../services/users.service'
 import {
   CreateUserRequestDTO,
@@ -7,7 +7,7 @@ import {
   GetUserResponseDTO,
   UpdateUserDTO
 } from '../../core/dtos'
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiOperation, ApiResponse, ApiTags, ApiHeader } from '@nestjs/swagger'
 
 @ApiTags('Users')
 @Controller('users')
@@ -32,17 +32,20 @@ export class UsersController {
 
   @Post('logout')
   @ApiOperation({ summary: 'Logout a user' })
-  @ApiBody({ type: Number })
+  @ApiBody({ type: String })
   @ApiResponse({ status: 200, description: 'User logged out successfully' })
-  logout(@Body() id: number) {
-    return this.usersService.logout(id)
+  logout(@Body() body: { email: string }) {
+    return this.usersService.logout(body.email)
   }
 
   @Get('me')
   @ApiOperation({ summary: 'Get the current user' })
-  @ApiBody({ type: String })
+  @ApiHeader({
+    name: 'Authorization',
+    description: 'Auth token (Bearer token)'
+  })
   @ApiResponse({ type: GetUserResponseDTO })
-  me(@Body() token: string) {
+  me(@Headers('Authorization') token: string) {
     return this.usersService.getUser(token)
   }
 

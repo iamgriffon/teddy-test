@@ -38,7 +38,6 @@ export class AuthService {
       const payload = await this.jwtService.verifyAsync(token, {
         ignoreExpiration: true
       })
-
       if (payload && payload.exp) {
         const currentTimeSec = Math.floor(Date.now() / 1000)
         if (currentTimeSec > payload.exp + JWT_REFRESH_EXPIRATION_TIME) {

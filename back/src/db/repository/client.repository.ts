@@ -35,8 +35,11 @@ export class ClientRepository extends Repository<ClientEntity> {
     if (!client) {
       throw new Error('Client is required')
     }
-    const result = await this.save(client)
-    return result
+    const result = await this.createQueryBuilder('client')
+      .insert()
+      .values(client)
+      .execute()
+    return result.raw[0]
   }
 
   async updateClient(

@@ -50,12 +50,13 @@ export class UsersService {
     response.name = user.name
     response.email = user.email
     response.session_token = tokens.access_token
-    response.session_token_expiry = new Date(Date.now() + 1 * 60 * 60 * 1000)
+    response.session_token_expiry = new Date(Date.now() + 24 * 60 * 60 * 1000)
     return response
   }
 
-  async logout(id: number) {
-    const user = await this.userRepository.findById(id)
+  async logout(email: string) {
+    const user = await this.userRepository.findUserByEmail(email)
+    console.log(user)
     if (!user) {
       throw new UnauthorizedException('User not found')
     }
@@ -71,8 +72,10 @@ export class UsersService {
     }
   }
 
-  async getUser(token: string) {
+  async getUser(Bearer: string) {
+    const token = Bearer.split(' ')[1]
     const payload = this.authService.decodeJwt(token)
+    console.log({payload})
     if (!payload) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED)
     }

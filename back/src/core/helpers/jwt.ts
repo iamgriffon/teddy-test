@@ -33,7 +33,7 @@ export async function refreshOrRevokeJwt(token: string) {
 
     if (payload && payload.exp) {
       const currentTimeSec = Math.floor(Date.now() / 1000)
-      const refreshGracePeriod = 7 * 24 * 60 * 60
+      const refreshGracePeriod = 7 * 24 * 60 * 60 * 1000
       if (currentTimeSec > payload.exp + refreshGracePeriod) {
         return null
       }

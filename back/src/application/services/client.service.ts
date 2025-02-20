@@ -36,9 +36,13 @@ export class ClientService implements IClientService {
     }
   }
 
-  async createClient(client: ClientEntity): Promise<ClientDTO> {
-    const newClient = await this.clientRepository.createClient(client)
-    return newClient
+  async createClient(clientData: Omit<ClientEntity, 'id'|'created_at'|'updated_at'>): Promise<ClientDTO> {
+    const client = this.clientRepository.create({
+      ...clientData,
+      created_at: new Date(),
+      updated_at: undefined
+    });
+    return this.clientRepository.save(client);
   }
 
   async updateClient(id: number, client: ClientEntity): Promise<UpdateResult> {
