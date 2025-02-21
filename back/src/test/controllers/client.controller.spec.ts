@@ -51,8 +51,8 @@ describe('ClientController', () => {
       expect(response).toBeInstanceOf(GetClientsDTO)
       if (response.clients) {
         expect(response.clients[0].name).toBe('Teste')
-        expect(String(response.clients[0].company_sallary)).toBe("10000")
-        expect(String(response.clients[0].sallary)).toBe("5000")
+        expect(String(response.clients[0].company_sallary)).toBe('10000')
+        expect(String(response.clients[0].sallary)).toBe('5000')
       }
     })
     it('should throw an error if the client is not valid', async () => {
@@ -80,8 +80,8 @@ describe('ClientController', () => {
       expect(response).toBeInstanceOf(ClientEntity)
       if (response) {
         expect(response.name).toBe('teste')
-        expect(String(response.company_sallary)).toBe("10000")
-        expect(String(response.sallary)).toBe("5000")
+        expect(String(response.company_sallary)).toBe('10000')
+        expect(String(response.sallary)).toBe('5000')
       }
     })
     it('should find all clients', async () => {

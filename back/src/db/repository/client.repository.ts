@@ -26,7 +26,10 @@ export interface IClientRepository extends Repository<ClientEntity> {
   getAllIds(): Promise<number[]>
 }
 
-export class ClientRepository extends Repository<ClientEntity> implements IClientRepository {
+export class ClientRepository
+  extends Repository<ClientEntity>
+  implements IClientRepository
+{
   constructor(private dataSource: DataSource) {
     super(ClientEntity, dataSource.createEntityManager())
   }

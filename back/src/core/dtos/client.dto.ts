@@ -75,7 +75,7 @@ export class DeleteClientDTO {
 }
 
 export class CreateClientDTO {
-  name: string;
-  sallary: number;
-  company_sallary: number;
+  name: string
+  sallary: number
+  company_sallary: number
 }
