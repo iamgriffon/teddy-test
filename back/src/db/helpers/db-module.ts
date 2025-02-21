@@ -6,7 +6,7 @@ dotenv.config({ path: '.env' })
 
 export const DatabaseModule = TypeOrmModule.forRoot({
   type: 'postgres',
-  host: String(process.env.DATABASE_HOST),
+  host: 'postgres',
   port: parseInt(process.env.DATABASE_PORT!),
   password: String(process.env.DATABASE_PASSWORD),
   username: String(process.env.DATABASE_USER),
