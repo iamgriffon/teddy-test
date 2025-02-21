@@ -92,10 +92,8 @@ describe('ClientService', () => {
       const mockClient = new ClientEntity()
       mockClient.name = 'Valid Name'
       mockClient.sallary = 500000
-      mockClient.company_sallary = 1000000,
-      
-      // Mock validation to return no errors
-      (validate as jest.Mock).mockResolvedValueOnce([])
+      mockClient.company_sallary = 1000000
+      ;(validate as jest.Mock).mockResolvedValueOnce([])
       repository.createClient.mockResolvedValue(mockClient)
 
       const result = await service.create(mockClient)

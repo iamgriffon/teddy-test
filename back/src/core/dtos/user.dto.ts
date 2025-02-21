@@ -4,8 +4,7 @@ import {
   Min,
   IsNumber,
   IsDate,
-  IsEmail,
-  IsArray
+  IsEmail
 } from 'class-validator'
 import { ApiProperty, PickType } from '@nestjs/swagger'
 
@@ -92,5 +91,5 @@ export class GetUserResponseDTO extends PickType(UserDTO, [
   'name',
   'email',
   'session_token',
-  'session_token_expiry',
+  'session_token_expiry'
 ]) {}

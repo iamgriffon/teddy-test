@@ -1,8 +1,4 @@
-import {
-  CreateUserRequestDTO,
-  LoginUserDTO,
-  UserDTO
-} from '../../core/dtos'
+import { CreateUserRequestDTO, LoginUserDTO, UserDTO } from '../../core/dtos'
 import { hashPassword } from '../../core/helpers/password'
 import { refreshOrRevokeJwt } from '../../core/helpers/jwt'
 import { UserRepository } from '../../db/repository/user.repository'

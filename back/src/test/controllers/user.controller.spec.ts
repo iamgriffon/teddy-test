@@ -9,6 +9,8 @@ import { UserEntity } from '@/db/entities'
 import { JwtModule } from '@nestjs/jwt'
 import { AuthModule } from '@/application/modules/auth.module'
 import { UserDTO } from '@/core'
+import * as dotenv from 'dotenv'
+dotenv.config({ path: '.env' })
 
 describe('UserController', () => {
   let usersController: UsersController
@@ -75,7 +77,7 @@ describe('UserController', () => {
         email: 'john.doe@example.com',
         password: 'password'
       })
-      
+
       const token = `Bearer ${response.session_token}`
       const userResponse = await usersController.me(token)
       expect(userResponse).toBeDefined()

@@ -1,4 +1,10 @@
-import { IsArray, IsEmail, IsNotEmpty, IsNumber, MinLength } from 'class-validator'
+import {
+  IsArray,
+  IsEmail,
+  IsNotEmpty,
+  IsNumber,
+  MinLength
+} from 'class-validator'
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm'
 
 @Entity('users')
