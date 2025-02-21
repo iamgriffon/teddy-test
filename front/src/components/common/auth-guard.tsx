@@ -23,8 +23,6 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
     enabled: isUserAuthenticated
   })
 
-  console.log(ids)
-
   useEffect(() => {
     if (ids) {
       setClients((prev) => prev.filter((client) => ids.includes(client.id)))

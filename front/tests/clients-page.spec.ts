@@ -221,11 +221,9 @@ describe('Dashboard Page', () => {
         .getByTestId('client-form-name')
         .textContent()
 
-      // Add clients
       await firstClientCard.getByTestId('client-add-icon').click()
       await secondClientCard.getByTestId('client-add-icon').click()
 
-      // Verify icons change
       await expect(
         firstClientCard.getByTestId('client-remove-icon')
       ).toBeVisible()
@@ -233,22 +231,91 @@ describe('Dashboard Page', () => {
         secondClientCard.getByTestId('client-remove-icon')
       ).toBeVisible()
 
-      // Navigate to selected page
       await page.goto('http://localhost/clients?selected=true', {
         waitUntil: 'networkidle'
       })
 
-      // Verify selected clients
       await expect(page.getByText(firstClientName as string)).toBeVisible()
       await expect(page.getByText(secondClientName as string)).toBeVisible()
 
-      // Remove clients
       await page.getByTestId('client-remove-button').last().click()
       await page.getByTestId('client-remove-button').first().click()
-
-      // Verify removal
       await expect(page.getByText(firstClientName as string)).not.toBeVisible()
       await expect(page.getByText(secondClientName as string)).not.toBeVisible()
+    })
+
+    test('should persist the selected clients when the page is refreshed', async () => {
+      const firstClientCard = page.getByTestId('client-card-1')
+      const secondClientCard = page.getByTestId('client-card-2')
+
+      await firstClientCard.getByTestId('client-add-icon').click()
+      await secondClientCard.getByTestId('client-add-icon').click()
+
+      await page.reload()
+
+      await expect(firstClientCard).toBeVisible()
+      await expect(secondClientCard).toBeVisible()
+    })
+
+    test('should persist the selected clients if the user relogs with the same email', async () => {
+      const firstClientCard = page.getByTestId('client-card-1')
+      const secondClientCard = page.getByTestId('client-card-2')
+
+      await firstClientCard.getByTestId('client-add-icon').click()
+      await secondClientCard.getByTestId('client-add-icon').click()
+
+      await page.goto('http://localhost/clients?selected=true', {
+        waitUntil: 'networkidle'
+      })
+
+      await page.reload()
+
+      await expect(firstClientCard).toBeVisible()
+      await expect(secondClientCard).toBeVisible()
+
+      await page.getByTestId('link-to-logout').click()
+      await authenticate(page)
+
+      await page.goto('http://localhost/clients?selected=true', {
+        waitUntil: 'networkidle'
+      })
+
+      await expect(firstClientCard).toBeVisible()
+      await expect(secondClientCard).toBeVisible()
+    })
+
+    test('should not persist the selected clients if the user relogs with a different email', async () => {
+      const firstClientCard = page.getByTestId('client-card-1')
+      const secondClientCard = page.getByTestId('client-card-2')
+
+      await firstClientCard.getByTestId('client-add-icon').click()
+      await secondClientCard.getByTestId('client-add-icon').click()
+
+      await page.goto('http://localhost/clients?selected=true', {
+        waitUntil: 'networkidle'
+      })
+
+      await page.getByTestId('link-to-logout').click()
+      await context.clearCookies()
+      await context.clearPermissions()
+      await page.evaluate(() => localStorage.clear())
+      await context.storageState({ path: 'storage-state.json' })
+      await authenticate(page)
+
+      await page.goto('http://localhost/login', {
+        waitUntil: 'networkidle'
+      })
+
+      await page.getByTestId('login-email-input').fill('email@email5.com')
+      await page.getByTestId('login-password-input').fill('Dupin#123')
+      await page.getByTestId('login-form-button').click()
+
+      await page.goto('http://localhost/clients?selected=true', {
+        waitUntil: 'networkidle'
+      })
+
+      await expect(firstClientCard).not.toBeVisible()
+      await expect(secondClientCard).not.toBeVisible() 
     })
   })
 

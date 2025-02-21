@@ -1,11 +1,43 @@
-import { useCallback, useState } from "react"
+import { useCallback, useMemo, useState } from 'react'
 import { toast } from 'react-toastify'
-import { text } from "consts/text"
-import { CloseIcon, WhatsappIcon, GmailIcon, GithubIcon } from 'components/icons'
-import { Button, Overlay } from "components/ui"
+import { text } from 'consts/text'
+import {
+  CloseIcon,
+  WhatsappIcon,
+  GmailIcon,
+  GithubIcon
+} from 'components/icons'
+import { Button, Overlay } from 'components/ui'
 
 export function About() {
   const [form, setForm] = useState(false)
+  const stats = useMemo(() => {
+    return {
+      files: {
+        backend: 38,
+        frontend: 83
+      },
+      lines: {
+        backend: 1936,
+        frontend: 2542
+      },
+      tests: {
+        frontend: 53,
+        backend: 35
+      },
+      repo: {
+        issues: 31,
+        pullRequests: 44,
+        commits: 105
+      }
+    }
+  }, [])
+
+  const { files, lines, tests, repo } = stats
+
+  const TOTAL_FILES = files.backend + files.frontend
+  const TOTAL_LINES = lines.backend + lines.frontend
+  const TOTAL_TESTS = tests.frontend + tests.backend
 
   const copyEmail = useCallback(() => {
     try {
@@ -81,9 +113,9 @@ export function About() {
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-background-primary p-8">
+    <div className="flex min-h-screen flex-col items-center bg-background-primary p-8">
       {form && <HireMeForm />}
-      <h1 className="text-4xl font-bold text-theme-primary mb-8 md:text-5xl">
+      <h1 className="mb-8 text-4xl font-bold text-theme-primary md:text-5xl">
         Visão Geral do Projeto
       </h1>
 
@@ -94,12 +126,13 @@ export function About() {
           </h2>
           <div className="space-y-2">
             <p className="text-lg text-theme-black">
-              🚀 Tempo Total de Desenvolvimento: <strong>~4.5 dias</strong>
+              🚀 Tempo Total de Desenvolvimento: <strong>~5 dias</strong>
             </p>
             <p className="text-lg text-theme-black">
-              ✅ Casos de Teste: <strong>84</strong> cenários abrangentes de
-              teste (<strong>49</strong> de <strong>frontend</strong> e{' '}
-              <strong>35</strong> de <strong>backend</strong>)
+              ✅ Casos de Teste: <strong>{TOTAL_TESTS}</strong> cenários
+              abrangentes de teste (<strong>{tests.frontend}</strong> de{' '}
+              <strong>frontend</strong> e <strong>{tests.backend}</strong> de{' '}
+              <strong>backend</strong>)
             </p>
             <p className="flex flex-col gap-2 py-4 text-lg text-theme-black">
               <span className="text-lg text-theme-black">
@@ -113,13 +146,13 @@ export function About() {
               </span>
             </p>
             <p className="text-lg text-theme-black">
-              🔍 Issues: <strong>31</strong>
+              🔍 Issues: <strong>{repo.issues}</strong>
             </p>
             <p className="text-lg text-theme-black">
-              📝 Pull Requests: <strong>44</strong>
+              📝 Pull Requests: <strong>{repo.pullRequests}</strong>
             </p>
             <p className="text-lg text-theme-black">
-              ✏️ Commits: <strong>105</strong>
+              ✏️ Commits: <strong>{repo.commits}</strong>
             </p>
             <p className="text-lg text-theme-black">
               🙏🏿 <strong>Nenhum</strong> commit foi feito direto na main
@@ -127,11 +160,11 @@ export function About() {
           </div>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-2xl font-semibold text-theme-black mb-4">
+        <section className="rounded-lg bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
             Estatísticas da Base de Código
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-theme-primary">
                 Estrutura do Frontend
@@ -157,23 +190,26 @@ export function About() {
                 Escopo Total do Sistema
               </p>
               <p className="text-theme-black">
-                121 arquivos | 4.417 linhas no total
+                {TOTAL_FILES} arquivos | {TOTAL_LINES} linhas no total
               </p>
               <p className="text-gray-500">
-                Média de <strong>36.6</strong> linhas por arquivo
+                Média de{' '}
+                <strong>{(TOTAL_LINES / TOTAL_FILES).toPrecision(3)}</strong>{' '}
+                linhas por arquivo
               </p>
             </div>
           </div>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm p-6">
-          <h2 className="text-2xl font-semibold text-theme-black mb-4">
+        <section className="rounded-lg bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
             Garantia de Qualidade
           </h2>
           <p className="text-theme-black">
-            Cobertura de testes abrangente com Playwright (para o front), e Jest (para o back) incluindo:
+            Cobertura de testes abrangente com Playwright (para o front), e Jest
+            (para o back) incluindo:
           </p>
-          <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
+          <ul className="mt-2 list-inside list-disc space-y-1 text-theme-black">
             <li>Testes unitários</li>
             <li>Testes de integração e de sistema</li>
             <li>Testes de operações CRUD</li>
@@ -184,8 +220,8 @@ export function About() {
           </ul>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm p-6 border-2 border-theme-primary">
-          <h2 className="text-2xl font-semibold text-theme-black mb-4">
+        <section className="rounded-lg border-2 border-theme-primary bg-white p-6 shadow-sm">
+          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
             Por Que Me Contratar?
           </h2>
           <div className="space-y-4">
@@ -237,10 +273,11 @@ export function About() {
                 <h3 className="font-medium text-theme-primary">
                   Resultados Mensuráveis
                 </h3>
-                <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
+                <ul className="mt-2 list-inside list-disc space-y-1 text-theme-black">
                   <li className="text-theme-black">
-                    Histórico de entregas com métricas claras, adoção de padrões de projeto e documentação
-                    abrangente do processo de desenvolvimento.
+                    Histórico de entregas com métricas claras, adoção de padrões
+                    de projeto e documentação abrangente do processo de
+                    desenvolvimento.
                   </li>
                   <li className="text-theme-black">
                     Desenvolvimento orientado a TDD, garantindo entregas que
@@ -258,7 +295,8 @@ export function About() {
                   Uso de Inteligência Artificial
                 </h3>
                 <p className="text-theme-black">
-                  Utilização de ferramentas como Cursor e Copilot para acelerar o desenvolvimento e garantir a qualidade do código.
+                  Utilização de ferramentas como Cursor e Copilot para acelerar
+                  o desenvolvimento e garantir a qualidade do código.
                 </p>
               </div>
             </div>
@@ -266,7 +304,7 @@ export function About() {
             <div className="mt-6">
               <Button
                 onClick={() => setForm(true)}
-                className="w-auto inline-block bg-theme-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-theme-primary/90 transition-colors"
+                className="inline-block w-auto rounded-lg bg-theme-primary px-6 py-3 font-medium text-white transition-colors hover:bg-theme-primary/90"
               >
                 Entre em Contato
               </Button>

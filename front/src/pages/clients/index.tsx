@@ -22,6 +22,7 @@ export function Clients() {
     () => new URLSearchParams(location.search),
     [location.search]
   )
+
   const selected = searchParams.get('selected')
   const isMainScreen = useMemo(() => {
     return !searchParams.size || !selected || selected === 'false'
@@ -81,6 +82,18 @@ export function Clients() {
   const handlePageClick = (selectedItem: { selected: number }) => {
     setPage(selectedItem.selected + 1)
   }
+
+  const onUpdateClient = useCallback(() => {
+    refetch()
+  }, [refetch])
+
+  useEffect(() => {
+    if (!!pageData.total_pages && itemsPerPage * page - 1 > pageData.total) {
+      setPage(pageData.total_pages)
+    }
+    //eslint-disable-next-line
+  }, [handlePageClick, setItemsPerPage, pageData, refetch])
+
   useEffect(() => {
     refetch()
     //eslint-disable-next-line
@@ -99,16 +112,11 @@ export function Clients() {
     setPage(1)
     Promise.all([refetch(), refetchUser()])
     //eslint-disable-next-line
-  }, [location.search, navigate])
+  }, [location.search, navigate, setItemsPerPage])
 
   const handleClearClients = useCallback(() => {
     setClients([])
   }, [setClients])
-
-  const onCRUDClient = useCallback(() => {
-    refetch()
-    refetchUser()
-  }, [refetch, refetchUser])
 
   return (
     <div className="flex size-full grow flex-col overflow-x-auto px-10">
@@ -127,7 +135,7 @@ export function Clients() {
           list={pageData}
           selected={selected === 'true'}
           onSelectClient={handleSelectedClient}
-          onCRUDClient={onCRUDClient}
+          onUpdateClient={onUpdateClient}
         />
       </section>
       <ClientPageFooter

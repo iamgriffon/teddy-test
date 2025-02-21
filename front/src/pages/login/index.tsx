@@ -9,11 +9,16 @@ import { toast } from 'react-toastify'
 import { useNavigate } from 'react-router-dom'
 import { useUserStore } from 'store'
 import Cookies from 'js-cookie'
+import { useLocalStorage } from '@uidotdev/usehooks'
+import { ClientDTO } from 'dtos'
 
 export function Login() {
   const { home } = links
   const navigate = useNavigate()
   const { setUser } = useUserStore()
+  const [email, setEmail] = useLocalStorage<string>('email', '')
+  // eslint-disable-next-line
+  const [_, setClients] = useLocalStorage<ClientDTO[]>('clients', [])
   const loginForm = useForm<LoginPageProps>({
     resolver: zodResolver(LoginPageSchema),
     defaultValues: {
@@ -38,6 +43,10 @@ export function Login() {
       toast.success(text.LOGIN_SUCCESS)
       handleSetUser(data)
       navigate('/clients')
+      setEmail(data.email)
+      if (data.email !== email) {
+        setClients([])
+      }
     },
     onError: () => {
       toast.error(text.LOGIN_ERROR)
