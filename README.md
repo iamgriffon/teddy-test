@@ -34,7 +34,16 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     pnpm install
     ```
 
-3.  **Execute o projeto com Docker Compose:**
+3.  **Crie o banco de dados:**
+
+    Dentro da pasta `teddy-test` execute os seguintes comandos:
+
+    ```bash
+    chmod +x create-db.sh
+    ./create-db.sh
+    ```
+
+4.  **Execute o projeto com Docker Compose:**
 
     Dentro da pasta `teddy-test` execute os seguintes comandos:
 
@@ -46,13 +55,13 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
 
 
-4.  **Acesse a aplicação:**
+5.  **Acesse a aplicação:**
 
     -   Frontend: `http://localhost/`
     -   Backend: `http://localhost/api/`
     -   Swagger: `http://localhost/api/docs`
 
-5. **Caso você esteja tendo problemas com dependências**
+6. **Caso você esteja tendo problemas com dependências**
 
 Execute o seguinte comando caso você esteja com problemas com as dependências:
 
