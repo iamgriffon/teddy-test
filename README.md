@@ -4,17 +4,17 @@ Este projeto consiste em uma aplicação fullstack construída com ReactJS (util
 
 ## Visão Geral
 
--   **Frontend:** Interface do usuário interativa e responsiva, desenvolvida com ReactJS e Vite.
--   **Backend:** API robusta e escalável, construída com NestJS.
--   **Web Server:** Nginx para servir o frontend e o backend.
--   **Docker:** Containerização das aplicações.
+- **Frontend:** Interface do usuário interativa e responsiva, desenvolvida com ReactJS e Vite.
+- **Backend:** API robusta e escalável, construída com NestJS.
+- **Web Server:** Nginx para servir o frontend e o backend.
+- **Docker:** Containerização das aplicações.
 
 ## Pré-requisitos
 
 Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
--   [Docker](https://www.docker.com/)
--   [Docker Compose](https://docs.docker.com/compose/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
 ## Configuração e Execução
 
@@ -25,7 +25,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     cd teddy-test
     ```
 
-2. **Instale as variáveis de ambiente e dependências:**
+2.  **Instale as variáveis de ambiente e dependências:**
 
     Dentro das pastas `teddy-test/front` e `teddy-test/back` execute o seguinte comando:
 
@@ -44,30 +44,30 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
     Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
 
-
-4.  **Crie o banco de dados:**
+4.  **Execute o script de setup:**
 
     Você vai provavelmente encontrar um erro de DB do NestJS, mas não tem problema.
 
-    Dentro da pasta `teddy-test` execute os seguintes comandos:
+    Ainda com o container rodando, abra uma segunda aba do terminal (dentro da pasta raiz `teddy-test`, fora do docker) e execute os seguintes comandos:
 
     ```bash
-    chmod +x migrate-db.sh
-    ./migrate-db.sh
-    docker restart back
+    chmod +x setup.sh
+    ./setup.sh
     ```
+
+    O projeto vai reiniciar algumas vezes, mas não se preocupe. Ao final de tudo, você vai conseguir acessar a aplicação.
 
 5.  **Acesse a aplicação:**
 
-    -   Frontend: `http://localhost/`
-    -   Backend: `http://localhost/api/`
-    -   Swagger: `http://localhost/api/docs`
+    - Frontend: `http://localhost/`
+    - Backend: `http://localhost/api/`
+    - Swagger: `http://localhost/api/docs`
 
-6. **Caso você esteja tendo problemas com dependências**
+EXTRA. **Caso você esteja tendo problemas com dependências**
 
 Execute o seguinte comando caso você esteja com problemas com as dependências:
 
-- No front 
+- No front
 
 ```bash
 docker exec -it front sh -c "pnpm install"
@@ -83,24 +83,23 @@ docker exec -it back sh -c "pnpm install"
 
 ### Frontend (ReactJS com Vite)
 
--   **Framework:** [ReactJS](https://reactjs.org/)
--   **Bundler:** [Vite](https://vitejs.dev/)
--   **Gerenciamento de Estado:** [Zustand](https://zustand.docs.pmnd.rs/)
--   **Estilização:** [TailwindCSS](https://tailwindcss.com/)
--   **Interface HTTP:** [Axios](https://axios-http.com/)
--   **Gerenciamento de Requisições:** [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/react-native/overview)
--   **Gerenciamento de Rotas:** [React Router](https://reactrouter.com/)
--   **Testes:** [Playwright](https://playwright.dev/)
-
+- **Framework:** [ReactJS](https://reactjs.org/)
+- **Bundler:** [Vite](https://vitejs.dev/)
+- **Gerenciamento de Estado:** [Zustand](https://zustand.docs.pmnd.rs/)
+- **Estilização:** [TailwindCSS](https://tailwindcss.com/)
+- **Interface HTTP:** [Axios](https://axios-http.com/)
+- **Gerenciamento de Requisições:** [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/react-native/overview)
+- **Gerenciamento de Rotas:** [React Router](https://reactrouter.com/)
+- **Testes:** [Playwright](https://playwright.dev/)
 
 ### Backend (NestJS)
 
--   **Framework:** [NestJS](https://nestjs.com/)
--   **ORM:** [TypeORM](https://typeorm.io/)
--   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
--   **Testes:** [Jest](https://jestjs.io/)
--   **Documentação:** [Swagger](https://swagger.io/)
--   **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
+- **Framework:** [NestJS](https://nestjs.com/)
+- **ORM:** [TypeORM](https://typeorm.io/)
+- **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
+- **Testes:** [Jest](https://jestjs.io/)
+- **Documentação:** [Swagger](https://swagger.io/)
+- **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
 
 ## Testes
 
@@ -119,10 +118,11 @@ Dentro da pasta `teddy-test/back` execute o seguinte comando:
 ```bash
 npm run test
 ```
+
 ## Código fonte
 
--  [Código fonte do frontend](https://github.com/iamgriffon/teddy-test/tree/main/front)
--  [Código fonte do backend](https://github.com/iamgriffon/teddy-test/tree/main/back)
+- [Código fonte do frontend](https://github.com/iamgriffon/teddy-test/tree/main/front)
+- [Código fonte do backend](https://github.com/iamgriffon/teddy-test/tree/main/back)
 
 ## Contribuição
 
