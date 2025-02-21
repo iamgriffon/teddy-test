@@ -39,8 +39,8 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     Dentro da pasta `teddy-test` execute os seguintes comandos:
 
     ```bash
-    chmod +x create-db.sh
-    ./create-db.sh
+    chmod +x migrate-db.sh
+    ./migrate-db.sh
     ```
 
 4.  **Execute o projeto com Docker Compose:**
