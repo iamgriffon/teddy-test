@@ -28,7 +28,7 @@ export function About() {
       repo: {
         issues: 32,
         pullRequests: 45,
-        commits: 107
+        commits: 111
       }
     }
   }, [])
