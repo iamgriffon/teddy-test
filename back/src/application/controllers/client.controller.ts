@@ -173,6 +173,11 @@ export class ClientController {
     }
   }
 
+  @Get('ids')
+  async findAllIds(): Promise<number[]> {
+    return await this.clientService.findAllIds()
+  }
+
   @Post('seed/:count')
   async seedClients(@Param('count') count: number): Promise<string> {
     await Promise.all([this.clientService.createMany(count)])

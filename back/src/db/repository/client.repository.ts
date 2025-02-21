@@ -23,6 +23,7 @@ export interface IClientRepository extends Repository<ClientEntity> {
   createMany(count: number): Promise<void>
   wipe(): Promise<void>
   findRecent(limit: number): Promise<ClientDTO[]>
+  getAllIds(): Promise<number[]>
 }
 
 export class ClientRepository extends Repository<ClientEntity> implements IClientRepository {
@@ -88,6 +89,11 @@ export class ClientRepository extends Repository<ClientEntity> implements IClien
       .orderBy('client.created_at', 'DESC')
       .take(limit)
       .getMany()
+  }
+
+  async getAllIds(): Promise<number[]> {
+    const clients = await this.find()
+    return clients.map((client) => client.id)
   }
 }
 

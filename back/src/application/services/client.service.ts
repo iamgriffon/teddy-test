@@ -13,6 +13,10 @@ export class ClientService implements IClientService {
     return this.clientRepository.findAll()
   }
 
+  async findAllIds(): Promise<number[]> {
+    return this.clientRepository.getAllIds()
+  }
+
   async findById(id: number): Promise<ClientDTO | null> {
     return this.clientRepository.findById(id)
   }
@@ -46,7 +50,7 @@ export class ClientService implements IClientService {
     client.company_sallary = clientData.company_sallary
     client.created_at = new Date()
     client.updated_at = new Date()
-    
+
     const errors = await validate(client)
     if (errors.length > 0) {
       throw new HttpException(errors, HttpStatus.BAD_REQUEST)
@@ -87,6 +91,7 @@ export class ClientService implements IClientService {
 
 export interface IClientService {
   findAll(): Promise<ClientDTO[]>
+  findAllIds(): Promise<number[]>
   findById(id: number): Promise<NullableClientDTO>
   create(client: ClientEntity): Promise<ClientDTO>
   findMany(options: { skip: number; take: number }): Promise<GetClientsDTO>

@@ -153,6 +153,14 @@ describe('ClientController', () => {
       await expect(clientController.delete(255)).rejects.toThrow(HttpException)
     })
   })
+
+  describe('Get All Ids', () => {
+    it('should return all ids', async () => {
+      const response = await clientController.findAllIds()
+      expect(response).toBeDefined()
+      expect(response).toBeInstanceOf(Array<number>)
+    })
+  })
   afterAll(async () => {
     await new Promise((resolve) => setTimeout(resolve, 500))
     const connection =
