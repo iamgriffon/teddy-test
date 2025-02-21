@@ -26,9 +26,9 @@ export function About() {
         backend: 35
       },
       repo: {
-        issues: 32,
-        pullRequests: 45,
-        commits: 107
+        issues: 33,
+        pullRequests: 46,
+        commits: 114
       }
     }
   }, [])
