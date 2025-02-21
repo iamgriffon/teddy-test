@@ -52,6 +52,19 @@ pnpm run build
 
 ### Testes
 
+Antes de rodar os testes, você precisa ter o projeto back em execução e voce precisa criar um usuário no banco de dados. Para isso, você pode usar o seguinte comando:
+
+```bash
+curl -X POST http://localhost/api/users/register -H "Content-Type: application/json" -d '{"name": "Test user", "email": "email@email2.com", "password": "12345678"}'
+```
+
+Você também precisa popular o banco de dados, para isso execute o seguinte comando:
+
+```bash
+curl -X POST http://localhost/api/clients/seed/50
+```
+
+Depois de criar o usuário e popular o banco de dados, você pode rodar os testes com o seguinte comando:
 ```bash
 pnpm test
 ```

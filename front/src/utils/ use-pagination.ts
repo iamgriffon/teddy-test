@@ -25,7 +25,7 @@ export const usePagination = <T>(
 
   const currentPageData = useMemo(() => {
     return data.slice(firstPageIndex, lastPageIndex)
-  }, [currentPage, itemsPerPage, data])
+  }, [data, lastPageIndex, firstPageIndex])
 
   return {
     firstPageIndex,

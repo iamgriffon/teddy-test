@@ -28,7 +28,7 @@ export function ClientList({
     if (selected) return 'selected'
     if (isLoading) return 'skeleton'
     return 'list'
-  }, [selected, isLoading, list.data.length])
+  }, [selected, isLoading])
 
   const Cards = () => {
     if (cardType === 'skeleton') {

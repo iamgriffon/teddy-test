@@ -25,7 +25,7 @@ export function Login() {
   const handleSetUser = (data: LoginResponse) => {
     setUser({
       id: data.id,
-      name: data.name,
+      name: data.name
     })
     Cookies.set('session_token', data.session_token)
     Cookies.set('session_token_expiry', String(data.session_token_expiry))

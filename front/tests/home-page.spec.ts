@@ -73,6 +73,41 @@ describe('Homepage', async () => {
       await link.click()
       await expect(page.getByTestId('login-form')).toBeVisible()
     })
+
+    describe('Create User Form Step 2', () => {
+      beforeEach(async () => {
+        const input = page.getByTestId('create-user-name-input')
+        await input.fill('John Doe')
+        await page.getByTestId('create-user-step1-button').click()
+        await expect(page.getByTestId('create-user-step2-form')).toBeVisible()
+      })
+
+      test('should show the error message when the email is empty', async () => {
+        const button = page.getByTestId('create-user-step2-button')
+        await button.click()
+        await expect(page.getByTestId('create-user-email-error')).toBeVisible()
+      })
+
+      test('should show the error message when the email is invalid', async () => {
+        const input = page.getByTestId('create-user-email-input')
+        await input.fill('invalid-email')
+        await page.getByTestId('create-user-step2-button').click()
+        await expect(page.getByTestId('create-user-email-error')).toBeVisible()
+      })
+
+      test('should show the error message when the password is empty', async () => {
+        const button = page.getByTestId('create-user-step2-button')
+        await button.click()
+        await expect(page.getByTestId('create-user-password-error')).toBeVisible()
+      })
+
+      test('should show the error message when the password is invalid', async () => {
+        const input = page.getByTestId('create-user-password-input')
+        await input.fill('12345678')
+        await page.getByTestId('create-user-step2-button').click()
+        await expect(page.getByTestId('create-user-password-error')).toBeVisible()
+      })
+    })
   })
 
   describe('Login Form', () => {

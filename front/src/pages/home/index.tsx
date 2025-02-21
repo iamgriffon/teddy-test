@@ -8,14 +8,12 @@ import {
 } from 'schemas'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
-import { useUserStore } from 'store'
 import { FirstStepForm, SecondStepForm } from './steps'
 import { useMutation } from '@tanstack/react-query'
 import { register, type RegisterRequest, isAuthenticated } from 'services'
 import { toast } from 'react-toastify'
 import { text } from 'consts'
 export function Home() {
-  const { setUser } = useUserStore()
   const [step, setStep] = useState<'first' | 'second'>('first')
   const navigate = useNavigate()
 
@@ -54,7 +52,7 @@ export function Home() {
       password: secondStepForm.getValues('password')
     }
     createUser(userData)
-  }, [navigate, setUser, firstStepForm, secondStepForm, createUser])
+  }, [firstStepForm, secondStepForm, createUser])
 
   const handleNextStep = useCallback((data: HomePageFirstStepType) => {
     if (data) setStep('second')

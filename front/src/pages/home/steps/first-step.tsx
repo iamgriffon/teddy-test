@@ -15,7 +15,10 @@ export function FirstStepForm({
         className="flex h-full w-[512px] flex-col items-center justify-center gap-5"
         data-testid="create-user-step1-form"
       >
-        <h1 className="font-sans text-4xl" data-testid="create-user-step1-title">
+        <h1
+          className="font-sans text-4xl"
+          data-testid="create-user-step1-title"
+        >
           Olá, seja bem-vindo(a)!{' '}
         </h1>
         <section className="flex w-full flex-col items-start gap-2">

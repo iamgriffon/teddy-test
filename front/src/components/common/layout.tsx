@@ -12,7 +12,10 @@ interface LayoutProps {
 export function Layout({ children, className }: LayoutProps) {
   const location = useLocation()
   const shouldHideNavbar = useMemo(() => {
-    return !location.pathname.includes('clients')
+    return (
+      !location.pathname.includes('clients') &&
+      !location.pathname.includes('about')
+    )
   }, [location.pathname])
 
   return (

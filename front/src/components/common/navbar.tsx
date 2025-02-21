@@ -1,7 +1,7 @@
 import logo from '../../assets/logo.svg'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { breakpoints, cn } from 'utils'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useClickAway, useMediaQuery } from '@uidotdev/usehooks'
 import { HomeIcon } from '../icons/home-icon'
 import { MobileMenuIcon } from '../icons/mobile-menu.icon'
@@ -14,11 +14,10 @@ import { links } from 'consts'
 import Cookies from 'js-cookie'
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { user, clearUser } = useUserStore()
+  const { user } = useUserStore()
   const location = useLocation()
   const isMobile = useMediaQuery(breakpoints.mobile)
   const { home, clients, selectedClients, about } = links
-  const navigate = useNavigate()
 
   const baseMobileMenuStyle = useMemo(
     () => cn('flex gap-4 items-center py-[14px] px-3 font-semibold'),
@@ -122,7 +121,15 @@ export function Navbar() {
         </aside>
       </>
     )
-  }, [location, ref, baseMobileMenuStyle, isMobile])
+  }, [
+    location,
+    ref,
+    baseMobileMenuStyle,
+    isMobile,
+    clients,
+    home,
+    selectedClients
+  ])
 
   const DesktopMenu = useCallback(() => {
     return (
@@ -175,7 +182,15 @@ export function Navbar() {
         </nav>
       </section>
     )
-  }, [location.pathname, location.search, clearUser])
+  }, [
+    location.pathname,
+    location.search,
+    currentUrl,
+    clients,
+    about,
+    home,
+    selectedClients
+  ])
 
   return (
     <nav
@@ -191,12 +206,12 @@ export function Navbar() {
           className="cursor-pointer"
           data-testid="side-menu-icon"
         />
-        <img src={logo} alt="Logo" />
+        <img src={logo} alt="Logo" data-testid="logo" />
       </section>
       <DesktopMenu />
       {isMenuOpen && <Sidemenu />}
       <section className="flex items-center gap-10 pr-[50px]">
-        <span>
+        <span data-testid="user-name">
           Olá, <strong>{user?.name}!</strong>
         </span>
       </section>

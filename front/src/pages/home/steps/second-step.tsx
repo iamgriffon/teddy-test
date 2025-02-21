@@ -43,6 +43,7 @@ export function SecondStepForm({
               placeholder="Digite sua senha:"
               className="h-[60px] w-full"
               type="password"
+              data-testid="create-user-password-input"
               {...secondStepForm.register('password')}
             />
             {secondStepForm.formState.errors.password && (

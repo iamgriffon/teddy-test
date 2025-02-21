@@ -8,7 +8,7 @@ import {
   ClientPageSelector,
   ClientPageFooter
 } from 'components/client'
-import { getClients, getUser, isAuthenticated, getAllIds } from 'services'
+import { getClients, getUser, isAuthenticated } from 'services'
 import { useLocalStorage } from '@uidotdev/usehooks'
 
 export function Clients() {
@@ -18,7 +18,10 @@ export function Clients() {
   const [clients, setClients] = useLocalStorage<ClientDTO[]>('clients', [])
   const location = useLocation()
   const navigate = useNavigate()
-  const searchParams = new URLSearchParams(location.search)
+  const searchParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  )
   const selected = searchParams.get('selected')
   const isMainScreen = useMemo(() => {
     return !searchParams.size || !selected || selected === 'false'
@@ -47,17 +50,14 @@ export function Clients() {
     if (userData && userData.name) {
       setUser({
         id: userData.id,
-        name: userData.name,
+        name: userData.name
       })
     }
   }, [userData, setUser])
 
   const pageData = {
     data: selected
-      ? clients.slice(
-          (page - 1) * itemsPerPage,
-          page * itemsPerPage
-        )
+      ? clients.slice((page - 1) * itemsPerPage, page * itemsPerPage)
       : data?.clients || [],
     total: selected ? clients.length : data?.total || 0,
     total_pages: selected
@@ -67,12 +67,7 @@ export function Clients() {
 
   const handleSelectedClient = useCallback(
     (client: ClientDTO) => {
-      if (!userStore) return
-      if (
-        clients.find(
-          (selectedClient) => selectedClient.id === client.id
-        )
-      ) {
+      if (clients.find((selectedClient) => selectedClient.id === client.id)) {
         const selectedClients = clients.filter(
           (selectedClient) => selectedClient.id !== client.id
         )
@@ -115,11 +110,10 @@ export function Clients() {
     refetchUser()
   }, [refetch, refetchUser])
 
-
   return (
-    <div className="flex w-full px-10 overflow-x-auto h-full grow flex-col">
+    <div className="flex size-full grow flex-col overflow-x-auto px-10">
       <section
-        className="mb-5 flex flex-col h-[calc(100vh-320px)] gap-4 max-xl:w-[1024px] max-lg:w-[768px] max-md:w-[480px] max-sm:w-[320px] xl:w-[1280px]"
+        className="mb-5 flex h-[calc(100vh-320px)] flex-col gap-4 max-xl:w-[1024px] max-lg:w-[768px] max-md:w-[480px] max-sm:w-[320px] xl:w-[1280px]"
         data-testid="clients-section"
       >
         <ClientPageSelector
