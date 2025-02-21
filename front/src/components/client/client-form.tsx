@@ -5,20 +5,13 @@ import { CloseIcon } from 'components/icons'
 import { cn } from 'utils'
 import { useFormContext, SubmitHandler, FieldValues } from 'react-hook-form'
 
-interface ClientFormProps<T = any> {
+interface ClientFormProps<T> {
   onSubmit: (data: T) => void
   buttonText: string
   title: string
   onClose: () => void
   loading?: boolean
   type?: 'create' | 'update' | 'delete' | 'clear'
-}
-
-type ClientFormData = {
-  id?: number
-  name: string
-  sallary: string
-  company_sallary: string
 }
 
 export function ClientForm<T>({

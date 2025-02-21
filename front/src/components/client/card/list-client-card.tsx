@@ -58,12 +58,16 @@ export function ListClientCard({
     if (!client || !user) return
     onSelectClient?.(client)
     toast.success(
-      `${client.name} ${isSelected ? text.DELETE_SELECTED_CLIENT_SUCCESS : text.SELECT_CLIENT_SUCCESS}`,
+      `${client.name} ${
+        isSelected
+          ? text.DELETE_SELECTED_CLIENT_SUCCESS
+          : text.SELECT_CLIENT_SUCCESS
+      }`,
       {
         position: 'bottom-left'
       }
     )
-  }, [client, isSelected, user])
+  }, [client, isSelected, user, onSelectClient])
 
   const UpdateForm = useForm<ClientFormSchemaType>({
     resolver: zodResolver(ClientFormSchema),

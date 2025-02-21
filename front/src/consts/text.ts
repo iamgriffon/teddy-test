@@ -15,4 +15,8 @@ export const text = {
   CREATE_CLIENT_ERROR: 'Erro ao criar cliente!',
   DELETE_CLIENT_ERROR: 'Erro ao deletar cliente!',
   UPDATE_CLIENT_ERROR: 'Erro ao atualizar cliente!',
+  COPY_EMAIL_SUCCESS: 'Email copiado para a área de transferência!',
+  COPY_EMAIL_ERROR: 'Erro ao copiar email para a área de transferência!',
+  COPY_WHATSAPP_SUCCESS: 'Whatsapp copiado para a área de transferência!',
+  COPY_WHATSAPP_ERROR: 'Erro ao copiar whatsapp para a área de transferência!'
 }

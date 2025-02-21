@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useMemo } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useClientStore } from 'store'
 
@@ -17,7 +17,7 @@ export function ClientPageSelector({
     (e: ChangeEvent<HTMLSelectElement>) => {
       setItemsPerPage(Number(e.target.value))
     },
-    []
+    [setItemsPerPage]
   )
 
   const location = useLocation()

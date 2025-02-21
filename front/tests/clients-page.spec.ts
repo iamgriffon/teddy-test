@@ -180,7 +180,7 @@ describe('Dashboard Page', () => {
     })
   })
 
-  describe('Items per page', () => {
+  describe('Items per page Selector', () => {
     test('should have a items per page select', async () => {
       const itemsPerPageSelect = page.getByTestId('items-per-page-select')
       await expect(itemsPerPageSelect).toBeVisible()
@@ -226,14 +226,18 @@ describe('Dashboard Page', () => {
       await secondClientCard.getByTestId('client-add-icon').click()
 
       // Verify icons change
-      await expect(firstClientCard.getByTestId('client-remove-icon')).toBeVisible()
-      await expect(secondClientCard.getByTestId('client-remove-icon')).toBeVisible()
+      await expect(
+        firstClientCard.getByTestId('client-remove-icon')
+      ).toBeVisible()
+      await expect(
+        secondClientCard.getByTestId('client-remove-icon')
+      ).toBeVisible()
 
       // Navigate to selected page
       await page.goto('http://localhost/clients?selected=true', {
         waitUntil: 'networkidle'
       })
-      
+
       // Verify selected clients
       await expect(page.getByText(firstClientName as string)).toBeVisible()
       await expect(page.getByText(secondClientName as string)).toBeVisible()
@@ -242,32 +246,101 @@ describe('Dashboard Page', () => {
       await page.getByTestId('client-remove-button').last().click()
       await page.getByTestId('client-remove-button').first().click()
 
-
       // Verify removal
       await expect(page.getByText(firstClientName as string)).not.toBeVisible()
       await expect(page.getByText(secondClientName as string)).not.toBeVisible()
     })
   })
 
-  describe('Side menu', () => {
+  describe('Navbar', () => {
+    beforeEach(async () => {
+      await authenticate(page)
+    })
+
+    test('should have a navbar', async () => {
+      const navbar = page.getByTestId('navbar')
+      await expect(navbar).toBeVisible()
+    })
+
+    test('should have a user name', async () => {
+      const userName = page.getByTestId('user-name')
+      await expect(userName).toBeVisible()
+    })
+
     test('should have a side menu', async () => {
       const sideMenu = page.getByTestId('side-menu-icon')
       await expect(sideMenu).toBeVisible()
     })
-    test('should open a side menu when the icon is clicked', async () => {
-      const sideMenu = page.getByTestId('side-menu-icon')
-      await sideMenu.click()
-      await expect(page.getByTestId('overlay')).toBeVisible()
-      await expect(page.getByTestId('side-menu')).toBeVisible()
+
+    test('should have a logo', async () => {
+      const logo = page.getByTestId('logo')
+      await expect(logo).toBeVisible()
     })
-    test('should close the side menu when the overlay is clicked', async () => {
-      const sideMenu = page.getByTestId('side-menu-icon')
-      await sideMenu.click()
-      await expect(page.getByTestId('overlay')).toBeVisible()
-      await expect(page.getByTestId('side-menu')).toBeVisible()
-      await page.getByTestId('side-menu-close-button').click()
-      await expect(page.getByTestId('overlay')).not.toBeVisible()
-      await expect(page.getByTestId('side-menu')).not.toBeVisible()
+
+    describe('Links', () => {
+      test('should have a link to /about', async () => {
+        const aboutLink = page.getByTestId('link-to-about')
+        await expect(aboutLink).toBeVisible()
+      })
+
+      test('should go to /about when the link is clicked', async () => {
+        const aboutLink = page.getByTestId('link-to-about')
+        await aboutLink.click()
+        await expect(page).toHaveURL('http://localhost/about')
+      })
+
+      test('should have a link to /clients', async () => {
+        const clientsLink = page.getByTestId('link-to-clients')
+        await expect(clientsLink).toBeVisible()
+      })
+
+      test('should go to /clients when the link is clicked', async () => {
+        const clientsLink = page.getByTestId('link-to-clients')
+        await clientsLink.click()
+        await expect(page).toHaveURL('http://localhost/clients')
+      })
+
+      test('should have a link to selected clients', async () => {
+        const selectedClientsLink = page.getByTestId('link-to-selected-clients')
+        await expect(selectedClientsLink).toBeVisible()
+      })
+
+      test('should go to /clients?selected=true when the link is clicked', async () => {
+        const selectedClientsLink = page.getByTestId('link-to-selected-clients')
+        await selectedClientsLink.click()
+        await expect(page).toHaveURL('http://localhost/clients?selected=true')
+      })
+
+      test('should have a logout link', async () => {
+        const logoutLink = page.getByTestId('link-to-logout')
+        await expect(logoutLink).toBeVisible()
+      })
+
+      test('should logout when the logout link is clicked', async () => {
+        const logoutLink = page.getByTestId('link-to-logout')
+        await logoutLink.click()
+        const cookies = await context.cookies()
+        expect(cookies).toHaveLength(0)
+        await expect(page.getByTestId('create-user-step1-form')).toBeVisible()
+      })
+    })
+
+    describe('Side menu', () => {
+      test('should open a side menu when the icon is clicked', async () => {
+        const sideMenu = page.getByTestId('side-menu-icon')
+        await sideMenu.click()
+        await expect(page.getByTestId('overlay')).toBeVisible()
+        await expect(page.getByTestId('side-menu')).toBeVisible()
+      })
+      test('should close the side menu when the overlay is clicked', async () => {
+        const sideMenu = page.getByTestId('side-menu-icon')
+        await sideMenu.click()
+        await expect(page.getByTestId('overlay')).toBeVisible()
+        await expect(page.getByTestId('side-menu')).toBeVisible()
+        await page.getByTestId('side-menu-close-button').click()
+        await expect(page.getByTestId('overlay')).not.toBeVisible()
+        await expect(page.getByTestId('side-menu')).not.toBeVisible()
+      })
     })
   })
 })

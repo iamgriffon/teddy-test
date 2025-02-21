@@ -8,6 +8,7 @@ import { ClientDTO } from 'dtos'
 export function RouteGuard({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate()
   const isUserAuthenticated = isAuthenticated()
+  //eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setClients] = useLocalStorage<ClientDTO[]>('clients', [])
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export function RouteGuard({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (ids) {
-      setClients(prev => prev.filter(client => ids.includes(client.id)))
+      setClients((prev) => prev.filter((client) => ids.includes(client.id)))
     }
   }, [ids, setClients])
 

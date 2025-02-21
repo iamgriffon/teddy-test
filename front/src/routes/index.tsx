@@ -15,11 +15,14 @@ export default function Router() {
             <Route path={links.login} element={<Login />} />
             <Route path={links.about} element={<About />} />
             <Route path="*" element={<NotFound />} />
-            <Route path={links.clients} element={
-              <RouteGuard>
-                <Clients />
-              </RouteGuard>
-            } />
+            <Route
+              path={links.clients}
+              element={
+                <RouteGuard>
+                  <Clients />
+                </RouteGuard>
+              }
+            />
           </Routes>
         </Layout>
       </BrowserRouter>

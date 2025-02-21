@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 export const useUserStore = create<UserStore>((set) => ({
   user: {
     id: 0,
-    name: '',
+    name: ''
   },
   setUser: (user: UserDTO) => {
     set({ user })
