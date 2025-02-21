@@ -25,16 +25,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     cd teddy-test
     ```
 
-2.  **Instale as variáveis de ambiente e dependências:**
-
-    Dentro das pastas `teddy-test/front` e `teddy-test/back` execute o seguinte comando:
-
-    ```bash
-    cp .env.example .env
-    pnpm install
-    ```
-
-3.  **Execute o projeto com Docker Compose:**
+2.  **Execute o projeto com Docker Compose:**
 
     Dentro da pasta `teddy-test` execute os seguintes comandos:
 
@@ -44,7 +35,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
 
     Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
 
-4.  **Execute o script de setup:**
+3.  **Execute o script de setup:**
 
     Você vai provavelmente encontrar um erro de DB do NestJS, mas não tem problema.
 
@@ -55,9 +46,13 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ./setup.sh
     ```
 
-    O projeto vai reiniciar algumas vezes, mas não se preocupe. Ao final de tudo, você vai conseguir acessar a aplicação.
+    Esse script fará:
+    - Instalar as dependências (local e docker)
+    - Instalar as variáveis de ambiente
+    - Criar os banco de dados (teste e prod)
+    - Reiniciar os projetos para aplicar as novas configurações
 
-5.  **Acesse a aplicação:**
+4.  **Acesse as aplicações:**
 
     - Frontend: `http://localhost/`
     - Backend: `http://localhost/api/`
@@ -85,12 +80,15 @@ docker exec -it back sh -c "pnpm install"
 
 - **Framework:** [ReactJS](https://reactjs.org/)
 - **Bundler:** [Vite](https://vitejs.dev/)
-- **Gerenciamento de Estado:** [Zustand](https://zustand.docs.pmnd.rs/)
+- **Gerenciamento de Estado Global:** [Zustand](https://zustand.docs.pmnd.rs/)
 - **Estilização:** [TailwindCSS](https://tailwindcss.com/)
 - **Interface HTTP:** [Axios](https://axios-http.com/)
 - **Gerenciamento de Requisições:** [Tanstack Query](https://tanstack.com/query/latest/docs/framework/react/react-native/overview)
 - **Gerenciamento de Rotas:** [React Router](https://reactrouter.com/)
 - **Testes:** [Playwright](https://playwright.dev/)
+- **Formulários:** [React Hook Form](https://react-hook-form.com/)
+- **Validação:** [Zod](https://zod.dev/)
+- **Armazenamento Local:** [Local Storage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage)
 
 ### Backend (NestJS)
 
@@ -100,6 +98,7 @@ docker exec -it back sh -c "pnpm install"
 - **Testes:** [Jest](https://jestjs.io/)
 - **Documentação:** [Swagger](https://swagger.io/)
 - **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
+- **Serviço de JWT** [NestJS JWT](https://github.com/nestjs/jwt)
 
 ## Testes
 
