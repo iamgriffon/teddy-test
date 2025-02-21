@@ -1,13 +1,8 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useState } from "react"
 import { toast } from 'react-toastify'
-import { text } from 'consts/text'
-import {
-  CloseIcon,
-  WhatsappIcon,
-  GmailIcon,
-  GithubIcon
-} from 'components/icons'
-import { Button, Overlay } from 'components/ui'
+import { text } from "consts/text"
+import { CloseIcon, WhatsappIcon, GmailIcon, GithubIcon } from 'components/icons'
+import { Button, Overlay } from "components/ui"
 
 export function About() {
   const [form, setForm] = useState(false)
@@ -86,7 +81,7 @@ export function About() {
   }
 
   return (
-    <div className="flex flex-col items-center h-[calc(100vh-180px)] bg-background-primary p-8">
+    <div className="flex flex-col items-center min-h-screen bg-background-primary p-8">
       {form && <HireMeForm />}
       <h1 className="text-4xl font-bold text-theme-primary mb-8 md:text-5xl">
         Visão Geral do Projeto
@@ -173,8 +168,7 @@ export function About() {
             Garantia de Qualidade
           </h2>
           <p className="text-theme-black">
-            Cobertura de testes abrangente com Playwright (para o front), e Jest
-            (para o back) incluindo:
+            Cobertura de testes abrangente com Playwright (para o front), e Jest (para o back) incluindo:
           </p>
           <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
             <li>Testes unitários</li>
@@ -187,9 +181,9 @@ export function About() {
           </ul>
         </section>
 
-        <section className="bg-white rounded-lg shadow-sm p-6">
+        <section className="bg-white rounded-lg shadow-sm p-6 border-2 border-theme-primary">
           <h2 className="text-2xl font-semibold text-theme-black mb-4">
-            Por que Me Contratar?
+            Por Que Me Contratar?
           </h2>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
@@ -201,7 +195,7 @@ export function About() {
                 <p className="text-theme-black">
                   Capaz de entregar projetos complexos em prazos curtos, como
                   demonstrado pelo desenvolvimento completo deste sistema em
-                  apenas 5 dias.
+                  apenas 4.5 dias.
                 </p>
               </div>
             </div>
@@ -242,9 +236,8 @@ export function About() {
                 </h3>
                 <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
                   <li className="text-theme-black">
-                    Histórico de entregas com métricas claras, adoção de padrões
-                    de projeto e documentação abrangente do processo de
-                    desenvolvimento.
+                    Histórico de entregas com métricas claras, adoção de padrões de projeto e documentação
+                    abrangente do processo de desenvolvimento.
                   </li>
                   <li className="text-theme-black">
                     Desenvolvimento orientado a TDD, garantindo entregas que
@@ -262,8 +255,7 @@ export function About() {
                   Uso de Inteligência Artificial
                 </h3>
                 <p className="text-theme-black">
-                  Utilização de ferramentas como Cursor e Copilot para acelerar
-                  o desenvolvimento e garantir a qualidade do código.
+                  Utilização de ferramentas como Cursor e Copilot para acelerar o desenvolvimento e garantir a qualidade do código.
                 </p>
               </div>
             </div>
