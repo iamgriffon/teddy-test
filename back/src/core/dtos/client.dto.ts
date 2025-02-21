@@ -75,7 +75,36 @@ export class DeleteClientDTO {
 }
 
 export class CreateClientDTO {
+  @ApiProperty({ example: 'John Doe', description: 'Client name' })
+  @IsString()
+  @Length(3, 255, { message: 'Name must be between 3 and 255 characters' })
   name: string
+
+  @ApiProperty({ example: 500000, description: 'Client salary' })
+  @IsNumber()
   sallary: number
+
+  @ApiProperty({ example: 1000000, description: 'Company salary' })
+  @IsNumber()
+  company_sallary: number
+}
+
+export class UpdateClientRequestDTO {
+  @ApiProperty({ example: 1, description: 'Client ID' })
+  @IsNumber()
+  @Min(0, { message: 'Id must be greater than 0' })
+  id: number
+
+  @ApiProperty({ example: 'John Doe', description: 'Client name' })
+  @IsString()
+  @Length(3, 255, { message: 'Name must be between 3 and 255 characters' })
+  name: string
+
+  @ApiProperty({ example: 500000, description: 'Client salary' })
+  @IsNumber()
+  sallary: number
+
+  @ApiProperty({ example: 1000000, description: 'Company salary' })
+  @IsNumber()
   company_sallary: number
 }

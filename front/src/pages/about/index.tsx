@@ -113,13 +113,13 @@ export function About() {
               </span>
             </p>
             <p className="text-lg text-theme-black">
-              🔍 Issues: <strong>30</strong>
+              🔍 Issues: <strong>31</strong>
             </p>
             <p className="text-lg text-theme-black">
               📝 Pull Requests: <strong>44</strong>
             </p>
             <p className="text-lg text-theme-black">
-              ✏️ Commits: <strong>103</strong>
+              ✏️ Commits: <strong>105</strong>
             </p>
             <p className="text-lg text-theme-black">
               🙏🏿 <strong>Nenhum</strong> commit foi feito direto na main
@@ -137,9 +137,9 @@ export function About() {
                 Estrutura do Frontend
               </h3>
               <p className="text-theme-black">
-                34 arquivos entre componentes, páginas e stores
+                83 arquivos entre componentes, páginas e stores
               </p>
-              <p className="text-theme-black">~1.558 linhas de código</p>
+              <p className="text-theme-black">2.481 linhas de código</p>
             </div>
 
             <div className="space-y-2">
@@ -147,9 +147,9 @@ export function About() {
                 Serviços de Backend
               </h3>
               <p className="text-theme-black">
-                26 arquivos dentre controllers, entities, testes e services
+                38 arquivos dentre controllers, entities, testes e services
               </p>
-              <p className="text-theme-black">~1.840 linhas de código</p>
+              <p className="text-theme-black">1.936 linhas de código</p>
             </div>
 
             <div className="col-span-full flex flex-col gap-2 border-t pt-4">
@@ -157,7 +157,10 @@ export function About() {
                 Escopo Total do Sistema
               </p>
               <p className="text-theme-black">
-                ~60 arquivos | ~3.390 linhas no total
+                121 arquivos | 4.417 linhas no total
+              </p>
+              <p className="text-gray-500">
+                Média de <strong>36.6</strong> linhas por arquivo
               </p>
             </div>
           </div>
