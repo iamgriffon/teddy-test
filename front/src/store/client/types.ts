@@ -17,12 +17,5 @@ export type ClientStore = {
     total: number
     total_pages: number
   }) => void
-
   clients: Client[]
-  selectedClients: Client[]
-  setClients: (clients: Client[]) => void
-  selectClient: (client: Client) => void
-  editClient: (client: Client) => void
-  deleteSelectedClients: (clients: string[]) => void
-  deleteSelectedClient: (client: string) => void
 }

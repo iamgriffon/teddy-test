@@ -6,23 +6,20 @@ import {
   BrowserContext,
   Page
 } from '@playwright/test'
-
+import { authenticate } from './helper/authenticate'
+import { text } from '../src/consts'
 let browser: Browser
 let context: BrowserContext
 let page: Page
 
 const { describe, beforeEach, afterAll } = test
 
-describe('Users Page', () => {
+describe('Dashboard Page', () => {
   beforeEach(async () => {
     browser = await chromium.launch()
     context = await browser.newContext()
     page = await context.newPage()
-    await page.goto('http://localhost/')
-    await page.getByTestId('homepage-input').fill('John Doe')
-    await page.getByTestId('homepage-button').click()
-    await page.goto('http://localhost/clients')
-    await page.waitForLoadState('networkidle')
+    await authenticate(page)
   })
 
   afterAll(async () => {
@@ -62,67 +59,45 @@ describe('Users Page', () => {
   })
 
   describe('Create Client', () => {
-    test('should open the create client form when the button is clicked   ', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
+    beforeEach(async () => {
+      const isFormVisible = await page.getByTestId('client-form').isVisible()
+      if (!isFormVisible) {
+        await page.getByTestId('client-footer-button').click()
+        await expect(page.getByTestId('client-form')).toBeVisible()
+      }
     })
-
     test('should close the create client form when the close button is clicked', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      const closeModalButton = page.getByTestId('close-modal-button')
-      await closeModalButton.click()
+      await page.getByTestId('close-modal-button').click()
       await expect(page.getByTestId('client-form')).not.toBeVisible()
     })
 
     test('should show the error message when the name input is empty', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      const nameInput = page.getByTestId('client-form-name-input')
-      await nameInput.fill('')
-      const submitButton = page.getByTestId('client-form-button')
-      await submitButton.click()
+      await page.getByTestId('client-form-name-input').fill('')
+      await page.getByTestId('client-form-button').click()
       await expect(page.getByTestId('client-form-name-error')).toBeVisible()
     })
 
     test('should show the error message when the sallary input is empty', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      const sallaryInput = page.getByTestId('client-form-sallary-input')
-      await sallaryInput.fill('')
-      const submitButton = page.getByTestId('client-form-button')
-      await submitButton.click()
+      await page.getByTestId('client-form-sallary-input').fill('')
+      await page.getByTestId('client-form-button').click()
       await expect(page.getByTestId('client-form-sallary-error')).toBeVisible()
     })
 
     test('should show the error message when the company sallary input is empty', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      const companySallaryInput = page.getByTestId('client-form-company-sallary-input')
-      await companySallaryInput.fill('')
-      const submitButton = page.getByTestId('client-form-button')
-      await submitButton.click()
-      await expect(page.getByTestId('client-form-company-sallary-error')).toBeVisible()
+      await page.getByTestId('client-form-company-sallary-input').fill('')
+      await page.getByTestId('client-form-button').click()
+      await expect(
+        page.getByTestId('client-form-company-sallary-error')
+      ).toBeVisible()
     })
 
     test('should fill the form correctly', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      const nameInput = page.getByTestId('client-form-name-input')
-      await nameInput.fill('John Doe')
-      const sallaryInput = page.getByTestId('client-form-sallary-input')
-      await sallaryInput.fill('10000')
-      const companySallaryInput = page.getByTestId(
-        'client-form-company-sallary-input'
-      )
-      await companySallaryInput.fill('20000,00')
-      const submitButton = page.getByTestId('client-form-button')
+      await page.getByTestId('client-form-name-input').fill('John Doe')
+      await page.getByTestId('client-form-sallary-input').fill('10000')
+      await page
+        .getByTestId('client-form-company-sallary-input')
+        .fill('20000,00')
+
       await page.route('**/clients', async (route) => {
         await route.fulfill({
           status: 200,
@@ -130,34 +105,28 @@ describe('Users Page', () => {
         })
       })
 
-      await submitButton.click()
-
-      await expect(page.getByText('Cliente criado com sucesso!')).toBeVisible()
+      await page.getByTestId('client-form-button').click()
+      await expect(page.getByText(text.CREATE_CLIENT_SUCCESS)).toBeVisible()
       await expect(page.getByTestId('client-form')).not.toBeVisible()
     })
 
     test('should reset the form correctly', async () => {
-      const createClientButton = page.getByTestId('create-client-button')
-      const nameInput = page.getByTestId('client-form-name-input')
-      const sallaryInput = page.getByTestId('client-form-sallary-input')
-      const companySallaryInput = page.getByTestId(
-        'client-form-company-sallary-input'
-      )
-
-      await createClientButton.click()
-      await expect(page.getByTestId('client-form')).toBeVisible()
-      await nameInput.fill('John Doe')
-      await sallaryInput.fill('10000')
-      await companySallaryInput.fill('20000,00')
-      const closeModalButton = page.getByTestId('close-modal-button')
-      await closeModalButton.click()
-
+      await page.getByTestId('client-form-name-input').fill('John Doe')
+      await page.getByTestId('client-form-sallary-input').fill('10000')
+      await page
+        .getByTestId('client-form-company-sallary-input')
+        .fill('20000,00')
+      await page.getByTestId('close-modal-button').click()
       await expect(page.getByTestId('client-form')).not.toBeVisible()
-      await createClientButton.click()
+      await page.getByTestId('client-footer-button').click()
       await expect(page.getByTestId('client-form')).toBeVisible()
-      await expect(nameInput).toHaveValue('')
-      await expect(sallaryInput).toHaveValue('')
-      await expect(companySallaryInput).toHaveValue('')
+      await expect(page.getByTestId('client-form-name-input')).toHaveValue('')
+      await expect(page.getByTestId('client-form-sallary-input')).toHaveValue(
+        ''
+      )
+      await expect(
+        page.getByTestId('client-form-company-sallary-input')
+      ).toHaveValue('')
     })
   })
 
@@ -165,10 +134,10 @@ describe('Users Page', () => {
     test('should open add and remove the client to the selected list when the button is clicked ', async () => {
       const addClientButton = page.getByTestId('client-add-icon').first()
       await addClientButton.click()
-      await expect(page.getByText('adicionado com sucesso!')).toBeVisible()
+      await expect(page.getByText(text.SELECT_CLIENT_SUCCESS)).toBeVisible()
       const removeClientButton = page.getByTestId('client-remove-icon').first()
       await removeClientButton.click()
-      expect(page.getByText('removido com sucesso!')).toBeVisible()
+      expect(page.getByText(text.DELETE_SELECTED_CLIENT_SUCCESS)).toBeVisible()
     })
     test('should open the update client form when the button is clicked ', async () => {
       const updateClientButton = page
@@ -206,9 +175,8 @@ describe('Users Page', () => {
           body: JSON.stringify({})
         })
       })
-
       await submitButton.click()
-      await expect(page.getByText('Cliente deletado com sucesso!')).toBeVisible()
+      await expect(page.getByText(text.DELETE_CLIENT_SUCCESS)).toBeVisible()
     })
   })
 
@@ -242,17 +210,42 @@ describe('Users Page', () => {
   })
 
   describe('Selected clients', () => {
-    test('should add a client to the selected clients list when the button is clicked', async () => {
-      await page.goto('http://localhost/clients')
-      const addClientButton = page.getByTestId('client-add-icon').first()
-      await addClientButton.click()
-      expect(page.getByText('adicionado com sucesso!')).toBeVisible()
-      await page.getByTestId('link-to-selected-clients').click()
-      await page.waitForURL('http://localhost/clients?selected=true')
-      const removeClientButton = page.getByTestId('client-remove-icon').first()
-      expect(removeClientButton).toBeVisible()
-      await removeClientButton.click()
-      expect(page.getByText('removido com sucesso!')).toBeVisible()
+    test('should add and remove a client to the selected clients list when the button is clicked', async () => {
+      const firstClientCard = page.getByTestId('client-card-1')
+      const secondClientCard = page.getByTestId('client-card-2')
+
+      const firstClientName = await firstClientCard
+        .getByTestId('client-form-name')
+        .textContent()
+      const secondClientName = await secondClientCard
+        .getByTestId('client-form-name')
+        .textContent()
+
+      // Add clients
+      await firstClientCard.getByTestId('client-add-icon').click()
+      await secondClientCard.getByTestId('client-add-icon').click()
+
+      // Verify icons change
+      await expect(firstClientCard.getByTestId('client-remove-icon')).toBeVisible()
+      await expect(secondClientCard.getByTestId('client-remove-icon')).toBeVisible()
+
+      // Navigate to selected page
+      await page.goto('http://localhost/clients?selected=true', {
+        waitUntil: 'networkidle'
+      })
+      
+      // Verify selected clients
+      await expect(page.getByText(firstClientName as string)).toBeVisible()
+      await expect(page.getByText(secondClientName as string)).toBeVisible()
+
+      // Remove clients
+      await page.getByTestId('client-remove-button').last().click()
+      await page.getByTestId('client-remove-button').first().click()
+
+
+      // Verify removal
+      await expect(page.getByText(firstClientName as string)).not.toBeVisible()
+      await expect(page.getByText(secondClientName as string)).not.toBeVisible()
     })
   })
 

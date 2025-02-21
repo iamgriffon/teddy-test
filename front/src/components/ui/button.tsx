@@ -16,7 +16,8 @@ export function Button({
 }: ButtonProps) {
   const baseButtonStyle = cn(
     'w-full flex items-center font-bold justify-center text-white rounded-[4px] transition-colors duration-300',
-    loading && 'opacity-50 animate-pulse cursor-not-allowed'
+    loading && 'opacity-50 animate-pulse cursor-not-allowed',
+    props.disabled && 'opacity-50 animate-pulse cursor-not-allowed'
   )
 
   const buttonStyle = useMemo(() => {

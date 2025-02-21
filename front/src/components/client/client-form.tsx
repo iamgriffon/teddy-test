@@ -11,7 +11,7 @@ interface ClientFormProps<T = any> {
   title: string
   onClose: () => void
   loading?: boolean
-  type?: 'create' | 'update' | 'delete'
+  type?: 'create' | 'update' | 'delete' | 'clear'
 }
 
 type ClientFormData = {
@@ -128,8 +128,16 @@ export function ClientForm<T>({
               className="flex gap-2 text-lg"
               data-testid="client-form-delete-message"
             >
-              <span>Você está prestes a excluir o cliente:</span>
-              <span className="font-bold">{name}</span>
+              {type === 'clear' ? (
+                <span>
+                  Você está prestes a limpar todos os clientes selecionados
+                </span>
+              ) : (
+                <>
+                  <span>Você está prestes a excluir o cliente:</span>
+                  <span className="font-bold">{name}</span>
+                </>
+              )}
             </p>
           )}
           <Button

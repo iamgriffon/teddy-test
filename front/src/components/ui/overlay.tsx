@@ -5,7 +5,7 @@ interface OverlayProps {
 export function Overlay({ children }: OverlayProps) {
   return (
     <div
-      className="fixed left-0 top-0 h-screen w-screen bg-theme-black/90 z-20"
+      className="fixed left-0 top-0 z-20 h-screen w-screen bg-theme-black/90"
       data-testid="overlay"
     >
       {children}

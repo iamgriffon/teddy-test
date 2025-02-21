@@ -1,6 +1,6 @@
 import { AddIcon, DeleteIcon, EditIcon } from 'components/icons'
 import { ClientDTO } from 'dtos'
-import { HTMLAttributes, useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { deleteClient, updateClient } from 'services'
 import { useForm, FormProvider } from 'react-hook-form'
@@ -8,61 +8,62 @@ import { ClientFormSchema, type ClientFormSchemaType } from 'schemas'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { parseCurrency, printCurrency, cn } from 'utils'
 import { ClientForm } from '../client-form'
-import { useClientStore } from 'store'
+import { useUserStore } from 'store'
 import { toast } from 'react-toastify'
-
-interface ClientCardProps extends HTMLAttributes<HTMLDivElement> {
-  client: ClientDTO
-  onCRUDClient: () => void
-}
-
+import { CardProps } from './types'
+import { text } from 'consts'
+import { useLocalStorage } from '@uidotdev/usehooks'
 export function ListClientCard({
   client,
   onCRUDClient,
+  onSelectClient,
   ...props
-}: ClientCardProps) {
+}: CardProps) {
+  const { user } = useUserStore()
+
   const { mutate: onDeleteClient, isPending: isDeleting } = useMutation({
     mutationFn: (id: number) => deleteClient(id),
     onSuccess: () => {
       setDeleteFormOpen(false)
-      toast.success('Cliente deletado com sucesso!')
-      onCRUDClient()
+      toast.success(text.DELETE_CLIENT_SUCCESS)
+      onCRUDClient?.()
     },
     onError: () => {
-      toast.error('Erro ao deletar cliente!')
+      toast.error(text.DELETE_CLIENT_ERROR)
     }
   })
+
+  const [clients] = useLocalStorage<ClientDTO[]>('clients', [])
 
   const { mutate: onUpdateClient, isPending: isUpdating } = useMutation({
     mutationFn: (params: ClientDTO) => updateClient(client.id, params),
     onSuccess: () => {
       setUpdateFormOpen(false)
-      toast.success('Cliente atualizado com sucesso!')
-      onCRUDClient()
+      toast.success(text.UPDATE_CLIENT_SUCCESS)
+      onCRUDClient?.()
     },
     onError: () => {
-      toast.error('Erro ao atualizar cliente!')
+      toast.error(text.UPDATE_CLIENT_ERROR)
     }
   })
 
-  const { selectClient, selectedClients } = useClientStore()
-  const isSelected = useMemo(
-    () =>
-      selectedClients.some((selectedClient) => selectedClient.id === client.id),
-    [selectedClients, client.id]
-  )
+  const isSelected = useMemo(() => {
+    return clients.find((c) => c.id === client.id)
+  }, [clients, client?.id])
+
   const [deleteFormOpen, setDeleteFormOpen] = useState(false)
   const [updateFormOpen, setUpdateFormOpen] = useState(false)
 
   const handleAddClient = useCallback(() => {
-    selectClient(client)
+    if (!client || !user) return
+    onSelectClient?.(client)
     toast.success(
-      `${client.name} ${isSelected ? 'removido' : 'adicionado'} com sucesso!`,
+      `${client.name} ${isSelected ? text.DELETE_SELECTED_CLIENT_SUCCESS : text.SELECT_CLIENT_SUCCESS}`,
       {
         position: 'bottom-left'
       }
     )
-  }, [client, selectClient, isSelected])
+  }, [client, isSelected, user])
 
   const UpdateForm = useForm<ClientFormSchemaType>({
     resolver: zodResolver(ClientFormSchema),
@@ -129,10 +130,16 @@ export function ListClientCard({
     [DeleteForm, client, isDeleting, onDeleteClient]
   )
 
+  if (!user)
+    return (
+      <section
+        {...props}
+        className={cn(props.className, 'bg-red-gray-100 animate-pulse')}
+      />
+    )
+
   return (
-    <section
-      {...props}
-    >
+    <section {...props}>
       <h1 className="truncate font-bold" data-testid="client-form-name">
         {client.name}
       </h1>

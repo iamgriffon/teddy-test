@@ -3,22 +3,21 @@ import { useLocation } from 'react-router-dom'
 import { useClientStore } from 'store'
 
 interface ClientPageSelectorProps {
-  itemsPerPage: number,
-  setItemsPerPage: (itemsPerPage: number) => void,
-  reload: () => void
+  total: number
+  itemsPerPage: number
+  setItemsPerPage: (itemsPerPage: number) => void
 }
 
 export function ClientPageSelector({
+  total,
   itemsPerPage,
-  setItemsPerPage,
-  reload
+  setItemsPerPage
 }: ClientPageSelectorProps) {
   const handleChangeSelect = useCallback(
     (e: ChangeEvent<HTMLSelectElement>) => {
       setItemsPerPage(Number(e.target.value))
-      reload()
     },
-    [reload]
+    []
   )
 
   const location = useLocation()
@@ -44,12 +43,12 @@ export function ClientPageSelector({
   }, [])
 
   return (
-    <div className="flex items-center justify-between max-md:flex-col max-md:gap-2 max-md:items-start">
+    <div className="flex items-center justify-between max-md:flex-col max-md:items-start max-md:gap-2">
       <p
         className="flex items-center gap-2 text-lg leading-6"
         data-testid="clients-total-label"
       >
-        <strong>{list.total}</strong>
+        <strong>{total}</strong>
         <span className="text-theme-black">{totalLabel}:</span>
       </p>
       <div className="flex items-center gap-2.5">

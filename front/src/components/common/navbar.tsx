@@ -1,7 +1,7 @@
 import logo from '../../assets/logo.svg'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { breakpoints, cn } from 'utils'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useClickAway, useMediaQuery } from '@uidotdev/usehooks'
 import { HomeIcon } from '../icons/home-icon'
 import { MobileMenuIcon } from '../icons/mobile-menu.icon'
@@ -10,14 +10,15 @@ import { useUserStore } from 'store/user/store'
 import { BackArrowIcon } from '../icons/back-arrow-icon'
 import { MenuIcon } from '../icons/menu-icon'
 import { Overlay, Link } from 'components/ui'
-import { links } from 'routes/links'
-
+import { links } from 'consts'
+import Cookies from 'js-cookie'
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user, clearUser } = useUserStore()
   const location = useLocation()
   const isMobile = useMediaQuery(breakpoints.mobile)
-  const { home, clients, selectedClients } = links
+  const { home, clients, selectedClients, about } = links
+  const navigate = useNavigate()
 
   const baseMobileMenuStyle = useMemo(
     () => cn('flex gap-4 items-center py-[14px] px-3 font-semibold'),
@@ -38,6 +39,10 @@ export function Navbar() {
     }
   }, [isMobile])
 
+  const currentUrl = useMemo(() => {
+    return window.location
+  }, [])
+
   const Sidemenu = useCallback(() => {
     const menuSize = cn(
       isMobile ? 'w-screen items-center' : 'w-auto pl-10 pr-20 items-start',
@@ -48,16 +53,15 @@ export function Navbar() {
       <>
         <Overlay />
         <aside
-          className={cn(menuSize, 'z-10')}
+          className={cn(menuSize, 'z-30')}
           ref={ref as React.RefObject<HTMLDivElement>}
           data-testid="side-menu"
         >
-          <button className="absolute -right-4 -top-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black p-0.5">
+          <button className="absolute -right-0 -top-4 flex size-10 cursor-pointer items-center justify-center rounded-full bg-black p-0.5">
             <BackArrowIcon
               className="fill-white"
               width={16}
               height={16}
-              fill=""
               onClick={() => setIsMenuOpen(false)}
               data-testid="side-menu-close-button"
             />
@@ -66,9 +70,7 @@ export function Navbar() {
             <Link
               to={home}
               active={location.pathname === home}
-              className={cn(
-                baseMobileMenuStyle,
-              )}
+              className={cn(baseMobileMenuStyle)}
             >
               <HomeIcon
                 className={cn(
@@ -84,11 +86,9 @@ export function Navbar() {
               to={clients}
               active={
                 location.pathname.includes('/clients') ||
-                location.search.includes('selected=true')
+                location.search.includes('selected')
               }
-              className={cn(
-                baseMobileMenuStyle,
-              )}
+              className={cn(baseMobileMenuStyle)}
             >
               <UserIcon
                 className={cn(
@@ -105,9 +105,7 @@ export function Navbar() {
             <Link
               to={selectedClients}
               active={location.pathname === selectedClients}
-              className={cn(
-                baseMobileMenuStyle,
-              )}
+              className={cn(baseMobileMenuStyle)}
             >
               <MobileMenuIcon
                 width={24}
@@ -133,10 +131,17 @@ export function Navbar() {
           <ul className="flex items-center gap-10">
             <li>
               <Link
+                to={about}
+                active={location.pathname === about}
+                data-testid="link-to-about"
+              >
+                Sobre
+              </Link>
+            </li>
+            <li>
+              <Link
                 to={clients}
-                active={
-                  location.pathname === clients && location.search === ''
-                }
+                active={location.pathname === clients && location.search === ''}
                 data-testid="link-to-clients"
               >
                 Clientes
@@ -145,10 +150,7 @@ export function Navbar() {
             <li>
               <Link
                 to={selectedClients}
-                active={
-                  location.pathname === selectedClients &&
-                  location.search === '?selected=true'
-                }
+                active={currentUrl.toString().includes('selected')}
                 data-testid="link-to-selected-clients"
               >
                 Clientes selecionados
@@ -156,7 +158,10 @@ export function Navbar() {
             </li>
             <li>
               <Link
-                onClick={() => clearUser()}
+                onClick={() => {
+                  Cookies.remove('session_token')
+                  Cookies.remove('session_token_expiry')
+                }}
                 to={home}
                 className={cn(
                   'text-base hover:text-theme-primary hover:underline'

@@ -5,6 +5,9 @@ interface PaginationResult<T> {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>
   currentPageData: T[]
   totalPages: number
+  firstPageIndex: number
+  lastPageIndex: number
+  total: number
 }
 
 export const usePagination = <T>(
@@ -17,16 +20,20 @@ export const usePagination = <T>(
     return Math.ceil(data.length / itemsPerPage)
   }, [data, itemsPerPage])
 
+  const firstPageIndex = (currentPage - 1) * itemsPerPage
+  const lastPageIndex = firstPageIndex + itemsPerPage
+
   const currentPageData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * itemsPerPage
-    const lastPageIndex = firstPageIndex + itemsPerPage
     return data.slice(firstPageIndex, lastPageIndex)
   }, [currentPage, itemsPerPage, data])
 
   return {
+    firstPageIndex,
+    lastPageIndex,
     currentPage: currentPage || 1,
     setCurrentPage: setCurrentPage || (() => {}),
     currentPageData: currentPageData || [],
-    totalPages: totalPages || 1
+    totalPages: totalPages || 1,
+    total: data.length || 0
   }
 }

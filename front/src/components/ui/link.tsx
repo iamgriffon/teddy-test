@@ -1,11 +1,18 @@
-import { LinkProps as RouterLinkProps, Link as RouterLink } from 'react-router-dom'
+import {
+  LinkProps as RouterLinkProps,
+  Link as RouterLink
+} from 'react-router-dom'
 import { cn } from 'utils'
 
 interface LinkProps extends RouterLinkProps {
   active?: boolean
 }
 
-export function Link({ children, active: condition = false, ...props }: LinkProps) {
+export function Link({
+  children,
+  active: condition = false,
+  ...props
+}: LinkProps) {
   return (
     <RouterLink
       {...props}

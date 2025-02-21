@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import { Layout } from 'components/common'
 import { useUserStore } from 'store/user/store'
-import { links } from 'routes/links'
+import { links } from 'consts'
 export function NotFound() {
   const { clearUser } = useUserStore()
   const { home, clients } = links
   return (
-    <Layout className="h-screen">
+    <Layout>
       <div
         className="relative flex size-full flex-col items-center justify-center"
         data-testid="not-found-page"

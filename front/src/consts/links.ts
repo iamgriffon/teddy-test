@@ -3,5 +3,6 @@ export const links = {
   login: '/login',
   register: '/register',
   clients: '/clients',
-  selectedClients: '/clients?selected=true'
+  selectedClients: '/clients?selected=true',
+  about: '/about'
 }

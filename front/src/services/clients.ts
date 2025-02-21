@@ -28,3 +28,8 @@ export const updateClient = async (id: number, params: ClientDTO) => {
   const { data } = await api.put(`/clients/${id}`, params)
   return data
 }
+
+export const getAllIds = async () => {
+  const { data } = await api.get<number[]>('/clients/ids')
+  return data
+}

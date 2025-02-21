@@ -1,9 +1,7 @@
 import { Navbar } from './navbar'
 import { cn } from 'utils'
 import { useLocation } from 'react-router-dom'
-import { useUserStore } from 'store'
-import { useEffect, useMemo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useMemo } from 'react'
 import { Bounce, ToastContainer } from 'react-toastify'
 
 interface LayoutProps {
@@ -13,19 +11,9 @@ interface LayoutProps {
 
 export function Layout({ children, className }: LayoutProps) {
   const location = useLocation()
-  const { user } = useUserStore()
-  const navigate = useNavigate()
-
-  const isHome = location.pathname === '/'
   const shouldHideNavbar = useMemo(() => {
     return !location.pathname.includes('clients')
   }, [location.pathname])
-
-  useEffect(() => {
-    if (user && isHome) {
-      navigate('/clients')
-    }
-  }, [user, isHome, navigate])
 
   return (
     <main

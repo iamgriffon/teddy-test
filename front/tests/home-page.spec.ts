@@ -1,13 +1,20 @@
-import { test, expect, Browser, chromium, BrowserContext, Page } from '@playwright/test'
-
-
+import {
+  test,
+  expect,
+  Browser,
+  chromium,
+  BrowserContext,
+  Page
+} from '@playwright/test'
+import { text } from '../src/consts'
+import { authenticate } from './helper/authenticate'
 let browser: Browser
 let context: BrowserContext
 let page: Page
 
-const { describe, beforeEach, afterAll } = test;
+const { describe, beforeEach, afterAll } = test
 
-describe('Homepage', () => {
+describe('Homepage', async () => {
   beforeEach(async () => {
     browser = await chromium.launch()
     context = await browser.newContext()
@@ -22,38 +29,62 @@ describe('Homepage', () => {
 
   describe('It should contain all the elements', () => {
     test('should have a form', async () => {
-      const form = page.getByTestId('homepage-form')
+      const form = page.getByTestId('create-user-step1-form')
       await expect(form).toBeVisible()
     })
-  
+
     test('should have a title', async () => {
-      const title = page.getByTestId('homepage-title')
+      const title = page.getByTestId('create-user-step1-title')
       await expect(title).toBeVisible()
     })
-  
+
     test('should have a input', async () => {
-      const input = page.getByTestId('homepage-input')
+      const input = page.getByTestId('create-user-name-input')
       await expect(input).toBeVisible()
     })
-  
+
     test('should have a button', async () => {
-      const button = page.getByTestId('homepage-button')
+      const button = page.getByTestId('create-user-step1-button')
       await expect(button).toBeVisible()
+    })
+
+    test('should have a link to login page', async () => {
+      const link = page.getByTestId('create-user-login-link')
+      await expect(link).toBeVisible()
     })
   })
 
-  describe('It should have the correct behavior', () => {
+  describe('Create User Form', () => {
     test('should show the error message when the input is empty', async () => {
-      const button = page.getByTestId('homepage-button')
+      const button = page.getByTestId('create-user-step1-button')
       await button.click()
-      await expect(page.getByTestId('homepage-error')).toBeVisible()
+      await expect(page.getByTestId('create-user-name-error')).toBeVisible()
     })
 
-    test('should redirect to the users page when the form is submitted', async () => {
-      const input = page.getByTestId('homepage-input')
+    test('should redirect to the next page when the form is submitted', async () => {
+      const input = page.getByTestId('create-user-name-input')
       await input.fill('John Doe')
-      await page.getByTestId('homepage-button').click()
-      await expect(page.getByText('Olá, John Doe!')).toBeVisible()
+      await page.getByTestId('create-user-step1-button').click()
+      await expect(page.getByTestId('create-user-step2-form')).toBeVisible()
+    })
+
+    test('should redirect to the login page when the link is clicked', async () => {
+      const link = page.getByTestId('create-user-login-link')
+      await link.click()
+      await expect(page.getByTestId('login-form')).toBeVisible()
+    })
+  })
+
+  describe('Login Form', () => {
+    test('should show the error message when the inputs are empty', async () => {
+      await page.goto('http://localhost/login')
+      await page.getByTestId('login-form-button').click()
+      await expect(page.getByTestId('login-email-error')).toBeVisible()
+      await expect(page.getByTestId('login-password-error')).toBeVisible()
+    })
+    test('should redirect to the clients page when the form is submitted', async () => {
+      const newPage = await authenticate(page)
+      await expect(newPage.getByTestId('clients-section')).toBeVisible()
     })
   })
 })
