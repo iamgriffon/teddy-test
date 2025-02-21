@@ -54,6 +54,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     ```bash
     chmod +x migrate-db.sh
     ./migrate-db.sh
+    docker restart back
     ```
 
 5.  **Acesse a aplicação:**
