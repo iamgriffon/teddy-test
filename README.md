@@ -34,16 +34,7 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     pnpm install
     ```
 
-3.  **Crie o banco de dados:**
-
-    Dentro da pasta `teddy-test` execute os seguintes comandos:
-
-    ```bash
-    chmod +x migrate-db.sh
-    ./migrate-db.sh
-    ```
-
-4.  **Execute o projeto com Docker Compose:**
+3.  **Execute o projeto com Docker Compose:**
 
     Dentro da pasta `teddy-test` execute os seguintes comandos:
 
@@ -54,6 +45,16 @@ Certifique-se de ter o Docker e o Docker Compose instalados em sua máquina.
     Este comando irá construir as imagens do Docker e iniciar os containers para o frontend e o backend.
 
 
+4.  **Crie o banco de dados:**
+
+    Você vai provavelmente encontrar um erro de DB do NestJS, mas não tem problema.
+
+    Dentro da pasta `teddy-test` execute os seguintes comandos:
+
+    ```bash
+    chmod +x migrate-db.sh
+    ./migrate-db.sh
+    ```
 
 5.  **Acesse a aplicação:**
 
