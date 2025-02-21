@@ -1,14 +1,13 @@
-import { Button } from 'components/ui/button'
-import { Overlay } from 'components/ui/overlay'
 import { useCallback, useState } from 'react'
-import {
-  GmailIcon,
-  WhatsappIcon,
-  GithubIcon,
-  CloseIcon
-} from 'components/icons'
 import { toast } from 'react-toastify'
 import { text } from 'consts/text'
+import {
+  CloseIcon,
+  WhatsappIcon,
+  GmailIcon,
+  GithubIcon
+} from 'components/icons'
+import { Button, Overlay } from 'components/ui'
 
 export function About() {
   const [form, setForm] = useState(false)
@@ -35,7 +34,7 @@ export function About() {
     return (
       <Overlay>
         <section className="flex size-full flex-col items-center justify-center">
-          <div className="mb-5 flex items-center h-auto w-[360px] flex-col justify-center gap-4 rounded-md bg-white p-5">
+          <div className="mb-5 flex h-auto w-[360px] flex-col items-center justify-center gap-4 rounded-md bg-white p-5">
             <p className="relative flex w-full items-center justify-between">
               <span
                 className="text-lg font-bold"
@@ -47,12 +46,12 @@ export function About() {
                 width={18}
                 height={18}
                 onClick={() => setForm(false)}
-                className="cursor-pointer absolute right-0 top-1"
+                className="absolute right-0 top-1 cursor-pointer"
               />
             </p>
-            <div className="w-full border-b border-gray-200 mb-2" />
+            <div className="mb-2 w-full border-b border-gray-200" />
             <Button
-              className="flex h-10 items-center justify-center gap-2 bg-green-500 hover:bg-green-800/90 transition-colors duration-300"
+              className="flex h-10 items-center justify-center gap-2 bg-green-500 transition-colors duration-300 hover:bg-green-800/90"
               type="submit"
               onClick={copyWhatsapp}
             >
@@ -60,23 +59,23 @@ export function About() {
               Chamar no WhatsApp
             </Button>
             <Button
-              className="group flex h-10 items-center justify-center gap-2 bg-white border border-red-500 text-red-500 hover:bg-red-500 hover:text-white transition-colors duration-300"
+              className="group flex h-10 items-center justify-center gap-2 border border-red-500 bg-white text-red-500 transition-colors duration-300 hover:bg-red-500 hover:text-white"
               type="submit"
               onClick={copyEmail}
             >
-              <div className="flex h-6 w-6 items-center p-1 justify-center rounded-full border-white group-hover:bg-white transition-colors duration-300">
+              <div className="flex size-6 items-center justify-center rounded-full border-white p-1 transition-colors duration-300 group-hover:bg-white">
                 <GmailIcon width={20} height={20} />
               </div>
               Me enviar um email
             </Button>
             <Button
-              className="group flex h-10 items-center justify-center gap-2 bg-white border text-black border-black hover:bg-black hover:text-white hover:border-black transition-colors duration-300"
+              className="group flex h-10 items-center justify-center gap-2 border border-black bg-white text-black transition-colors duration-300 hover:border-black hover:bg-black hover:text-white"
               type="button"
             >
               <GithubIcon
                 width={20}
                 height={20}
-                className="group-hover:fill-white transition-colors duration-300"
+                className="transition-colors duration-300 group-hover:fill-white"
               />
               <a href="https://github.com/iamgriffon">Conferir meu Github</a>
             </Button>
@@ -87,27 +86,27 @@ export function About() {
   }
 
   return (
-    <div className="flex flex-col items-center bg-background-primary">
+    <div className="flex flex-col items-center h-[calc(100vh-180px)] bg-background-primary p-8">
       {form && <HireMeForm />}
-      <h1 className="mb-8 text-4xl font-bold text-theme-primary md:text-5xl">
+      <h1 className="text-4xl font-bold text-theme-primary mb-8 md:text-5xl">
         Visão Geral do Projeto
       </h1>
 
-      <div className="w-full flex flex-col gap-4 max-h-[calc(100vh-240px)] rounded-lg border border-theme-primary p-4 overflow-y-scroll">
+      <div className="flex max-h-[calc(100vh-240px)] w-full flex-col gap-4 overflow-y-scroll rounded-lg border border-theme-primary p-4">
         <section className="rounded-lg bg-white p-6 shadow-sm">
           <h2 className="mb-4 text-2xl font-semibold text-theme-black">
             Cronograma de Desenvolvimento
           </h2>
           <div className="space-y-2">
             <p className="text-lg text-theme-black">
-              🚀 Tempo Total de Desenvolvimento: <strong>~5 dias</strong>
+              🚀 Tempo Total de Desenvolvimento: <strong>~4.5 dias</strong>
             </p>
             <p className="text-lg text-theme-black">
               ✅ Casos de Teste: <strong>84</strong> cenários abrangentes de
               teste (<strong>49</strong> de <strong>frontend</strong> e{' '}
               <strong>35</strong> de <strong>backend</strong>)
             </p>
-            <p className="text-lg text-theme-black flex flex-col gap-2 py-4">
+            <p className="flex flex-col gap-2 py-4 text-lg text-theme-black">
               <span className="text-lg text-theme-black">
                 🗓 Data do primeiro commit: <strong>16/02/2025</strong>
               </span>
@@ -122,7 +121,7 @@ export function About() {
               🔍 Issues: <strong>30</strong>
             </p>
             <p className="text-lg text-theme-black">
-              📝 Pull Requests: <strong>41</strong>
+              📝 Pull Requests: <strong>42</strong>
             </p>
             <p className="text-lg text-theme-black">
               ✏️ Commits: <strong>100</strong>
@@ -133,20 +132,19 @@ export function About() {
           </div>
         </section>
 
-        <section className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
+        <section className="bg-white rounded-lg shadow-sm p-6">
+          <h2 className="text-2xl font-semibold text-theme-black mb-4">
             Estatísticas da Base de Código
           </h2>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <h3 className="text-lg font-medium text-theme-primary">
                 Estrutura do Frontend
               </h3>
               <p className="text-theme-black">
-                96 arquivos entre componentes, páginas, consts, interfaces,
-                stores, utils e testes
+                34 arquivos entre componentes, páginas e stores
               </p>
-              <p className="text-theme-black">3.524 linhas de código</p>
+              <p className="text-theme-black">~1.558 linhas de código</p>
             </div>
 
             <div className="space-y-2">
@@ -154,34 +152,31 @@ export function About() {
                 Serviços de Backend
               </h3>
               <p className="text-theme-black">
-                38 arquivos dentre controllers, entities, testes e services
+                26 arquivos dentre controllers, entities, testes e services
               </p>
-              <p className="text-theme-black">1.906 linhas de código</p>
+              <p className="text-theme-black">~1.840 linhas de código</p>
             </div>
 
-            <div className="col-span-full border-t pt-4 flex flex-col gap-2">
+            <div className="col-span-full flex flex-col gap-2 border-t pt-4">
               <p className="text-lg font-medium text-theme-primary">
                 Escopo Total do Sistema
               </p>
               <p className="text-theme-black">
-                134 arquivos | 5.448 linhas no total
-              </p>
-              <p className="text-gray-500">
-                Média de <strong>40.6</strong> linhas por arquivo
+                ~60 arquivos | ~3.390 linhas no total
               </p>
             </div>
           </div>
         </section>
 
-        <section className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
+        <section className="bg-white rounded-lg shadow-sm p-6">
+          <h2 className="text-2xl font-semibold text-theme-black mb-4">
             Garantia de Qualidade
           </h2>
           <p className="text-theme-black">
             Cobertura de testes abrangente com Playwright (para o front), e Jest
             (para o back) incluindo:
           </p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-theme-black">
+          <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
             <li>Testes unitários</li>
             <li>Testes de integração e de sistema</li>
             <li>Testes de operações CRUD</li>
@@ -192,9 +187,9 @@ export function About() {
           </ul>
         </section>
 
-        <section className="rounded-lg bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-2xl font-semibold text-theme-black">
-            Por que me contratar?
+        <section className="bg-white rounded-lg shadow-sm p-6">
+          <h2 className="text-2xl font-semibold text-theme-black mb-4">
+            Por que Me Contratar?
           </h2>
           <div className="space-y-4">
             <div className="flex items-start space-x-3">
@@ -218,10 +213,8 @@ export function About() {
                   Domínio Full Stack
                 </h3>
                 <p className="text-theme-black">
-                  Experiência comprovada em desenvolvimento devops, frontend e
-                  backend, com capacidade de construir aplicações completas e
-                  escaláveis. Bem como a elaboração de artefatos de qualidade
-                  como documentação e testes.
+                  Experiência comprovada em desenvolvimento frontend e backend,
+                  com capacidade de construir aplicações completas e escaláveis.
                 </p>
               </div>
             </div>
@@ -234,7 +227,9 @@ export function About() {
                 </h3>
                 <p className="text-theme-black">
                   Comprometimento com testes automatizados e boas práticas, como
-                  clean code, garantindo código robusto e manutenível.
+                  clean code, garantindo código robusto e manutenível. Além
+                  disso, comprometimento com a elaboraçao de artefatos de
+                  qualidade com documentação, testes e métricas claras.
                 </p>
               </div>
             </div>
@@ -245,7 +240,7 @@ export function About() {
                 <h3 className="font-medium text-theme-primary">
                   Resultados Mensuráveis
                 </h3>
-                <ul className="mt-2 list-inside list-disc space-y-1 text-theme-black">
+                <ul className="list-disc list-inside mt-2 space-y-1 text-theme-black">
                   <li className="text-theme-black">
                     Histórico de entregas com métricas claras, adoção de padrões
                     de projeto e documentação abrangente do processo de
@@ -253,8 +248,8 @@ export function About() {
                   </li>
                   <li className="text-theme-black">
                     Desenvolvimento orientado a TDD, garantindo entregas que
-                    funcionam de primeira (após testes locais, CR, QA e validação),
-                    evitando retrabalho.
+                    funcionam de primeira (após testes locais, CR, QA e
+                    validação), evitando retrabalho.
                   </li>
                 </ul>
               </div>
@@ -274,12 +269,12 @@ export function About() {
             </div>
 
             <div className="mt-6">
-              <button
+              <Button
                 onClick={() => setForm(true)}
-                className="inline-block rounded-lg bg-theme-primary px-6 py-3 font-medium text-white transition-colors hover:bg-theme-primary/90"
+                className="w-auto inline-block bg-theme-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-theme-primary/90 transition-colors"
               >
                 Entre em Contato
-              </button>
+              </Button>
             </div>
           </div>
         </section>
