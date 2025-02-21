@@ -6,7 +6,7 @@ const JWT_EXPIRATION_TIME = 24 * 60 * 60 * 1000
 
 const jwtService = new JwtService({
   signOptions: { expiresIn: JWT_EXPIRATION_TIME },
-  privateKey: process.env.JWT_SECRET
+  secret: process.env.JWT_SECRET
 })
 
 export function generateJwt(payload: any) {
