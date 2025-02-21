@@ -121,10 +121,10 @@ export function About() {
               🔍 Issues: <strong>30</strong>
             </p>
             <p className="text-lg text-theme-black">
-              📝 Pull Requests: <strong>42</strong>
+              📝 Pull Requests: <strong>44</strong>
             </p>
             <p className="text-lg text-theme-black">
-              ✏️ Commits: <strong>100</strong>
+              ✏️ Commits: <strong>103</strong>
             </p>
             <p className="text-lg text-theme-black">
               🙏🏿 <strong>Nenhum</strong> commit foi feito direto na main
