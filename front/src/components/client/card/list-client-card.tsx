@@ -15,7 +15,7 @@ import { text } from 'consts'
 import { useLocalStorage } from '@uidotdev/usehooks'
 export function ListClientCard({
   client,
-  onCRUDClient,
+  onUpdateClient,
   onSelectClient,
   ...props
 }: CardProps) {
@@ -26,7 +26,7 @@ export function ListClientCard({
     onSuccess: () => {
       setDeleteFormOpen(false)
       toast.success(text.DELETE_CLIENT_SUCCESS)
-      onCRUDClient?.()
+      onUpdateClient?.()
     },
     onError: () => {
       toast.error(text.DELETE_CLIENT_ERROR)
@@ -35,12 +35,12 @@ export function ListClientCard({
 
   const [clients] = useLocalStorage<ClientDTO[]>('clients', [])
 
-  const { mutate: onUpdateClient, isPending: isUpdating } = useMutation({
+  const { mutate: mutateClient, isPending: isUpdating } = useMutation({
     mutationFn: (params: ClientDTO) => updateClient(client.id, params),
     onSuccess: () => {
       setUpdateFormOpen(false)
       toast.success(text.UPDATE_CLIENT_SUCCESS)
-      onCRUDClient?.()
+      onUpdateClient?.()
     },
     onError: () => {
       toast.error(text.UPDATE_CLIENT_ERROR)
@@ -92,9 +92,9 @@ export function ListClientCard({
         sallary: parseCurrency(data.sallary),
         company_sallary: parseCurrency(data.company_sallary)
       }
-      onUpdateClient(request)
+      mutateClient(request)
     },
-    [onUpdateClient, client.id]
+    [mutateClient, client.id]
   )
 
   const UpdateClientForm = useCallback(

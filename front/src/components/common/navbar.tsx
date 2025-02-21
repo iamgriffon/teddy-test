@@ -3,15 +3,18 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { breakpoints, cn } from 'utils'
 import { useLocation } from 'react-router-dom'
 import { useClickAway, useMediaQuery } from '@uidotdev/usehooks'
-import { HomeIcon } from '../icons/home-icon'
-import { MobileMenuIcon } from '../icons/mobile-menu.icon'
-import { UserIcon } from '../icons/user-icon'
+import {
+  HomeIcon,
+  UserIcon,
+  MobileMenuIcon,
+  BackArrowIcon,
+  MenuIcon
+} from 'components/icons'
 import { useUserStore } from 'store/user/store'
-import { BackArrowIcon } from '../icons/back-arrow-icon'
-import { MenuIcon } from '../icons/menu-icon'
 import { Overlay, Link } from 'components/ui'
 import { links } from 'consts'
 import Cookies from 'js-cookie'
+
 export function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { user } = useUserStore()
@@ -131,20 +134,16 @@ export function Navbar() {
     selectedClients
   ])
 
+  const handleLogout = useCallback(() => {
+    Cookies.remove('session_token')
+    Cookies.remove('session_token_expiry')
+  }, [])
+
   const DesktopMenu = useCallback(() => {
     return (
       <section className="flex items-center gap-10 pr-[50px]">
         <nav className="max-md:hidden">
           <ul className="flex items-center gap-10">
-            <li>
-              <Link
-                to={about}
-                active={location.pathname === about}
-                data-testid="link-to-about"
-              >
-                Sobre
-              </Link>
-            </li>
             <li>
               <Link
                 to={clients}
@@ -165,10 +164,16 @@ export function Navbar() {
             </li>
             <li>
               <Link
-                onClick={() => {
-                  Cookies.remove('session_token')
-                  Cookies.remove('session_token_expiry')
-                }}
+                to={about}
+                active={location.pathname === about}
+                data-testid="link-to-about"
+              >
+                Sobre
+              </Link>
+            </li>
+            <li>
+              <Link
+                onClick={handleLogout}
                 to={home}
                 className={cn(
                   'text-base hover:text-theme-primary hover:underline'
@@ -189,7 +194,8 @@ export function Navbar() {
     clients,
     about,
     home,
-    selectedClients
+    selectedClients,
+    handleLogout
   ])
 
   return (

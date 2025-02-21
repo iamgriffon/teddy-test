@@ -13,7 +13,7 @@ interface ClientListProps {
     total_pages: number
   }
   onSelectClient: (client: ClientDTO) => void
-  onCRUDClient?: () => void
+  onUpdateClient?: () => void
 }
 
 export function ClientList({
@@ -22,7 +22,7 @@ export function ClientList({
   list,
   selected,
   onSelectClient,
-  onCRUDClient
+  onUpdateClient
 }: ClientListProps) {
   const cardType = useMemo(() => {
     if (selected) return 'selected'
@@ -54,7 +54,7 @@ export function ClientList({
         client={client}
         type={cardType}
         onSelectClient={onSelectClient}
-        onCRUDClient={onCRUDClient}
+        onUpdateClient={onUpdateClient}
         data-testid={`client-card-${index + 1}`}
       />
     ))
