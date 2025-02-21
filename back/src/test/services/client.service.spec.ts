@@ -19,7 +19,8 @@ const mockClientRepository = () => ({
   update: jest.fn(),
   delete: jest.fn(),
   wipe: jest.fn(),
-  count: jest.fn()
+  count: jest.fn(),
+  getAllIds: jest.fn().mockResolvedValue([1, 2, 3])
 })
 
 describe('ClientService', () => {
@@ -111,6 +112,13 @@ describe('ClientService', () => {
     it('should throw on wipe failure', async () => {
       repository.wipe.mockRejectedValue(new Error())
       await expect(service.wipe()).rejects.toThrow(HttpException)
+    })
+  })
+
+  describe('findAllIds', () => {
+    it('should return all ids', async () => {
+      const result = await service.findAllIds()
+      expect(result).toEqual([1, 2, 3])
     })
   })
 })
