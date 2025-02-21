@@ -92,7 +92,11 @@ export class ClientRepository extends Repository<ClientEntity> implements IClien
   }
 
   async getAllIds(): Promise<number[]> {
-    const clients = await this.find()
+    const clients = await this.find({
+      select: {
+        id: true
+      }
+    })
     return clients.map((client) => client.id)
   }
 }

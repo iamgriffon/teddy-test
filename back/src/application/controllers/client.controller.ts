@@ -63,6 +63,13 @@ export class ClientController {
     return response
   }
 
+  @ApiOperation({ summary: 'Get all client ids' })
+  @ApiResponse({ status: 200, type: [Number] })
+  @Get('ids')
+  async findAllIds(): Promise<number[]> {
+    return await this.clientService.findAllIds()
+  }
+
   @ApiOperation({ summary: 'Get client by ID' })
   @ApiResponse({ status: 200, type: ClientDTO })
   @ApiResponse({ status: 404, description: 'Client not found' })
@@ -171,11 +178,6 @@ export class ClientController {
       ...result,
       affected: result.affected || 0
     }
-  }
-
-  @Get('ids')
-  async findAllIds(): Promise<number[]> {
-    return await this.clientService.findAllIds()
   }
 
   @Post('seed/:count')
