@@ -3,7 +3,8 @@ import {
   ClientDTO,
   DeleteClientDTO,
   GetClientsDTO,
-  CreateClientDTO
+  CreateClientDTO,
+  UpdateClientRequestDTO
 } from '../../core/dtos'
 import { ClientEntity } from '../../db/entities/client.entity'
 import {
@@ -131,13 +132,19 @@ export class ClientController {
   })
   async update(
     @Param('id') id: number,
-    @Body() client: ClientEntity
+    @Body() client: UpdateClientRequestDTO
   ): Promise<UpdateResult | HttpException> {
     if (!client) {
       throw new HttpException('Invalid body', HttpStatus.BAD_REQUEST)
     }
-    client.updated_at = new Date()
-    const result = await this.clientService.updateClient(id, client)
+    const clientEntity = new ClientEntity()
+    clientEntity.id = id
+    clientEntity.name = client.name
+    clientEntity.sallary = client.sallary
+    clientEntity.company_sallary = client.company_sallary
+    clientEntity.updated_at = new Date()
+
+    const result = await this.clientService.updateClient(id, clientEntity)
     if (!result.affected) {
       throw new HttpException('Client not found', HttpStatus.NOT_FOUND)
     }
