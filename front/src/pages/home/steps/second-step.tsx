@@ -13,11 +13,11 @@ export function SecondStepForm({
         <form
           onSubmit={secondStepForm.handleSubmit(handleLogin)}
           className="flex w-[512px] flex-col items-start justify-center gap-5"
-          data-testid="homepage-form"
+          data-testid="create-user-step2-form"
         >
           <h1
             className="flex flex-col gap-2 font-sans text-4xl"
-            data-testid="homepage-title"
+            data-testid="create-user-step2-title"
           >
             <span>Para prosseguir,</span>
             <span>digite seu e-mail e senha</span>
@@ -27,12 +27,12 @@ export function SecondStepForm({
               placeholder="Digite seu e-mail:"
               className="h-[60px] w-full"
               {...secondStepForm.register('email')}
-              data-testid="homepage-email-input"
+              data-testid="create-user-email-input"
             />
             {secondStepForm.formState.errors.email && (
               <p
                 className="text-right text-sm text-red-500"
-                data-testid="homepage-error"
+                data-testid="create-user-email-error"
               >
                 * {secondStepForm.formState.errors.email.message}
               </p>
@@ -48,7 +48,7 @@ export function SecondStepForm({
             {secondStepForm.formState.errors.password && (
               <p
                 className="text-left text-sm text-red-500"
-                data-testid="homepage-error"
+                data-testid="create-user-password-error"
               >
                 * {secondStepForm.formState.errors.password.message}
               </p>
@@ -57,9 +57,9 @@ export function SecondStepForm({
           <Button
             className="h-[60px] bg-theme-primary hover:bg-orange-800/90"
             type="submit"
-            data-testid="homepage-second-step-button"
+            data-testid="create-user-step2-button"
           >
-            Entrar
+            Cadastrar
           </Button>
         </form>
       </FormProvider>
@@ -67,7 +67,7 @@ export function SecondStepForm({
         variant="secondary"
         className="h-[60px] border-2 border-theme-primary text-theme-primary hover:border-orange-800/90 hover:bg-gray-200/90 hover:text-orange-800/90"
         type="button"
-        data-testid="homepage-second-step-back-button"
+        data-testid="create-user-back-button"
         onClick={handleStepBack}
       >
         Voltar

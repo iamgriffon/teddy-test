@@ -8,6 +8,7 @@ import { CardProps } from './types'
 export function ClientCard({
   client = {} as ClientDTO,
   onCRUDClient = () => {},
+  onSelectClient = () => {},
   type,
   ...props
 }: CardProps) {
@@ -26,6 +27,7 @@ export function ClientCard({
       client={client}
       className={cn(baseStyle, props.className)}
       onCRUDClient={onCRUDClient}
+      onSelectClient={onSelectClient}
       type={type}
       {...props}
     />

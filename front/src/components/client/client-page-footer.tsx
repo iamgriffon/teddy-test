@@ -2,7 +2,6 @@ import { Button, Paginator } from 'components/ui'
 import { ClientForm } from 'components/client'
 import { useForm } from 'react-hook-form'
 import { parseCurrency } from 'utils'
-import { useClientStore } from 'store'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ClientFormSchema,
@@ -15,30 +14,32 @@ import { useCallback, useState } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { createClient, CreateClientRequest } from 'services'
 import { toast } from 'react-toastify'
-
+import { ClientDTO } from 'dtos'
+import { text } from 'consts'
 interface ClientPageFooterProps {
-  isHomeScreen: boolean
+  isMainScreen: boolean
   list: {
+    data: ClientDTO[]
     total_pages: number
   }
-  
+  handleClearClients: () => void
   handlePageClick: (selectedItem: { selected: number }) => void
   page: number
   refetch: () => void
 }
 export function ClientPageFooter({
-  isHomeScreen,
+  isMainScreen,
   list,
   handlePageClick,
   page,
-  refetch
+  refetch,
+  handleClearClients
 }: ClientPageFooterProps) {
   const [createClientForm, setCreateClientForm] = useState(false)
   const [selectedClientsForm, setSelectedClientsForm] = useState(false)
-  const { deleteSelectedClients, selectedClients } = useClientStore()
 
   const onClickBottomBtn = useCallback(() => {
-    if (isHomeScreen) {
+    if (isMainScreen) {
       setCreateClientForm(true)
       createUserForm.reset()
       return
@@ -49,7 +50,7 @@ export function ClientPageFooter({
     return
 
     //eslint-disable-next-line
-  }, [isHomeScreen])
+  }, [isMainScreen])
 
   const createUserForm = useForm<ClientFormSchemaType>({
     resolver: zodResolver(ClientFormSchema),
@@ -73,7 +74,7 @@ export function ClientPageFooter({
       refetch()
       setCreateClientForm(false)
       createUserForm.reset()
-      toast.success('Cliente criado com sucesso!')
+      toast.success(text.CREATE_CLIENT_SUCCESS)
     }
   })
 
@@ -89,13 +90,12 @@ export function ClientPageFooter({
     [onCreateClient]
   )
 
-  const handleDeleteSelectedClients = useCallback(
-    (data: SelectedClientFormSchemaType) => {
-      deleteSelectedClients(data.clients)
-      setSelectedClientsForm(false)
-    },
-    [deleteSelectedClients, selectedClients]
-  )
+  const onClearSelectedClients = useCallback(() => {
+    handleClearClients()
+    setSelectedClientsForm(false)
+    deleteSelectedClientsForm.reset()
+    toast.success(text.CLEAR_SELECTED_CLIENTS_SUCCESS)
+  }, [handleClearClients, setSelectedClientsForm, deleteSelectedClientsForm])
 
   return (
     <footer>
@@ -113,20 +113,21 @@ export function ClientPageFooter({
       {selectedClientsForm && (
         <FormProvider {...deleteSelectedClientsForm}>
           <ClientForm
-            onSubmit={handleDeleteSelectedClients}
+            onSubmit={onClearSelectedClients}
             buttonText="Limpar clientes selecionados"
             title="Limpar clientes"
             onClose={() => setSelectedClientsForm(false)}
-            type="delete"
+            type="clear"
           />
         </FormProvider>
       )}
       <Button
-        className="h-10 w-full border-2 border-theme-primary text-sm font-bold text-theme-primary transition-all duration-300 hover:bg-theme-primary hover:text-white"
+        className="h-10"
         onClick={onClickBottomBtn}
         data-testid="client-footer-button"
+        disabled={!list.data.length}
       >
-        {isHomeScreen ? 'Criar Cliente' : 'Limpar clientes selecionados'}
+        {isMainScreen ? 'Criar Cliente' : 'Limpar clientes selecionados'}
       </Button>
       {!!list.total_pages && list.total_pages > 1 && (
         <Paginator

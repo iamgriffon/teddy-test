@@ -1,22 +1,19 @@
-import { ClientDTO } from 'dtos'
-import { HTMLAttributes, useCallback } from 'react'
+import { useCallback } from 'react'
 import { printCurrency } from 'utils/print-currency'
-import { useClientStore } from 'store/client'
 import { MinusIcon } from 'components/icons/minus-icon'
 import { CardProps } from './types'
-
-
+import { toast } from 'react-toastify'
+import { text } from 'consts'
 export function SelectedClientCard({
   client,
   onCRUDClient,
+  onSelectClient,
   ...props
 }: CardProps) {
-  const { deleteSelectedClient } = useClientStore()
-
   const handleDeleteSelectedClient = useCallback(() => {
-    deleteSelectedClient(client?.id.toString() || '')
-    onCRUDClient?.()
-  }, [deleteSelectedClient, client?.id, onCRUDClient])
+    onSelectClient?.(client)
+    toast.success(text.DELETE_SELECTED_CLIENT_SUCCESS)
+  }, [onSelectClient, client])
 
   return (
     <section

@@ -26,9 +26,11 @@ export type LoginRequest = {
 }
 
 export type LoginResponse = {
-  status: number
+  id: number
   name: string
-  token: string
+  email: string
+  session_token: string
+  session_token_expiry: string
 }
 
 export type RegisterRequest = {
@@ -40,12 +42,21 @@ export type RegisterRequest = {
 export type RegisterResponse = {
   id: number
   name: string
-  email: string 
+  email: string
   created_at: string
   updated_at: string
 }
 
+export type GetUserResponse = {
+  id: number
+  name: string
+  email: string
+  session_token: string
+  session_token_expiry: string
+}
+
 export type BodylessResponse = {
+  error?: string | object
   status: number
   message: string
-} 
+}
