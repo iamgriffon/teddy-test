@@ -7,6 +7,7 @@ import { text } from 'consts'
 export function SelectedClientCard({
   client,
   onSelectClient,
+  onUpdateClient,
   ...props
 }: CardProps) {
   const handleDeleteSelectedClient = useCallback(() => {
