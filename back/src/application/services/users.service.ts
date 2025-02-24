@@ -1,9 +1,7 @@
 import { CreateUserRequestDTO, LoginUserDTO, UserDTO } from '../../core/dtos'
-import { hashPassword } from '../../core/helpers/password'
 import { refreshOrRevokeJwt } from '../../core/helpers/jwt'
 import { UserRepository } from '../../db/repository/user.repository'
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
@@ -18,26 +16,32 @@ export class UsersService {
     private readonly authService: AuthService
   ) {}
 
-  async create(userData: CreateUserRequestDTO) {
-    try {
-      await this.userRepository.createUser({
-        ...userData,
-        password: await hashPassword(userData.password)
-      })
-      return { status: 201, message: 'User created successfully' }
-    } catch {
-      throw new BadRequestException('Failed to create user')
+  async create(userDto: CreateUserRequestDTO) {
+    if (!userDto.email || !userDto.password) {
+      throw new HttpException('Invalid request', HttpStatus.BAD_REQUEST)
     }
+    const existingUser = await this.userRepository.findUserByEmail(
+      userDto.email
+    )
+    if (existingUser) {
+      throw new HttpException('Email already in use', HttpStatus.CONFLICT)
+    }
+
+    await this.userRepository.save({
+      ...userDto,
+      email: userDto.email?.toLowerCase()
+    })
+    return { status: 201, message: 'User created successfully' }
   }
 
   async login(creds: LoginUserDTO) {
+    if (!creds.email || !creds.password) {
+      throw new HttpException('Invalid request', HttpStatus.BAD_REQUEST)
+    }
     const user = await this.authService.validateUser(
       creds.email,
       creds.password
     )
-    if (!user) {
-      throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED)
-    }
 
     const tokens = await this.authService.login(user)
 
