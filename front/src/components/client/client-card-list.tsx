@@ -35,10 +35,7 @@ export function ClientList({
       return Array.from({ length: itemsPerPage }).map((_, index) => (
         <ClientCardSkeleton
           key={index}
-          type={cardType}
-          client={{} as ClientDTO}
           data-testid={`client-card-skeleton`}
-          onUpdateClient={() => {}}
         />
       ))
     }
@@ -54,7 +51,9 @@ export function ClientList({
         key={index}
         client={client}
         type={cardType}
-        onSelectClient={onSelectClient}
+        onSelectClient={
+          cardType !== ('skeleton' as string) ? onSelectClient : () => {}
+        }
         onUpdateClient={onUpdateClient}
         data-testid={`client-card-${index + 1}`}
       />

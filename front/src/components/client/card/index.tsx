@@ -14,14 +14,18 @@ export function ClientCard({
 }: CardProps) {
   const ComponentMap = {
     list: ListClientCard,
-    selected: SelectedClientCard,
-    skeleton: ClientCardSkeleton
+    selected: SelectedClientCard
   }
 
   const baseStyle =
     'flex h-[150px] min-w-[285px] max-w-[320px] flex-col items-center justify-center gap-2.5 rounded-[4px] bg-white px-16 py-4 shadow-[0px_0px_4px_0px_#0000001A]'
 
+  if (type === 'skeleton') {
+    return <ClientCardSkeleton {...props} />
+  }
+
   const Component = ComponentMap[type] as React.FC<CardProps>
+
   return (
     <Component
       client={client}

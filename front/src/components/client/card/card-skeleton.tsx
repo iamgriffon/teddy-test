@@ -1,7 +1,9 @@
 import { cn } from 'utils/cn'
-import { CardProps } from './types'
+import { HTMLAttributes } from 'react'
 
-export function ClientCardSkeleton({ ...props }: CardProps) {
+export function ClientCardSkeleton({
+  ...props
+}: HTMLAttributes<HTMLDivElement>) {
   return (
     <section
       className={cn('bg-gray-200 animate-pulse', props.className)}
