@@ -98,12 +98,16 @@ export class AuthService {
     }
   }
 
-  async validateUser(email: string, pass: string): Promise<UserEntity | null> {
+  async validateUser(email: string, pass: string): Promise<UserEntity> {
     const user = await this.userRepository.findUserByEmail(email)
-    if (user && (await comparePassword(pass, user.password))) {
-      return user
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND)
     }
-    return null
+    const isPasswordValid = await comparePassword(pass, user.password)
+    if (!isPasswordValid) {
+      throw new HttpException('Invalid credentials', HttpStatus.CONFLICT)
+    }
+    return user
   }
 
   async login(user: UserEntity) {

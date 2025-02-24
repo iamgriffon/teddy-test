@@ -3,17 +3,29 @@ import { UsersService } from '@/application/services/users.service'
 import { UserRepository } from '@/db/repository/user.repository'
 import { AuthService, JwtPayload } from '@/application/helpers/auth.service'
 import { UserEntity } from '@/db/entities/users.entity'
-import { BadRequestException, HttpException } from '@nestjs/common'
+import { HttpException, HttpStatus } from '@nestjs/common'
 
 const mockUserRepository = () => ({
-  createUser: jest.fn(),
   findUserByEmail: jest.fn(),
+  save: jest.fn().mockImplementation((user) => {
+    const mockUser = new UserEntity()
+    mockUser.id = 1
+    mockUser.name = user.name
+    mockUser.email = user.email
+    mockUser.password = 'hashed_' + user.password
+    return Promise.resolve(mockUser)
+  }),
   updateUser: jest.fn(),
   findById: jest.fn().mockResolvedValue(new UserEntity())
 })
 
 const mockAuthService = () => ({
-  validateUser: jest.fn(),
+  validateUser: jest.fn().mockImplementation(async (email, password) => {
+    const user = await mockUserRepository().findUserByEmail(email)
+    if (user && password === 'pass') return user
+
+    throw new HttpException('Invalid credentials', HttpStatus.CONFLICT)
+  }),
   login: jest.fn(),
   decodeJwt: jest.fn().mockReturnValue({
     email: 'test@test.com',
@@ -57,18 +69,26 @@ describe('UsersService', () => {
         email: 'test@test.com',
         password: 'pass'
       }
-      userRepository.createUser.mockResolvedValue(new UserEntity())
+      userRepository.save.mockResolvedValue(new UserEntity())
 
       const result = await service.create(mockUserDto)
       expect(result.status).toBe(201)
       expect(result.message).toBe('User created successfully')
     })
 
-    it('should throw on creation failure', async () => {
-      userRepository.createUser.mockRejectedValue(new Error())
-      await expect(service.create({} as any)).rejects.toThrow(
-        BadRequestException
-      )
+    it('should throw on invalid request', async () => {
+      await expect(service.create({} as any)).rejects.toThrow(HttpException)
+    })
+
+    it('should throw when email already exists', async () => {
+      const mockUserDto = {
+        name: 'Test',
+        email: 'test@test.com',
+        password: 'pass'
+      }
+      userRepository.findUserByEmail.mockResolvedValue(new UserEntity())
+
+      await expect(service.create(mockUserDto)).rejects.toThrow(HttpException)
     })
   })
 
@@ -93,8 +113,34 @@ describe('UsersService', () => {
     })
 
     it('should throw for invalid credentials', async () => {
-      authService.validateUser.mockResolvedValue(null)
+      authService.validateUser.mockRejectedValue(
+        new HttpException('Invalid credentials', HttpStatus.CONFLICT)
+      )
+      await expect(
+        service.login({
+          email: 'test@test.com',
+          password: 'wrong'
+        })
+      ).rejects.toThrow(HttpException)
+      expect(authService.validateUser).toHaveBeenCalled()
+    })
+
+    it('should throw for invalid request', async () => {
       await expect(service.login({} as any)).rejects.toThrow(HttpException)
+      expect(authService.validateUser).not.toHaveBeenCalled()
+    })
+
+    it('should throw for user not found', async () => {
+      authService.validateUser.mockRejectedValue(
+        new HttpException('User not found', HttpStatus.NOT_FOUND)
+      )
+      await expect(
+        service.login({
+          email: 'test@test.com',
+          password: 'pass'
+        })
+      ).rejects.toThrow(HttpException)
+      expect(authService.validateUser).toHaveBeenCalled()
     })
   })
 
