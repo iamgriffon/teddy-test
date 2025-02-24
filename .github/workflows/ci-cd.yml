@@ -30,7 +30,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: 'pnpm'
 
       - name: Install PNPM
         run: npm install -g pnpm@latest
@@ -61,7 +60,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 22
-          cache: 'pnpm'
 
       - name: Install PNPM
         run: npm install -g pnpm@latest

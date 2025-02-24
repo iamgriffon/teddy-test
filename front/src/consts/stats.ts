@@ -2,7 +2,7 @@ export const stats = {
   repo: {
     issues: 37,
     pullRequests: 52,
-    commits: 123
+    commits: 127
   },
   files: {
     backend: 38,
