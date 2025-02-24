@@ -98,14 +98,28 @@ describe('Homepage', async () => {
       test('should show the error message when the password is empty', async () => {
         const button = page.getByTestId('create-user-step2-button')
         await button.click()
-        await expect(page.getByTestId('create-user-password-error')).toBeVisible()
+        await expect(
+          page.getByTestId('create-user-password-error')
+        ).toBeVisible()
+      })
+
+      test('should show the error message when the email already exists', async () => {
+        const emailInput = page.getByTestId('create-user-email-input')
+        const passwordInput = page.getByTestId('create-user-password-input')
+        await emailInput.fill('email@email2.com')
+        await passwordInput.fill('Teste@123')
+        await page.getByTestId('create-user-step2-button').click()
+        await expect(page.getByTestId('create-user-email-error')).toBeVisible()
+        expect(page.getByText(`* ${text.EMAIL_ALREADY_EXISTS}`))
       })
 
       test('should show the error message when the password is invalid', async () => {
         const input = page.getByTestId('create-user-password-input')
         await input.fill('12345678')
         await page.getByTestId('create-user-step2-button').click()
-        await expect(page.getByTestId('create-user-password-error')).toBeVisible()
+        await expect(
+          page.getByTestId('create-user-password-error')
+        ).toBeVisible()
       })
     })
   })

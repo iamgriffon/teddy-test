@@ -38,6 +38,7 @@ export function ClientList({
           type={cardType}
           client={{} as ClientDTO}
           data-testid={`client-card-skeleton`}
+          onUpdateClient={() => {}}
         />
       ))
     }

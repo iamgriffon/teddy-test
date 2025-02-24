@@ -11,6 +11,7 @@ import { useUserStore } from 'store'
 import Cookies from 'js-cookie'
 import { useLocalStorage } from '@uidotdev/usehooks'
 import { ClientDTO } from 'dtos'
+import { AxiosError } from 'axios'
 
 export function Login() {
   const { home } = links
@@ -48,7 +49,15 @@ export function Login() {
         setClients([])
       }
     },
-    onError: () => {
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 404) {
+        loginForm.setError('email', { message: text.LOGIN_USER_NOT_FOUND })
+      }
+      if (error.response?.status === 409) {
+        loginForm.setError('email', {
+          message: text.LOGIN_INVALID_CREDENTIALS
+        })
+      }
       toast.error(text.LOGIN_ERROR)
     }
   })
@@ -60,6 +69,7 @@ export function Login() {
   } = loginForm
 
   const handleLogin = async (data: LoginPageProps) => {
+    loginForm.clearErrors()
     authenticate(data)
   }
 

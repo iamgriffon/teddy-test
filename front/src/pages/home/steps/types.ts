@@ -7,7 +7,7 @@ export interface FirstStepFormProps {
 }
 
 export interface SecondStepFormProps {
-  handleLogin: (data: HomePageSecondStepType) => void
+  handleRegister: (data: HomePageSecondStepType) => void
   handleStepBack: () => void
   secondStepForm: UseFormReturn<HomePageSecondStepType>
 }

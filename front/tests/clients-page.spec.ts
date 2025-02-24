@@ -26,7 +26,7 @@ describe('Dashboard Page', () => {
     await browser.close()
   })
 
-  describe('It should contain all the elements', () => {
+  describe('Page elements', () => {
     test('should have a wrapper', async () => {
       const wrapper = page.getByTestId('clients-section')
       await expect(wrapper).toBeVisible()
@@ -408,6 +408,18 @@ describe('Dashboard Page', () => {
         await expect(page.getByTestId('overlay')).not.toBeVisible()
         await expect(page.getByTestId('side-menu')).not.toBeVisible()
       })
+    })
+  })
+
+  describe('Client Page', () => {
+    test('should go to homepage if the user is not authenticated', async () => {
+      await page.goto('http://localhost/clients', {
+        waitUntil: 'networkidle'
+      })
+      await context.clearCookies();
+      await context.clearPermissions();
+      await page.reload()
+      await expect(page).toHaveURL('http://localhost/')
     })
   })
 })

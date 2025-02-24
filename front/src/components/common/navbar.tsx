@@ -90,13 +90,13 @@ export function Navbar() {
                 location.pathname.includes('/clients') ||
                 location.search.includes('selected')
               }
-              className={cn(baseMobileMenuStyle)}
+              className={cn('group', baseMobileMenuStyle)}
             >
               <UserIcon
                 className={cn(
-                  location.pathname === clients && !location.search
-                    ? 'stroke-theme-primary stroke-0.5'
-                    : 'stroke-theme-primary',
+                  location.pathname === clients &&
+                    !location.search &&
+                    'fill-theme-primary',
                   'w-6 h-6'
                 )}
                 width={24}

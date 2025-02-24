@@ -1,6 +1,6 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { toast } from 'react-toastify'
-import { text } from 'consts/text'
+import { text, stats } from 'consts'
 import {
   CloseIcon,
   WhatsappIcon,
@@ -11,28 +11,6 @@ import { Button, Overlay } from 'components/ui'
 
 export function About() {
   const [form, setForm] = useState(false)
-  const stats = useMemo(() => {
-    return {
-      files: {
-        backend: 38,
-        frontend: 83
-      },
-      lines: {
-        backend: 1936,
-        frontend: 2542
-      },
-      tests: {
-        frontend: 53,
-        backend: 35
-      },
-      repo: {
-        issues: 33,
-        pullRequests: 46,
-        commits: 114
-      }
-    }
-  }, [])
-
   const { files, lines, tests, repo } = stats
 
   const TOTAL_FILES = files.backend + files.frontend
@@ -113,7 +91,7 @@ export function About() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center bg-background-primary p-8">
+    <div className="flex flex-col items-center bg-background-primary px-8">
       {form && <HireMeForm />}
       <h1 className="mb-8 text-4xl font-bold text-theme-primary md:text-5xl">
         Visão Geral do Projeto
@@ -126,7 +104,7 @@ export function About() {
           </h2>
           <div className="space-y-2">
             <p className="text-lg text-theme-black">
-              🚀 Tempo Total de Desenvolvimento: <strong>~5 dias</strong>
+              🚀 Tempo Total de Desenvolvimento: <strong>~5 dias (menos de 48h para o MVP)</strong>
             </p>
             <p className="text-lg text-theme-black">
               ✅ Casos de Teste: <strong>{TOTAL_TESTS}</strong> cenários
@@ -139,10 +117,10 @@ export function About() {
                 🗓 Data do primeiro commit: <strong>16/02/2025</strong>
               </span>
               <span className="text-lg text-theme-black">
-                🗓 Data da entrega: <strong>18/02/2025</strong>
+                🗓 Data da finalização do MVP (entrega): <strong>18/02/2025</strong>
               </span>
               <span className="text-lg text-theme-black">
-                🗓 Data da entrega final: <strong>21/02/2025</strong>
+                🗓 Data do último commit: <strong>23/02/2025</strong>
               </span>
             </p>
             <p className="text-lg text-theme-black">
@@ -234,7 +212,7 @@ export function About() {
                 <p className="text-theme-black">
                   Capaz de entregar projetos complexos em prazos curtos, como
                   demonstrado pelo desenvolvimento completo deste sistema em
-                  apenas 4.5 dias.
+                  apenas 2 dias.
                 </p>
               </div>
             </div>
