@@ -1,9 +1,9 @@
 import { FormProvider } from 'react-hook-form'
 import { Button, Input } from 'components/ui'
 import { SecondStepFormProps } from './types'
-
+import { cn } from 'utils'
 export function SecondStepForm({
-  handleLogin,
+  handleRegister,
   handleStepBack,
   secondStepForm
 }: SecondStepFormProps) {
@@ -11,7 +11,7 @@ export function SecondStepForm({
     <section className="flex size-full flex-col items-center justify-center gap-5">
       <FormProvider {...secondStepForm}>
         <form
-          onSubmit={secondStepForm.handleSubmit(handleLogin)}
+          onSubmit={secondStepForm.handleSubmit(handleRegister)}
           className="flex w-[512px] flex-col items-start justify-center gap-5"
           data-testid="create-user-step2-form"
         >
@@ -25,7 +25,11 @@ export function SecondStepForm({
           <section className="flex w-full flex-col items-start gap-2">
             <Input
               placeholder="Digite seu e-mail:"
-              className="h-[60px] w-full"
+              className={cn(
+                secondStepForm.formState.errors.email &&
+                  'border-red-500 hover:border-red-800/80',
+                'h-[60px] w-full'
+              )}
               {...secondStepForm.register('email')}
               data-testid="create-user-email-input"
             />
@@ -41,7 +45,11 @@ export function SecondStepForm({
           <section className="flex w-full flex-col items-start gap-2">
             <Input
               placeholder="Digite sua senha:"
-              className="h-[60px] w-full"
+              className={cn(
+                secondStepForm.formState.errors.password &&
+                  'border-red-500 hover:border-red-800/80',
+                'h-[60px] w-full'
+              )}
               type="password"
               data-testid="create-user-password-input"
               {...secondStepForm.register('password')}

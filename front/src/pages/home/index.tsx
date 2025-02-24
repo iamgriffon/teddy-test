@@ -13,6 +13,7 @@ import { useMutation } from '@tanstack/react-query'
 import { register, type RegisterRequest, isAuthenticated } from 'services'
 import { toast } from 'react-toastify'
 import { text } from 'consts'
+import { AxiosError } from 'axios'
 export function Home() {
   const [step, setStep] = useState<'first' | 'second'>('first')
   const navigate = useNavigate()
@@ -42,6 +43,17 @@ export function Home() {
         toast.success(text.CREATE_USER_SUCCESS)
         navigate('/login')
       }
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 400) {
+        secondStepForm.setError('email', { message: text.CREATE_USER_ERROR })
+      }
+      if (error.response?.status === 409) {
+        secondStepForm.setError('email', { message: text.EMAIL_ALREADY_EXISTS })
+      }
+      if (error.response?.status === 500) {
+        toast.error(text.INTERNAL_SERVER_ERROR)
+      }
     }
   })
 
@@ -66,7 +78,11 @@ export function Home() {
 
   const ComponentMap = {
     first: FirstStepForm({ handleNextStep, firstStepForm }),
-    second: SecondStepForm({ handleLogin, handleStepBack, secondStepForm })
+    second: SecondStepForm({
+      handleRegister: handleLogin,
+      handleStepBack,
+      secondStepForm
+    })
   }
 
   return (

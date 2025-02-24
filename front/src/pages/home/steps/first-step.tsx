@@ -2,6 +2,7 @@ import { FormProvider } from 'react-hook-form'
 import { FirstStepFormProps } from './types'
 import { Link, Button, Input } from 'components/ui'
 import { links } from 'consts'
+import { cn } from 'utils'
 
 export function FirstStepForm({
   handleNextStep,
@@ -24,7 +25,11 @@ export function FirstStepForm({
         <section className="flex w-full flex-col items-start gap-2">
           <Input
             placeholder="Digite seu nome:"
-            className="h-[60px] w-full"
+            className={cn(
+              firstStepForm.formState.errors.name &&
+                'border-red-500 hover:border-red-800/80',
+              'h-[60px] w-full'
+            )}
             {...firstStepForm.register('name')}
             id="user-input"
             data-testid="create-user-name-input"

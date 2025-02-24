@@ -3,6 +3,7 @@ import { cn } from 'utils'
 import { useLocation } from 'react-router-dom'
 import { useMemo } from 'react'
 import { Bounce, ToastContainer } from 'react-toastify'
+import { RouteGuard } from './auth-guard'
 
 interface LayoutProps {
   children?: React.ReactNode
@@ -25,31 +26,33 @@ export function Layout({ children, className }: LayoutProps) {
         shouldHideNavbar ? 'bg-white' : 'bg-background-primary'
       )}
     >
-      <section className={cn('flex flex-col items-center h-full w-full')}>
-        {!shouldHideNavbar && <Navbar />}
-        <div
-          className={cn(
-            !className && 'justify-center',
-            'flex flex-col items-center min-h-full px-4',
-            className
-          )}
-        >
-          {children}
-        </div>
-        <ToastContainer
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick={false}
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          transition={Bounce}
-        />
-      </section>
+      <RouteGuard>
+        <section className={cn('flex flex-col items-center h-full w-full')}>
+          {!shouldHideNavbar && <Navbar />}
+          <div
+            className={cn(
+              !className && 'justify-center',
+              'flex flex-col items-center min-h-full px-4',
+              className
+            )}
+          >
+            {children}
+          </div>
+          <ToastContainer
+            position="bottom-left"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+            transition={Bounce}
+          />
+        </section>
+      </RouteGuard>
     </main>
   )
 }
