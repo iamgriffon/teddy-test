@@ -97,8 +97,12 @@ docker exec -it back sh -c "pnpm install"
 - **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
 - **Testes:** [Jest](https://jestjs.io/)
 - **Documentação:** [Swagger](https://swagger.io/)
-- **Banco de Dados:** [PostgreSQL](https://www.postgresql.org/)
 - **Serviço de JWT** [NestJS JWT](https://github.com/nestjs/jwt)
+
+## DevOps
+- **Nginx**: [Nginx](https://nginx.org/)
+- **Docker**: [Docker](https://www.docker.com/)
+- **GitHub Actions**: [GitHub Actions](https://docs.github.com/en/actions)
 
 ## Testes
 
