@@ -14,7 +14,6 @@ export const stats = {
   },
   tests: {
     frontend: 56,
-    frontend: 56,
     backend: 38
   }
 }
