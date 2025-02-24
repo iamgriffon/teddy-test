@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  back:
+  teddy-back:
     build:
       context: ./back
       dockerfile: Dockerfile
@@ -18,7 +18,7 @@ services:
       - app-network
     container_name: back
 
-  front:
+  teddy-front:
     build:
       context: ./front
       dockerfile: Dockerfile
