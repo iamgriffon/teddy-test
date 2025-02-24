@@ -1,0 +1,76 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_USER: sa
+          POSTGRES_PASSWORD: 123456
+          POSTGRES_DB: teddy_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install Dependencies
+        working-directory: back
+        run: pnpm install
+
+      - name: Run Tests
+        working-directory: back
+        env:
+          DATABASE_PORT: 5432
+          DATABASE_USER: sa
+          DATABASE_PASSWORD: 123456
+          DATABASE_NAME: teddy_test
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        run: pnpm run test
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install PNPM
+        run: npm install -g pnpm
+
+      - name: Install Dependencies
+        working-directory: front
+        run: pnpm install
+
+      - name: Install Playwright Browsers
+        working-directory: front
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run Tests
+        working-directory: front
+        run: pnpm test 

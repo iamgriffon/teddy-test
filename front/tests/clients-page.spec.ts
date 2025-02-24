@@ -146,6 +146,28 @@ describe('Dashboard Page', () => {
       await updateClientButton.click()
       await expect(page.getByTestId('client-form')).toBeVisible()
     })
+    test('should update the client', async () => {
+      const updateClientButton = page
+        .getByTestId('client-form-edit-icon')
+        .first()
+      await updateClientButton.click()
+      await expect(page.getByTestId('client-form')).toBeVisible()
+      await page.getByTestId('client-form-name-input').fill('John Doe')
+      await page.getByTestId('client-form-sallary-input').fill('10000')
+      await page
+        .getByTestId('client-form-company-sallary-input')
+        .fill('20000,00')
+
+      await page.route('**/clients/*', async (route) => {
+        await route.fulfill({
+          status: 200,
+          body: JSON.stringify({})
+        })
+      })
+
+      await page.getByTestId('client-form-button').click()
+      await expect(page.getByText(text.UPDATE_CLIENT_SUCCESS)).toBeVisible()
+    })
     test('should open the delete client form when the button is clicked ', async () => {
       const deleteClientButton = page
         .getByTestId('client-form-delete-icon')
